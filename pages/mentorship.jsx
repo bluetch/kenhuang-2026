@@ -1,161 +1,355 @@
 import Image from "next/image";
-import { Button, Container, Layout, Typography } from "components";
+import { ArrowUpRight, Check } from "lucide-react";
+import { SiteLayout } from "components/SiteLayout";
+import { Badge } from "components/ui/badge";
+import { Button } from "components/ui/button";
+import { Separator } from "components/ui/separator";
 import mentorshipHero from "public/images/mentorship/mentorship_hero.jpg";
 
-const Mentorship = () => {
-  const programs = [
-    {
-      name: "求職衝刺方案",
-      img: "refresh",
-      section: 3,
-      price: 1000,
-      desc: "你目前正在積極求職找尋適合的工作嗎？讓我針對你的履歷、作品集和面試策略進行改善來提高成功機率吧！",
-      audience: "All designers",
-      button: "前往預約",
-    },
-    {
-      name: "目標實踐方案",
-      img: "refresh",
-      section: 6,
-      price: 900,
-      desc: "你要持續自我成長並且讓自己達到理想的狀態嗎？讓我幫助你設定目標並逐步實現吧！",
-      audience: "Experienced designers",
-      button: "前往預約",
-    },
-    {
-      name: "職涯教練方案",
-      img: "refresh",
-      section: 12,
-      price: 800,
-      desc: "你有長期想實現的職涯願景，並且想在目前的工作中有更好的表現嗎？讓我幫助你排除困難快速前進吧！",
-      audience: "New designers",
-      button: "前往預約",
-    },
-  ];
+const programs = [
+  {
+    name: "求職衝刺方案",
+    nameEn: "Job Sprint",
+    sessions: 3,
+    price: 1000,
+    unit: "TWD / session",
+    desc: "針對你的履歷、作品集和面試策略進行改善，提高求職成功率。",
+    descEn: "Targeted resume, portfolio, and interview strategy to maximize your job search success rate.",
+    highlight: false,
+    perks: ["Portfolio critique", "Resume optimization", "Mock interview", "Interview strategy"],
+  },
+  {
+    name: "目標實踐方案",
+    nameEn: "Goal Achievement",
+    sessions: 6,
+    price: 900,
+    unit: "TWD / session",
+    desc: "設定目標並逐步實現，持續自我成長，達到理想狀態。",
+    descEn: "Set measurable goals and build a step-by-step plan to reach your ideal state as a designer.",
+    highlight: true,
+    perks: ["Goal setting framework", "Monthly check-ins", "Design critique", "Career roadmap", "Resource curation"],
+  },
+  {
+    name: "職涯教練方案",
+    nameEn: "Career Coaching",
+    sessions: 12,
+    price: 800,
+    unit: "TWD / session",
+    desc: "長期職涯願景規劃，幫助你在工作中有更好的表現。",
+    descEn: "Long-term career vision planning, helping you advance at work and achieve your professional goals.",
+    highlight: false,
+    perks: ["Long-term planning", "Leadership coaching", "Salary negotiation", "Network building", "Senior-level review", "On-demand support"],
+  },
+];
 
-  const benefits = [
-    {
-      name: "Tools",
-      img: "tools",
-      desc: "Get you up to speed quickly with design and visual development tools Figma or front-end: HTML/CSS/JS skills",
-    },
-    {
-      name: "Portfolio review",
-      img: "portfolio",
-      desc: "Help you sort out the presentation and details of your work, so that you can write a better story",
-    },
-    {
-      name: "Career coach",
-      img: "smile",
-      desc: "Assist you in planning your mid- to long-term career goals, as well as provide suggested direction and guidance",
-    },
-    {
-      name: "Mock Interview",
-      img: "work",
-      desc: "Accompany you to simulate the real interview situation, let you be more familiar with the interview process, answering skills and job search strategies",
-    },
-  ];
+const benefits = [
+  {
+    name: "Tools",
+    desc: "Get up to speed with Figma, HTML/CSS/JS, and modern design tooling for product roles.",
+  },
+  {
+    name: "Portfolio Review",
+    desc: "Improve presentation and storytelling of your work so your portfolio tells a compelling story.",
+  },
+  {
+    name: "Career Coach",
+    desc: "Plan your mid- to long-term goals with suggested direction and guidance from real experience.",
+  },
+  {
+    name: "Mock Interview",
+    desc: "Simulate real interview scenarios, sharpen your answering skills, and build confidence.",
+  },
+];
 
-  const mentoringStyle = [
-    {
-      name: "Authenticity",
-      img: "refresh",
-      desc: "No sugar-coated critiques here. I care about your growth too much to not keep it real. We will tear things down and rebuild them better, together.",
-    },
-    {
-      name: "Humility",
-      img: "refresh",
-      desc: "I don’t profess to be at the top of the design talent pool, because I know there is still much for me to master. Design is a moving target I am hunting every day.",
-    },
-    {
-      name: "Equality",
-      img: "refresh",
-      desc: "To me, you are more than just a mentee. You are a designer — an industry peer. I’m not the only one teaching and you’re not the only one learning.",
-    },
-    {
-      name: "Transparency",
-      img: "refresh",
-      desc: "I don’t have all the answers, but I amm happy to point you towards useful resources and share what I have learned from my own personal design journey.",
-    },
-  ];
+const mentorStyle = [
+  { name: "Authenticity", desc: "No sugar-coated critiques. Honest feedback because I care about your growth." },
+  { name: "Humility", desc: "Design is a moving target — I am learning every day alongside you." },
+  { name: "Equality", desc: "You are more than a mentee. You are a designer and industry peer." },
+  { name: "Transparency", desc: "I point you toward useful resources and share my own design journey openly." },
+];
+
+const clientLogos = [
+  { src: "/images/mentorship/facebook_logo.png", alt: "Facebook" },
+  { src: "/images/mentorship/benq_logo.png", alt: "BenQ" },
+  { src: "/images/mentorship/shopee_logo.png", alt: "Shopee" },
+  { src: "/images/mentorship/tsmc_logo.png", alt: "TSMC" },
+  { src: "/images/mentorship/seagroup_logo.png", alt: "Sea Group" },
+  { src: "/images/mentorship/trendmicro_logo.png", alt: "Trend Micro" },
+  { src: "/images/mentorship/alibaba_logo.png", alt: "Alibaba" },
+  { src: "/images/mentorship/google_logo.png", alt: "Google" },
+];
+
+export default function Mentorship() {
   return (
-    <Layout
-      title="Mentorship | Ken Huang"
-      description="1:1 mentorship with Ken Huang for designers and front-end engineers. Portfolio reviews, career coaching, and interview prep."
+    <SiteLayout
+      title="Mentorship — Ken Huang"
+      description="1:1 mentorship with Ken Huang for designers and frontend engineers. Portfolio reviews, career coaching, and interview prep."
     >
-      <section className="flex flex-col justify-center items-center space-y-8 lg:py-32 py-16">
-        <Container>
-          <Typography className="text-center" variant="h1">Mentor Program</Typography>
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <p className="text-gray-500">Boost your career and become a better designer or engineer</p>
-              <p className="text-gray-500">As a self-thought designer with years of experience in multinational organization, I deeply understand the challenges product design learners could face so I’m able to help them achieve their goals at different stages of careers. In this mentorship program, I will provide professional advice based on your needs, help you to clarify problems and set goals, and address them systematically. In the past three years, I have helped more than 50 designers from more than 10 countries around the world to achieve their career goals.  They have better performance on projects and start to influence their team.</p>
-              <p className="text-gray-500">Contace Me: <a href="mailto:bluetch@gmail.com" className="text-sky-500">bluetch@gmail.com</a></p>
+      {/* Hero */}
+      <section className="pt-32 pb-24 lg:pt-40 lg:pb-32 border-b border-ink-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <p
+                  className="text-xs tracking-widest uppercase text-lime"
+                  style={{ fontFamily: "JetBrains Mono, monospace" }}
+                >
+                  Mentorship
+                </p>
+                <h1
+                  style={{
+                    fontFamily: "Fraunces, serif",
+                    fontSize: "clamp(3rem, 6vw, 5rem)",
+                    fontWeight: 400,
+                    letterSpacing: "-0.03em",
+                    lineHeight: 0.95,
+                    color: "#F2EDE4",
+                  }}
+                >
+                  Boost your career,
+                  <br />
+                  <em style={{ color: "#C5F135", fontStyle: "italic" }}>become better.</em>
+                </h1>
+              </div>
+              <div className="space-y-4 text-cream-muted leading-relaxed max-w-md" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                <p>
+                  As a self-taught designer with years of experience in
+                  multinational organizations, I deeply understand the challenges
+                  product design learners face.
+                </p>
+                <p>
+                  In the past three years, I have helped more than 50 designers
+                  from 10+ countries around the world achieve their career goals.
+                </p>
+              </div>
+              <a href="mailto:bluetch@gmail.com">
+                <Button size="lg">
+                  Contact Me
+                  <ArrowUpRight size={16} />
+                </Button>
+              </a>
+              <p className="text-xs text-cream-faint" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+                bluetch@gmail.com
+              </p>
             </div>
-            <Image src={mentorshipHero} alt="Ken Huang mentorship" />
-          </div>
-        </Container>
-      </section>
-      <section className="lg:py-32">
-        <Container className="text-center space-y-8">
-          <Typography variant="h2">Benefits of Mentorship</Typography>
-          <p>I know a thing or two because I have done a thing or two in my design career, and I am committed to helping you make use of that knowledge.</p>
-          <div className="grid lg:grid-cols-2 gap-8">
-            {benefits.map((benefit, i) => {
-              return (
-                <div key={`benefit-${i}`} className="shadow-md space-y-4 rounded-lg p-8">
-                  {/* <Icon name={benefit.img} className="w-12 h-12 inline-block bg-black rounded-lg" /> */}
-                  <Typography variant="h3">{benefit.name}</Typography>
-                  <p className="text-gray-500">{benefit.desc}</p>
-                </div>
-              )
-            })}
-          </div>
-        </Container>
-      </section>
-      <section className="my-32">
-        <Container className="text-center space-y-20">
-          <Typography variant="h2">I’ve mentored talented <br />designers & engineers from all over the world</Typography>
-          <div className="grid lg:grid-cols-4 lg:gap-20 grid-cols-2 gap-4">
-            <div className="flex items-center">
-              <img src="/images/mentorship/facebook_logo.png" alt="Facebook" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/benq_logo.png" alt="Benq" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/shopee_logo.png" alt="Shopee" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/tsmc_logo.png" alt="TSMC" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/seagroup_logo.png" alt="sea group" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/trendmicro_logo.png" alt="trend micro" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/alibaba_logo.png" alt="alibaba group" />
-            </div>
-            <div className="flex items-center">
-              <img src="/images/mentorship/google_logo.png" alt="Google" />
-            </div>
-          </div>
-        </Container>
-      </section>
-      <section className="py-32 bg-gray-50">
-        <Container className="text-center">
-          <div className="flex flex-col justify-center items-center space-y-8">
-          <Typography variant="h2">Book a consult</Typography>
-            <p>Thinking about mentorship? Lets talk about it. The first call is on me.</p>
-            {/* <Button href="">Introduce yourself</Button> */}
-            <p>Contace Me: <a href="mailto:bluetch@gmail.com" className="text-sky-500">bluetch@gmail.com</a></p>
-          </div>
-        </Container>
-      </section>
-    </Layout >
-  )
-}
 
-export default Mentorship;
+            <div className="overflow-hidden border border-ink-border">
+              <Image src={mentorshipHero} alt="Ken Huang mentorship" className="w-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Programs / Pricing */}
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-start gap-6 mb-12">
+            <span className="text-xs text-cream-faint mt-1" style={{ fontFamily: "JetBrains Mono, monospace" }}>01</span>
+            <div>
+              <h2
+                style={{ fontFamily: "Fraunces, serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 400, letterSpacing: "-0.02em", color: "#F2EDE4" }}
+              >
+                Programs
+              </h2>
+              <p className="text-cream-muted mt-2" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                Choose the program that fits your current stage.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {programs.map((program) => (
+              <div
+                key={program.name}
+                className={`relative border flex flex-col p-8 space-y-6 transition-all duration-200 ${
+                  program.highlight
+                    ? "border-lime bg-lime-glow"
+                    : "border-ink-border bg-ink-surface hover:border-ink-muted"
+                }`}
+              >
+                {program.highlight && (
+                  <div className="absolute -top-3 left-8">
+                    <Badge variant="active" className="text-[9px]">Most Popular</Badge>
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <p
+                    className="text-xs text-cream-faint tracking-widest uppercase"
+                    style={{ fontFamily: "JetBrains Mono, monospace" }}
+                  >
+                    {program.sessions} sessions
+                  </p>
+                  <h3
+                    style={{ fontFamily: "Fraunces, serif", fontSize: "1.4rem", fontWeight: 500, color: "#F2EDE4" }}
+                  >
+                    {program.nameEn}
+                  </h3>
+                  <p
+                    className="text-sm text-cream-muted"
+                    style={{ fontFamily: "Fraunces, serif", fontStyle: "italic" }}
+                  >
+                    {program.name}
+                  </p>
+                </div>
+
+                <div className="flex items-baseline gap-1">
+                  <span
+                    style={{ fontFamily: "Fraunces, serif", fontSize: "2.5rem", fontWeight: 500, color: program.highlight ? "#C5F135" : "#F2EDE4", lineHeight: 1 }}
+                  >
+                    {program.price.toLocaleString()}
+                  </span>
+                  <span className="text-xs text-cream-muted" style={{ fontFamily: "JetBrains Mono, monospace" }}>
+                    {program.unit}
+                  </span>
+                </div>
+
+                <p className="text-sm text-cream-muted leading-relaxed" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  {program.descEn}
+                </p>
+
+                <Separator className="bg-ink-border" />
+
+                <ul className="space-y-2 flex-1">
+                  {program.perks.map((perk) => (
+                    <li key={perk} className="flex items-center gap-2 text-sm text-cream-muted" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                      <Check size={12} className="text-lime flex-shrink-0" />
+                      {perk}
+                    </li>
+                  ))}
+                </ul>
+
+                <a href="mailto:bluetch@gmail.com">
+                  <Button
+                    variant={program.highlight ? "default" : "outline"}
+                    className="w-full"
+                  >
+                    Book a session
+                  </Button>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Benefits */}
+      <section className="py-24 border-y border-ink-border bg-ink-surface">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-start gap-6 mb-12">
+            <span className="text-xs text-cream-faint mt-1" style={{ fontFamily: "JetBrains Mono, monospace" }}>02</span>
+            <h2
+              style={{ fontFamily: "Fraunces, serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 400, letterSpacing: "-0.02em", color: "#F2EDE4" }}
+            >
+              Benefits
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {benefits.map((benefit, i) => (
+              <div
+                key={benefit.name}
+                className="border border-ink-border p-8 space-y-4 hover:border-ink-muted transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className="text-xs text-cream-faint"
+                    style={{ fontFamily: "JetBrains Mono, monospace" }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3
+                    className="group-hover:text-lime transition-colors"
+                    style={{ fontFamily: "Fraunces, serif", fontSize: "1.3rem", fontWeight: 500, color: "#F2EDE4" }}
+                  >
+                    {benefit.name}
+                  </h3>
+                </div>
+                <p className="text-sm text-cream-muted leading-relaxed" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  {benefit.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mentoring Style */}
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-start gap-6 mb-12">
+            <span className="text-xs text-cream-faint mt-1" style={{ fontFamily: "JetBrains Mono, monospace" }}>03</span>
+            <h2
+              style={{ fontFamily: "Fraunces, serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 400, letterSpacing: "-0.02em", color: "#F2EDE4" }}
+            >
+              How I Mentor
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-l border-t border-ink-border">
+            {mentorStyle.map((style) => (
+              <div
+                key={style.name}
+                className="border-r border-b border-ink-border p-8 space-y-4 hover:bg-ink-surface transition-colors group"
+              >
+                <h3
+                  className="group-hover:text-lime transition-colors"
+                  style={{ fontFamily: "Fraunces, serif", fontSize: "1.2rem", fontWeight: 500, color: "#F2EDE4" }}
+                >
+                  {style.name}
+                </h3>
+                <p className="text-sm text-cream-muted leading-relaxed" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  {style.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Client logos */}
+      <section className="py-24 border-t border-ink-border">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <p
+            className="text-center text-xs tracking-widest uppercase text-cream-muted mb-12"
+            style={{ fontFamily: "JetBrains Mono, monospace" }}
+          >
+            Mentored designers from
+          </p>
+          <div className="grid grid-cols-4 lg:grid-cols-8 gap-8 items-center opacity-50 hover:opacity-70 transition-opacity">
+            {clientLogos.map((logo) => (
+              <div key={logo.alt} className="flex items-center justify-center">
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="max-h-8 w-auto object-contain filter brightness-0 invert"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 border-t border-ink-border bg-ink-surface">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center space-y-8">
+          <h2
+            style={{ fontFamily: "Fraunces, serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 400, letterSpacing: "-0.02em", color: "#F2EDE4", lineHeight: 1 }}
+          >
+            First session is{" "}
+            <em style={{ color: "#C5F135", fontStyle: "italic" }}>on me.</em>
+          </h2>
+          <p className="text-cream-muted max-w-md mx-auto" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+            Thinking about mentorship? Let&apos;s talk about it. The introductory call is free.
+          </p>
+          <a href="mailto:bluetch@gmail.com">
+            <Button size="lg">
+              Introduce yourself
+              <ArrowUpRight size={16} />
+            </Button>
+          </a>
+        </div>
+      </section>
+    </SiteLayout>
+  );
+}

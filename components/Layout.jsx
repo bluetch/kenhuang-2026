@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { Footer } from "components/Footer";
-import { Header } from "components/Header";
+import { SiteHeader } from "components/SiteHeader";
+import { SiteFooter } from "components/SiteFooter";
 import { SITE_META_DESCRIPTION, SITE_TITLE, SITE_URL } from "constants/site";
 
 export const Layout = ({
@@ -12,7 +12,7 @@ export const Layout = ({
   const pageDescription = description || SITE_META_DESCRIPTION;
 
   return (
-    <div className="flex flex-col h-screen justify-between">
+    <>
       <Head>
         <title>{pageTitle}</title>
         <meta charSet="utf-8" />
@@ -24,23 +24,19 @@ export const Layout = ({
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <div className={`mscroll-smooth relative mb-auto`}>
-        {children}
-      </div>
-      <Footer />
-    </div>
+      <SiteHeader />
+      <main className="min-h-screen">{children}</main>
+      <SiteFooter />
+    </>
   );
 };
 
 export const Container = ({ className = "", children }) => {
   return (
-    <div className={`container mx-auto lg:px-8 px-4 ${className}`}>{children}</div>
-  )
-}
+    <div className={`max-w-7xl mx-auto lg:px-8 px-4 ${className}`}>{children}</div>
+  );
+};
 
-export const HR = () =>{
-  return(
-    <hr className="lg:my-24 my-12" />
-  )
-}
+export const HR = () => {
+  return <hr className="lg:my-24 my-12 border-ink-border" />;
+};

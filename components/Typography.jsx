@@ -1,29 +1,27 @@
-
-
 const VARIANT_CONFIG = {
   h1: {
     Tag: "h1",
-    baseClass: "text-4xl font-bold mb-8",
+    baseClass: "font-display text-4xl font-semibold mb-8 text-cream tracking-tight",
   },
   h2: {
     Tag: "h2",
-    baseClass: "text-3xl font-bold mb-6",
+    baseClass: "font-display text-3xl font-semibold mb-6 text-cream tracking-tight",
   },
   h3: {
     Tag: "h3",
-    baseClass: "text-2xl font-bold mb-4",
+    baseClass: "font-display text-2xl font-semibold mb-4 text-cream tracking-tight",
   },
   h4: {
     Tag: "h4",
-    baseClass: "text-xl font-bold mb-3",
+    baseClass: "font-display text-xl font-semibold mb-3 text-cream",
   },
   h5: {
     Tag: "h5",
-    baseClass: "font-bold text-base mb-2",
+    baseClass: "font-display font-semibold text-base mb-2 text-cream",
   },
   h6: {
     Tag: "h6",
-    baseClass: "font-bold text-sm mb-1",
+    baseClass: "font-display font-semibold text-sm mb-1 text-cream",
   },
 };
 
@@ -35,7 +33,11 @@ export const Typography = ({ className = "", variant = "h4", children, ...rest }
   const { Tag, baseClass } = config;
 
   return (
-    <Tag className={`${baseClass} ${className}`} {...rest}>
+    <Tag
+      className={`${baseClass} ${className}`}
+      style={{ fontFamily: "Fraunces, Georgia, serif" }}
+      {...rest}
+    >
       {children}
     </Tag>
   );

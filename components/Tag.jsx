@@ -1,18 +1,32 @@
-export const Tag = ({ children, variant="black" }) => {
-  
+export const Tag = ({ children, variant = "black" }) => {
   if (Array.isArray(children)) {
     return (
-      <div className="space-x-2">
-        {children.map((item) => {
-          return (
-            <span className="rounded bg-gray-100 inline-block text-xs px-4 py-1 mb-2" key={`tag-${item}`}>{item}</span>
-          )
-        })}
+      <div className="flex flex-wrap gap-2">
+        {children.map((item) => (
+          <span
+            key={`tag-${item}`}
+            className="text-[10px] tracking-widest uppercase text-lime px-3 py-1"
+            style={{
+              fontFamily: "JetBrains Mono, monospace",
+              background: "rgba(197,241,53,0.12)",
+            }}
+          >
+            {item}
+          </span>
+        ))}
       </div>
-    )
+    );
   } else {
-    return(
-      <span className="rounded bg-black text-white inline-block py-0 px-2 mr-2">{children}</span>
-    )
+    return (
+      <span
+        className="text-[10px] tracking-widest uppercase text-lime px-2 py-0.5"
+        style={{
+          fontFamily: "JetBrains Mono, monospace",
+          background: "rgba(197,241,53,0.12)",
+        }}
+      >
+        {children}
+      </span>
+    );
   }
-}
+};
