@@ -3,16 +3,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
-import { Badge } from "components/ui/badge";
 import { fetcher } from "utils";
 
 function dateFormat(d) {
   const s = String(d);
-  if (s.length === 8) {
-    return `${s.slice(0, 4)}.${s.slice(4, 6)}.${s.slice(6, 8)}`;
-  }
+  if (s.length === 8) return `${s.slice(0, 4)}.${s.slice(4, 6)}.${s.slice(6, 8)}`;
   return s;
 }
+
+const CAT_COLOR = {
+  camino: "text-game-pink border-game-pink",
+  frontend: "text-game-blue border-game-blue",
+};
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([]);
@@ -35,60 +37,54 @@ export default function ArticleList() {
     return sorted.filter((item) => item.category.includes(activeFilter));
   }, [activeFilter, articles]);
 
-  const filters = ["all", "camino", "frontend"];
-
   return (
     <SiteLayout
-      title="Writing — Ken Huang"
+      title="Quest Log — Ken Huang"
       description="Articles by Ken Huang on frontend engineering, product design, and travel."
     >
-      {/* Page header */}
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-20 border-b border-ink-border">
+      {/* Header */}
+      <section className="pt-32 pb-16 lg:pt-40 lg:pb-20 border-b-2 border-dark bg-paper"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,0,110,0.04) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-            <div className="space-y-4">
-              <p
-                className="text-xs tracking-widest uppercase text-lime"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
-              >
-                Writing
+            <div>
+              <p className="text-xs text-game-pink font-bold tracking-widest uppercase mb-2" style={{ fontFamily: "Space Mono, monospace" }}>
+                ◆ QUEST LOG
               </p>
               <h1
-                style={{
-                  fontFamily: "Fraunces, serif",
-                  fontSize: "clamp(3rem, 6vw, 5rem)",
-                  fontWeight: 400,
-                  letterSpacing: "-0.03em",
-                  lineHeight: 0.95,
-                  color: "#F2EDE4",
-                }}
+                className="text-dark leading-none"
+                style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(3rem, 6vw, 5rem)", fontWeight: 900 }}
               >
-                Articles
+                Writing
               </h1>
             </div>
-            <p
-              className="text-cream-muted max-w-xs leading-relaxed"
-              style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
-            >
-              {data.length} articles on design, engineering,
-              and life on the road.
-            </p>
+            <div className="bg-white border-2 border-dark px-5 py-3">
+              <p className="text-xs text-text-muted" style={{ fontFamily: "Space Mono, monospace" }}>
+                QUESTS LOGGED: <span className="text-dark font-bold">{data.length}</span>
+              </p>
+            </div>
           </div>
 
-          {/* Filter */}
-          <div className="flex gap-1 mt-10 border-b border-ink-border">
-            {filters.map((f) => (
+          {/* Filters */}
+          <div className="flex gap-0 mt-10 border-2 border-dark w-fit">
+            {[
+              { id: "all", label: "ALL QUESTS" },
+              { id: "camino", label: "CAMINO" },
+              { id: "frontend", label: "FRONTEND" },
+            ].map((f) => (
               <button
-                key={f}
-                onClick={() => setActiveFilter(f)}
-                className={`px-4 py-3 text-xs tracking-widest uppercase border-b-2 -mb-[2px] transition-all duration-200 ${
-                  activeFilter === f
-                    ? "border-lime text-lime"
-                    : "border-transparent text-cream-muted hover:text-cream"
+                key={f.id}
+                onClick={() => setActiveFilter(f.id)}
+                className={`px-5 py-2.5 text-xs font-bold tracking-widest uppercase border-r-2 border-dark last:border-r-0 transition-all duration-150 ${
+                  activeFilter === f.id ? "bg-dark text-white" : "bg-white text-text-muted hover:bg-paper-warm"
                 }`}
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                style={{ fontFamily: "Space Mono, monospace" }}
               >
-                {f}
+                {f.label}
               </button>
             ))}
           </div>
@@ -96,91 +92,70 @@ export default function ArticleList() {
       </section>
 
       {/* Article list */}
-      <section className="py-8 lg:py-12">
+      <section className="py-16 bg-paper">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="space-y-0">
+          <div className="border-2 border-dark">
             {data.map((item, i) => {
               const isExternal = item.url.startsWith("http");
+              const cat = item.category[0] || "";
               return (
                 <Link
                   key={item.url}
                   href={item.url}
                   target={isExternal ? "_blank" : "_self"}
                   rel={isExternal ? "noopener noreferrer" : undefined}
-                  className="group flex items-start gap-6 py-6 border-b border-ink-border hover:bg-ink-surface transition-colors duration-200 px-4 -mx-4"
+                  className="group flex items-center gap-4 p-4 border-b-2 border-dark last:border-b-0 bg-white hover:bg-dark transition-all duration-150"
                 >
-                  {/* Index number */}
+                  {/* Number */}
                   <span
-                    className="text-xs text-cream-faint w-8 flex-shrink-0 pt-1"
-                    style={{ fontFamily: "JetBrains Mono, monospace" }}
+                    className="text-xs text-text-faint group-hover:text-gray-500 w-8 flex-shrink-0 font-mono"
+                    style={{ fontFamily: "Space Mono, monospace" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
                   {/* Thumbnail */}
-                  <div className="w-16 h-16 flex-shrink-0 overflow-hidden border border-ink-border bg-ink-elevated hidden sm:block">
-                    <img
-                      src={item.img}
-                      alt=""
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                      loading="lazy"
-                    />
+                  <div className="w-14 h-12 overflow-hidden border-2 border-paper-border group-hover:border-gray-700 flex-shrink-0 hidden sm:block">
+                    <img src={item.img} alt="" className="w-full h-full object-cover" loading="lazy" />
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0 space-y-1.5">
-                    <div className="flex items-center gap-2">
-                      {item.category.slice(0, 2).map((cat) => (
-                        <Badge key={cat} variant="outline" className="text-[9px]">
-                          {cat}
-                        </Badge>
-                      ))}
-                    </div>
+                  {/* Cat tag */}
+                  {cat && (
+                    <span
+                      className={`text-[9px] font-bold uppercase border px-2 py-0.5 flex-shrink-0 group-hover:border-gray-600 group-hover:text-gray-400 ${CAT_COLOR[cat] || "text-dark border-dark"}`}
+                      style={{ fontFamily: "Space Mono, monospace" }}
+                    >
+                      {cat}
+                    </span>
+                  )}
+
+                  {/* Title */}
+                  <div className="flex-1 min-w-0">
                     <h3
-                      className="text-cream group-hover:text-lime transition-colors duration-200 line-clamp-2"
-                      style={{
-                        fontFamily: "Fraunces, serif",
-                        fontSize: "1rem",
-                        fontWeight: 500,
-                        lineHeight: 1.4,
-                      }}
+                      className="text-dark group-hover:text-white transition-colors font-semibold line-clamp-1 text-sm"
+                      style={{ fontFamily: "DM Sans, sans-serif" }}
                     >
                       {item.name}
                     </h3>
-                    <p
-                      className="text-xs text-cream-muted line-clamp-1 hidden md:block"
-                      style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
-                    >
-                      {item.desc}
-                    </p>
                   </div>
 
-                  {/* Meta */}
-                  <div className="flex items-center gap-4 flex-shrink-0 mt-1">
-                    <span
-                      className="text-xs text-cream-faint hidden sm:block"
-                      style={{ fontFamily: "JetBrains Mono, monospace" }}
-                    >
-                      {dateFormat(item.date)}
-                    </span>
-                    {isExternal ? (
-                      <ArrowUpRight size={14} className="text-cream-faint group-hover:text-lime transition-colors" />
-                    ) : (
-                      <ArrowRight size={14} className="text-cream-faint group-hover:text-lime transition-colors" />
-                    )}
-                  </div>
+                  {/* Date */}
+                  <span
+                    className="text-[10px] text-text-faint group-hover:text-gray-500 font-mono hidden md:block flex-shrink-0"
+                    style={{ fontFamily: "Space Mono, monospace" }}
+                  >
+                    {dateFormat(item.date)}
+                  </span>
+
+                  {/* Arrow */}
+                  {isExternal
+                    ? <ArrowUpRight size={14} className="text-text-faint group-hover:text-white flex-shrink-0 transition-colors" />
+                    : <ArrowRight size={14} className="text-text-faint group-hover:text-white flex-shrink-0 transition-colors" />
+                  }
                 </Link>
               );
             })}
           </div>
-
-          {data.length === 0 && (
-            <div className="py-24 text-center">
-              <p className="text-cream-muted" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                No articles found.
-              </p>
-            </div>
-          )}
         </div>
       </section>
     </SiteLayout>

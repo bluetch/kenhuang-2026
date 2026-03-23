@@ -1,35 +1,86 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Zap, Shield, Star, Trophy, Sword } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
 import { Badge } from "components/ui/badge";
 import { Button } from "components/ui/button";
-import { Separator } from "components/ui/separator";
 import { fetcher } from "utils";
+import dynamic from "next/dynamic";
+
+const ParticleCanvas = dynamic(
+  () => import("components/ParticleCanvas").then((m) => m.ParticleCanvas),
+  { ssr: false }
+);
 
 function dateFormat(d) {
   const s = String(d);
-  if (s.length === 8) {
-    return `${s.slice(0, 4)}.${s.slice(4, 6)}.${s.slice(6, 8)}`;
-  }
+  if (s.length === 8) return `${s.slice(0, 4)}.${s.slice(4, 6)}.${s.slice(6, 8)}`;
   return s;
 }
 
-const stats = [
-  { value: "15+", label: "Years of experience" },
-  { value: "50+", label: "Mentor sessions" },
-  { value: "10", label: "Countries worked with" },
-  { value: "6", label: "Companies" },
-];
+// XP Bar component
+function XPBar({ label, value, max, color = "bg-game-blue", delay = 0 }) {
+  const [filled, setFilled] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setFilled(true), 800 + delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+  const pct = Math.round((value / max) * 100);
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between items-center">
+        <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
+          {label}
+        </span>
+        <span className="text-[10px] font-mono text-dark font-bold" style={{ fontFamily: "Space Mono, monospace" }}>
+          {value}/{max}
+        </span>
+      </div>
+      <div className="h-3 bg-paper-warm border-2 border-dark overflow-hidden">
+        <div
+          className={`h-full ${color} transition-all duration-1000 ease-out`}
+          style={{ width: filled ? `${pct}%` : "0%", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4)" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// Stat block
+function StatBlock({ icon: Icon, value, label, color }) {
+  return (
+    <div className={`border-2 border-dark p-4 bg-white shadow-pixel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-150 group`}>
+      <div className={`w-8 h-8 ${color} border-2 border-dark flex items-center justify-center mb-2`}>
+        <Icon size={14} className="text-white" />
+      </div>
+      <p className="text-2xl font-bold text-dark" style={{ fontFamily: "Orbitron, monospace" }}>{value}</p>
+      <p className="text-xs text-text-muted uppercase tracking-wider mt-1" style={{ fontFamily: "Space Mono, monospace" }}>{label}</p>
+    </div>
+  );
+}
+
+// Achievement badge
+function Achievement({ icon, label, earned = true }) {
+  return (
+    <div className={`flex items-center gap-2 px-3 py-2 border-2 ${earned ? "border-game-yellow bg-game-yellow/10 shadow-pixel-yellow" : "border-paper-muted bg-paper-warm opacity-50"}`}>
+      <span className="text-lg">{icon}</span>
+      <span className="text-xs font-mono uppercase tracking-wide text-dark" style={{ fontFamily: "Space Mono, monospace" }}>{label}</span>
+    </div>
+  );
+}
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
   const [portfolio, setPortfolio] = useState([]);
   const [activeFilter, setActiveFilter] = useState("all");
+  const [showHUD, setShowHUD] = useState(false);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     fetcher("/api/articles", { setState: setArticles });
     fetcher("/api/portfolio", { setState: setPortfolio });
+    const t = setTimeout(() => setShowHUD(true), 300);
+    return () => clearTimeout(t);
   }, []);
 
   const featuredWork = useMemo(() => {
@@ -39,160 +90,277 @@ export default function Home() {
   }, [portfolio, activeFilter]);
 
   const featuredArticles = useMemo(() => {
-    return [...articles].sort((a, b) => (a.date > b.date ? -1 : 1)).slice(0, 5);
+    return [...articles].sort((a, b) => (a.date > b.date ? -1 : 1)).slice(0, 6);
   }, [articles]);
 
   return (
     <SiteLayout
-      title="Ken Huang — Product Designer & Frontend Developer"
-      description="Product designer and frontend developer based in Taipei, Taiwan. 15+ years crafting digital experiences for Shopee, Trend Micro, and more."
+      title="KEN HUANG — Product Designer & Frontend Developer"
+      description="Product designer and frontend developer based in Taipei, Taiwan. 15+ years crafting digital experiences."
     >
-      {/* Hero */}
-      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden pt-16">
-        {/* Background grid lines */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
+      {/* ══════════════════════════════════════
+          HERO — GAME START SCREEN
+      ══════════════════════════════════════ */}
+      <section
+        ref={heroRef}
+        className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-paper"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(67,97,238,0.04) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      >
+        {/* Canvas particle background */}
+        <div className="absolute inset-0">
+          <ParticleCanvas />
+        </div>
 
-        {/* Lime accent blob */}
-        <div
-          className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, rgba(197,241,53,0.06) 0%, transparent 70%)",
-            filter: "blur(40px)",
-          }}
-        />
+        {/* Corner decorations — game HUD corners */}
+        <div className="absolute top-20 left-6 w-8 h-8 border-t-2 border-l-2 border-game-blue" />
+        <div className="absolute top-20 right-6 w-8 h-8 border-t-2 border-r-2 border-game-blue" />
+        <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-game-blue" />
+        <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-game-blue" />
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24 w-full">
-          <div className="max-w-5xl">
-            {/* Eyebrow */}
-            <div className="flex items-center gap-3 mb-8 animate-fade-up">
-              <span
-                className="text-xs tracking-widest uppercase text-lime"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+        {/* Player tag */}
+        <div className="absolute top-20 left-1/2 -translate-x-1/2">
+          <div className="flex items-center gap-2 bg-dark text-white px-4 py-1.5 border-2 border-dark text-xs font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
+            <span className="w-2 h-2 bg-game-green rounded-full animate-pulse" />
+            PLAYER 1 · ONLINE
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Main content */}
+            <div className="space-y-8">
+              {/* Game label */}
+              <div
+                className={`transition-all duration-500 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               >
-                Ken Huang
-              </span>
-              <span className="text-ink-muted">—</span>
-              <span
-                className="text-xs tracking-widest uppercase text-cream-muted"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                <span
+                  className="text-xs text-game-blue font-bold tracking-widest uppercase"
+                  style={{ fontFamily: "Space Mono, monospace" }}
+                >
+                  — SELECT YOUR HERO —
+                </span>
+              </div>
+
+              {/* Main title */}
+              <div
+                className={`space-y-2 transition-all duration-700 delay-100 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
               >
-                Taipei, Taiwan
-              </span>
+                <h1
+                  className="leading-none text-dark glitch"
+                  data-text="KEN HUANG"
+                  style={{
+                    fontFamily: "Orbitron, monospace",
+                    fontSize: "clamp(2.8rem, 7vw, 6rem)",
+                    fontWeight: 900,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  KEN HUANG
+                </h1>
+                <div className="flex items-center gap-3">
+                  <div className="h-0.5 w-8 bg-game-blue" />
+                  <p
+                    className="text-dark font-semibold"
+                    style={{
+                      fontFamily: "Syne, sans-serif",
+                      fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
+                    }}
+                  >
+                    Product Designer × Frontend Dev
+                  </p>
+                </div>
+              </div>
+
+              {/* XP Bars */}
+              <div
+                className={`space-y-3 bg-white border-2 border-dark p-5 shadow-pixel transition-all duration-700 delay-200 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              >
+                <p className="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
+                  ▸ CHARACTER STATS
+                </p>
+                <XPBar label="Design XP" value={15} max={15} color="bg-game-blue" delay={0} />
+                <XPBar label="Code XP" value={13} max={15} color="bg-game-pink" delay={150} />
+                <XPBar label="Mentor XP" value={8} max={10} color="bg-game-yellow" delay={300} />
+                <XPBar label="Level" value={99} max={99} color="bg-game-green" delay={450} />
+              </div>
+
+              {/* CTA buttons */}
+              <div
+                className={`flex flex-wrap gap-3 transition-all duration-700 delay-300 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              >
+                <Link href="/portfolio">
+                  <Button size="lg" className="font-game" style={{ fontFamily: "Space Mono, monospace" }}>
+                    ▶ VIEW WORK
+                    <ArrowRight size={16} />
+                  </Button>
+                </Link>
+                <Link href="/about">
+                  <Button variant="outline" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
+                    CHARACTER INFO
+                  </Button>
+                </Link>
+              </div>
             </div>
 
-            {/* Main headline */}
-            <h1
-              className="animate-fade-up delay-100 text-balance"
-              style={{
-                fontFamily: "Fraunces, serif",
-                fontSize: "clamp(3.5rem, 8vw, 7rem)",
-                fontWeight: 400,
-                lineHeight: 0.95,
-                letterSpacing: "-0.03em",
-                color: "#F2EDE4",
-              }}
+            {/* Right: Character card */}
+            <div
+              className={`transition-all duration-700 delay-200 ${showHUD ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
             >
-              Designer who
-              <br />
-              <em style={{ fontStyle: "italic", color: "#C5F135" }}>builds,</em>
-              <br />
-              Developer who
-              <br />
-              <em style={{ fontStyle: "italic", color: "#C5F135" }}>designs.</em>
-            </h1>
+              <div className="bg-white border-2 border-dark shadow-pixel-lg relative">
+                {/* Card header */}
+                <div className="bg-dark px-6 py-3 flex justify-between items-center">
+                  <span className="text-white font-bold text-xs tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
+                    PLAYER CARD
+                  </span>
+                  <span className="text-game-yellow text-xs font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
+                    LVL 99
+                  </span>
+                </div>
 
-            <p
-              className="mt-8 text-lg text-cream-muted max-w-xl leading-relaxed animate-fade-up delay-200"
-              style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
-            >
-              I craft digital experiences from pixel to production — product
-              thinking, UX research, and frontend engineering, all in one.
-            </p>
+                {/* Avatar + info */}
+                <div className="p-6 flex items-start gap-6">
+                  <div className="relative">
+                    <div className="w-24 h-24 border-2 border-dark overflow-hidden flex-shrink-0">
+                      <img
+                        src="/images/about/kenhuang_avatar.png"
+                        alt="Ken Huang"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    {/* Level badge */}
+                    <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-game-yellow border-2 border-dark flex items-center justify-center">
+                      <Star size={12} className="text-dark" fill="currentColor" />
+                    </div>
+                  </div>
 
-            <div className="flex flex-wrap gap-4 mt-10 animate-fade-up delay-300">
-              <Link href="/portfolio">
-                <Button size="lg">
-                  View my work
-                  <ArrowRight size={16} />
-                </Button>
-              </Link>
-              <Link href="/about">
-                <Button variant="outline" size="lg">
-                  About me
-                </Button>
-              </Link>
+                  <div className="space-y-2">
+                    <p className="font-bold text-sm text-dark" style={{ fontFamily: "Orbitron, monospace" }}>KEN HUANG</p>
+                    <p className="text-xs text-game-blue font-semibold uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
+                      UX ENGINEER
+                    </p>
+                    <p className="text-xs text-text-muted" style={{ fontFamily: "Space Mono, monospace" }}>
+                      CLASS: Designer / Dev
+                      <br />
+                      ORIGIN: Taipei, TW
+                      <br />
+                      EXP: 15+ Years
+                    </p>
+                  </div>
+                </div>
+
+                {/* Abilities */}
+                <div className="px-6 pb-4 space-y-2">
+                  <p className="text-[10px] text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
+                    ▸ ABILITIES
+                  </p>
+                  {[
+                    { name: "Product Thinking", icon: "🧠", value: 95 },
+                    { name: "React / Next.js", icon: "⚛️", value: 90 },
+                    { name: "Figma / Design", icon: "🎨", value: 92 },
+                    { name: "Mentorship", icon: "🎓", value: 88 },
+                  ].map((ability) => (
+                    <div key={ability.name} className="flex items-center gap-3">
+                      <span className="text-sm w-5">{ability.icon}</span>
+                      <span className="text-xs text-dark flex-1" style={{ fontFamily: "Space Mono, monospace" }}>
+                        {ability.name}
+                      </span>
+                      <div className="flex gap-0.5">
+                        {Array.from({ length: 10 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-2.5 h-2 border border-dark ${i < Math.round(ability.value / 10) ? "bg-game-blue" : "bg-paper-warm"}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Achievements */}
+                <div className="border-t-2 border-dark px-6 py-4">
+                  <p className="text-[10px] text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
+                    ▸ ACHIEVEMENTS
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {["🏆 Shopee DLS", "🌍 10 Countries", "👟 800km Camino", "🎓 50+ Mentees"].map((a) => (
+                      <span key={a} className="text-[10px] bg-game-yellow/20 border border-game-yellow px-2 py-0.5 text-dark" style={{ fontFamily: "Space Mono, monospace" }}>
+                        {a}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-fade-in delay-800">
-          <span
-            className="text-xs text-cream-faint tracking-widest uppercase"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            Scroll
-          </span>
-          <div className="w-px h-10 bg-gradient-to-b from-cream-faint to-transparent" />
+        {/* Scroll hint */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce">
+          <p className="text-[10px] text-text-muted font-mono animate-blink" style={{ fontFamily: "Space Mono, monospace" }}>
+            SCROLL TO EXPLORE
+          </p>
+          <div className="w-px h-8 bg-game-blue" />
         </div>
       </section>
 
-      {/* Stats strip */}
-      <section className="border-y border-ink-border py-8 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => (
-              <div key={i} className="space-y-1">
-                <p
-                  style={{
-                    fontFamily: "Fraunces, serif",
-                    fontSize: "2.5rem",
-                    fontWeight: 500,
-                    color: "#C5F135",
-                    lineHeight: 1,
-                  }}
-                >
-                  {stat.value}
-                </p>
-                <p
-                  className="text-xs text-cream-muted tracking-wide uppercase"
-                  style={{ fontFamily: "JetBrains Mono, monospace" }}
-                >
-                  {stat.label}
-                </p>
-              </div>
+      {/* ══════════════════════════════════════
+          STATS STRIP
+      ══════════════════════════════════════ */}
+      <section className="border-y-2 border-dark bg-dark py-6 overflow-hidden">
+        {/* Scrolling marquee */}
+        <div className="flex overflow-hidden">
+          <div className="flex gap-12 animate-marquee whitespace-nowrap">
+            {[
+              "15+ YEARS EXP",
+              "★ SHOPEE DLS",
+              "50+ MENTOR SESSIONS",
+              "10 COUNTRIES",
+              "REACT / NEXT.JS",
+              "PRODUCT DESIGN",
+              "TAIPEI TAIWAN",
+              "800KM CAMINO",
+              "15+ YEARS EXP",
+              "★ SHOPEE DLS",
+              "50+ MENTOR SESSIONS",
+              "10 COUNTRIES",
+              "REACT / NEXT.JS",
+              "PRODUCT DESIGN",
+              "TAIPEI TAIWAN",
+              "800KM CAMINO",
+            ].map((item, i) => (
+              <span
+                key={i}
+                className={`text-sm font-bold tracking-widest ${i % 4 === 0 ? "text-game-blue" : i % 4 === 1 ? "text-game-pink" : i % 4 === 2 ? "text-game-yellow" : "text-game-green"}`}
+                style={{ fontFamily: "Space Mono, monospace" }}
+              >
+                {item}
+                <span className="mx-6 text-gray-600">◆</span>
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Featured Work */}
-      <section className="py-24 lg:py-32">
+      {/* ══════════════════════════════════════
+          SELECTED WORK — MISSION LOG
+      ══════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 bg-paper">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Section header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-            <div className="flex items-start gap-6">
-              <span
-                className="text-xs text-cream-faint mt-1"
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
-              >
-                01
-              </span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+            <div className="space-y-2">
+              <p className="text-xs text-game-blue font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
+                ◆ MISSION LOG
+              </p>
               <h2
+                className="text-dark leading-none"
                 style={{
-                  fontFamily: "Fraunces, serif",
-                  fontSize: "clamp(2rem, 4vw, 3.5rem)",
-                  fontWeight: 400,
-                  letterSpacing: "-0.02em",
-                  color: "#F2EDE4",
-                  lineHeight: 1,
+                  fontFamily: "Syne, sans-serif",
+                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                  fontWeight: 800,
                 }}
               >
                 Selected Work
@@ -200,26 +368,26 @@ export default function Home() {
             </div>
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 text-sm text-cream-muted hover:text-lime transition-colors group"
-              style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-game-blue hover:text-dark transition-colors group border-b-2 border-game-blue pb-0.5"
+              style={{ fontFamily: "Space Mono, monospace" }}
             >
-              View all projects
+              VIEW ALL MISSIONS
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
           {/* Filter tabs */}
-          <div className="flex gap-1 mb-10 border-b border-ink-border">
+          <div className="flex gap-0 mb-10 border-2 border-dark w-fit">
             {["all", "design", "frontend"].map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-4 py-3 text-xs tracking-widest uppercase border-b-2 -mb-[2px] transition-all duration-200 ${
+                className={`px-5 py-2 text-xs font-bold tracking-widest uppercase transition-all duration-150 border-r-2 border-dark last:border-r-0 ${
                   activeFilter === f
-                    ? "border-lime text-lime"
-                    : "border-transparent text-cream-muted hover:text-cream"
+                    ? "bg-dark text-white"
+                    : "bg-white text-text-muted hover:bg-paper-warm"
                 }`}
-                style={{ fontFamily: "JetBrains Mono, monospace" }}
+                style={{ fontFamily: "Space Mono, monospace" }}
               >
                 {f}
               </button>
@@ -232,56 +400,56 @@ export default function Home() {
               <Link
                 key={item.url}
                 href={item.url}
-                className="group relative overflow-hidden border border-ink-border hover:border-ink-muted transition-all duration-300 bg-ink-surface"
-                style={{ animationDelay: `${i * 0.1}s` }}
+                className="group block bg-white border-2 border-dark shadow-pixel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-150 overflow-hidden"
               >
-                {/* Image */}
-                <div className="overflow-hidden aspect-[16/9] bg-ink-elevated">
+                {/* Mission number badge */}
+                <div className="relative overflow-hidden aspect-[16/9] bg-paper-warm">
                   <img
                     src={item.img}
                     alt={item.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                   />
+                  {/* Mission overlay */}
+                  <div className="absolute top-3 left-3">
+                    <div className="bg-dark text-white px-2 py-1 text-[10px] font-mono border border-white" style={{ fontFamily: "Space Mono, monospace" }}>
+                      MISSION {String(i + 1).padStart(2, "0")}
+                    </div>
+                  </div>
+                  {/* Category badges */}
+                  <div className="absolute top-3 right-3 flex gap-1">
+                    {item.category.map((cat) => (
+                      <span
+                        key={cat}
+                        className={`px-2 py-0.5 text-[9px] font-bold border ${cat === "design" ? "bg-game-pink text-white border-game-pink" : "bg-game-blue text-white border-game-blue"}`}
+                        style={{ fontFamily: "Space Mono, monospace" }}
+                      >
+                        {cat.toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-game-blue/0 group-hover:bg-game-blue/10 transition-all duration-300 flex items-center justify-center">
+                    <div className="w-12 h-12 bg-game-blue border-2 border-white flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
+                      <ArrowUpRight size={20} className="text-white" />
+                    </div>
+                  </div>
                 </div>
-
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                 {/* Content */}
-                <div className="p-6 flex items-start justify-between gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      {item.category.map((cat) => (
-                        <Badge key={cat} variant="default" className="text-[10px]">
-                          {cat}
-                        </Badge>
-                      ))}
-                    </div>
-                    <h3
-                      style={{ fontFamily: "Fraunces, serif", fontWeight: 500, fontSize: "1.2rem", color: "#F2EDE4" }}
-                    >
-                      {item.name}
-                    </h3>
-                    <p className="text-sm text-cream-muted line-clamp-2" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                      {item.desc}
-                    </p>
-                  </div>
-                  <div className="flex-shrink-0 mt-1">
-                    <div className="w-8 h-8 border border-ink-border flex items-center justify-center group-hover:border-lime group-hover:text-lime transition-all duration-200">
-                      <ArrowUpRight size={14} />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Company tag */}
-                <div className="px-6 pb-4">
-                  <span
-                    className="text-xs text-cream-faint"
-                    style={{ fontFamily: "JetBrains Mono, monospace" }}
+                <div className="p-5">
+                  <h3
+                    className="text-dark font-bold mb-2 group-hover:text-game-blue transition-colors"
+                    style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700 }}
                   >
+                    {item.name}
+                  </h3>
+                  <p className="text-sm text-text-muted line-clamp-2 mb-3" style={{ fontFamily: "DM Sans, sans-serif" }}>
+                    {item.desc}
+                  </p>
+                  <p className="text-[10px] text-text-faint font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
                     {item.company} · {item.date}
-                  </span>
+                  </p>
                 </div>
               </Link>
             ))}
@@ -289,67 +457,84 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About strip */}
-      <section className="py-24 border-y border-ink-border bg-ink-surface">
+      {/* ══════════════════════════════════════
+          ABOUT — CHARACTER PROFILE
+      ══════════════════════════════════════ */}
+      <section className="py-24 border-t-2 border-dark bg-dark">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <div className="flex items-start gap-6">
-                <span className="text-xs text-cream-faint mt-1" style={{ fontFamily: "JetBrains Mono, monospace" }}>02</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            {/* Left */}
+            <div className="space-y-8">
+              <div className="space-y-2">
+                <p className="text-xs text-game-blue font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
+                  ◆ CHARACTER PROFILE
+                </p>
                 <h2
-                  style={{
-                    fontFamily: "Fraunces, serif",
-                    fontSize: "clamp(2rem, 4vw, 3rem)",
-                    fontWeight: 400,
-                    letterSpacing: "-0.02em",
-                    color: "#F2EDE4",
-                    lineHeight: 1.1,
-                  }}
+                  className="text-white leading-none"
+                  style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800 }}
                 >
-                  Bridging design
+                  Designer who builds.
                   <br />
-                  <em style={{ color: "#C5F135", fontStyle: "italic" }}>& engineering</em>
+                  <span className="text-game-blue">Developer who designs.</span>
                 </h2>
               </div>
-              <p className="text-cream-muted leading-relaxed max-w-md" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                Since 2005, I have enjoyed turning complex problems into
-                simple, beautiful and intuitive products. Over 15 years across
-                6 companies in APAC and Europe — from Shopee to Trend Micro.
+              <p className="text-gray-400 leading-relaxed" style={{ fontFamily: "DM Sans, sans-serif" }}>
+                Since 2005, turning complex problems into simple, beautiful, and
+                intuitive products. 15+ years across APAC and Europe — from Shopee
+                to Trend Micro.
               </p>
-              <div className="flex gap-4">
-                <Link href="/about">
-                  <Button variant="outline">
-                    Read my story
-                    <ArrowRight size={14} />
-                  </Button>
-                </Link>
-                <a href="/mentorship">
-                  <Button variant="ghost">Mentorship</Button>
-                </a>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { icon: Sword, value: "15+", label: "Years EXP", color: "bg-game-blue" },
+                  { icon: Shield, value: "6", label: "Companies", color: "bg-game-pink" },
+                  { icon: Trophy, value: "50+", label: "Mentees", color: "bg-game-yellow" },
+                  { icon: Zap, value: "10", label: "Countries", color: "bg-game-green" },
+                ].map((s) => (
+                  <div key={s.label} className="bg-gray-900 border-2 border-gray-700 p-4 hover:border-game-blue transition-colors">
+                    <div className={`w-7 h-7 ${s.color} flex items-center justify-center mb-2`}>
+                      <s.icon size={13} className="text-white" />
+                    </div>
+                    <p className="text-xl font-bold text-white" style={{ fontFamily: "Orbitron, monospace" }}>{s.value}</p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider" style={{ fontFamily: "Space Mono, monospace" }}>{s.label}</p>
+                  </div>
+                ))}
               </div>
+              <Link href="/about">
+                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-dark" style={{ fontFamily: "Space Mono, monospace" }}>
+                  VIEW FULL PROFILE
+                  <ArrowRight size={14} />
+                </Button>
+              </Link>
             </div>
 
-            {/* Skills grid */}
-            <div className="grid grid-cols-3 gap-4">
+            {/* Right: Skill tree */}
+            <div className="space-y-4">
+              <p className="text-xs text-game-blue font-bold tracking-widest uppercase mb-6" style={{ fontFamily: "Space Mono, monospace" }}>
+                ◆ SKILL TREE
+              </p>
               {[
-                { label: "Product Design", items: ["UX Research", "Figma", "Design Systems", "Prototyping"] },
-                { label: "Frontend Dev", items: ["React / Next.js", "TypeScript", "Tailwind CSS", "Node.js"] },
-                { label: "Leadership", items: ["Mentorship", "Team Lead", "Career Coach", "50+ Sessions"] },
-              ].map((skill) => (
-                <div key={skill.label} className="border border-ink-border p-4 space-y-3 hover:border-ink-muted transition-colors">
-                  <p
-                    className="text-[10px] tracking-widest uppercase text-lime"
-                    style={{ fontFamily: "JetBrains Mono, monospace" }}
-                  >
-                    {skill.label}
-                  </p>
-                  <ul className="space-y-1.5">
-                    {skill.items.map((item) => (
-                      <li key={item} className="text-xs text-cream-muted" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                        {item}
-                      </li>
+                { cat: "DESIGN", color: "bg-game-pink", skills: ["Product Thinking", "UX Research", "Figma", "Design Systems", "Prototyping"] },
+                { cat: "FRONTEND", color: "bg-game-blue", skills: ["React / Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Git / CI/CD"] },
+                { cat: "LEADERSHIP", color: "bg-game-yellow", skills: ["Mentorship", "Team Lead", "Career Coach", "Portfolio Review"] },
+              ].map((group) => (
+                <div key={group.cat} className="bg-gray-900 border-2 border-gray-700 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className={`w-2 h-4 ${group.color}`} />
+                    <p className="text-xs font-bold text-white tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
+                      {group.cat}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="text-[10px] bg-gray-800 text-gray-300 border border-gray-700 px-2 py-1"
+                        style={{ fontFamily: "Space Mono, monospace" }}
+                      >
+                        {skill}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               ))}
             </div>
@@ -357,36 +542,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Writing */}
-      <section className="py-24 lg:py-32">
+      {/* ══════════════════════════════════════
+          WRITING — QUEST LOG
+      ══════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 bg-paper">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-            <div className="flex items-start gap-6">
-              <span className="text-xs text-cream-faint mt-1" style={{ fontFamily: "JetBrains Mono, monospace" }}>03</span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+            <div className="space-y-2">
+              <p className="text-xs text-game-pink font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
+                ◆ QUEST LOG
+              </p>
               <h2
-                style={{
-                  fontFamily: "Fraunces, serif",
-                  fontSize: "clamp(2rem, 4vw, 3.5rem)",
-                  fontWeight: 400,
-                  letterSpacing: "-0.02em",
-                  color: "#F2EDE4",
-                  lineHeight: 1,
-                }}
+                className="text-dark leading-none"
+                style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 800 }}
               >
                 Writing
               </h2>
             </div>
             <Link
               href="/articles"
-              className="inline-flex items-center gap-2 text-sm text-cream-muted hover:text-lime transition-colors group"
-              style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-game-pink hover:text-dark transition-colors border-b-2 border-game-pink pb-0.5"
+              style={{ fontFamily: "Space Mono, monospace" }}
             >
-              All articles
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              ALL QUESTS
+              <ArrowRight size={14} />
             </Link>
           </div>
 
-          <div className="space-y-0">
+          <div className="space-y-0 border-2 border-dark">
             {featuredArticles.map((item, i) => {
               const isExternal = item.url.startsWith("http");
               return (
@@ -395,42 +578,38 @@ export default function Home() {
                   href={item.url}
                   target={isExternal ? "_blank" : "_self"}
                   rel={isExternal ? "noopener noreferrer" : undefined}
-                  className="group flex items-start gap-6 py-6 border-b border-ink-border hover:bg-ink-surface transition-colors duration-200 px-4 -mx-4"
+                  className="group flex items-center gap-4 p-4 border-b-2 border-dark last:border-b-0 bg-white hover:bg-game-blue hover:text-white transition-all duration-150"
                 >
                   <span
-                    className="text-xs text-cream-faint mt-1 w-6 flex-shrink-0 pt-0.5"
-                    style={{ fontFamily: "JetBrains Mono, monospace" }}
+                    className="text-xs font-mono text-text-faint group-hover:text-white/60 w-6 flex-shrink-0"
+                    style={{ fontFamily: "Space Mono, monospace" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="flex-1 min-w-0 space-y-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      {item.category.slice(0, 2).map((cat) => (
-                        <Badge key={cat} variant="outline" className="text-[9px]">
-                          {cat}
-                        </Badge>
+                  <div className="w-12 h-10 overflow-hidden border border-paper-border group-hover:border-white/30 flex-shrink-0 hidden sm:block">
+                    <img src={item.img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      {item.category.slice(0, 1).map((cat) => (
+                        <span key={cat} className="text-[9px] font-mono text-game-blue group-hover:text-white/70 uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
+                          [{cat}]
+                        </span>
                       ))}
                     </div>
                     <h3
-                      className="text-cream group-hover:text-lime transition-colors duration-200 line-clamp-2"
-                      style={{ fontFamily: "Fraunces, serif", fontSize: "1rem", fontWeight: 500 }}
+                      className="text-dark group-hover:text-white transition-colors line-clamp-1 font-semibold text-sm"
+                      style={{ fontFamily: "DM Sans, sans-serif" }}
                     >
                       {item.name}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-4 flex-shrink-0 mt-1">
-                    <span
-                      className="text-xs text-cream-faint hidden sm:block"
-                      style={{ fontFamily: "JetBrains Mono, monospace" }}
-                    >
-                      {dateFormat(item.date)}
-                    </span>
-                    {isExternal ? (
-                      <ArrowUpRight size={14} className="text-cream-faint group-hover:text-lime transition-colors" />
-                    ) : (
-                      <ArrowRight size={14} className="text-cream-faint group-hover:text-lime transition-colors" />
-                    )}
+                  <div className="flex-shrink-0 text-xs text-text-faint group-hover:text-white/60 font-mono hidden md:block" style={{ fontFamily: "Space Mono, monospace" }}>
+                    {dateFormat(item.date)}
                   </div>
+                  {isExternal
+                    ? <ArrowUpRight size={14} className="flex-shrink-0 text-text-faint group-hover:text-white transition-colors" />
+                    : <ArrowRight size={14} className="flex-shrink-0 text-text-faint group-hover:text-white transition-colors" />}
                 </Link>
               );
             })}
@@ -438,45 +617,56 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 border-t border-ink-border">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h2
-            style={{
-              fontFamily: "Fraunces, serif",
-              fontSize: "clamp(3rem, 7vw, 6rem)",
-              fontWeight: 400,
-              letterSpacing: "-0.03em",
-              lineHeight: 0.95,
-              color: "#F2EDE4",
-            }}
-          >
-            Let&apos;s build
-            <br />
-            <em style={{ color: "#C5F135", fontStyle: "italic" }}>something</em>
-            <br />
-            together.
-          </h2>
-          <p className="mt-6 text-cream-muted max-w-sm mx-auto" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-            Available for design consulting, frontend projects, and mentorship sessions.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center mt-10">
-            <a href="mailto:bluetch@gmail.com">
-              <Button size="lg">
-                Get in touch
-                <ArrowUpRight size={16} />
-              </Button>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/bluetch/"
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* ══════════════════════════════════════
+          CTA — GAME OVER / CONTINUE?
+      ══════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 border-t-2 border-dark bg-paper relative overflow-hidden">
+        {/* Background grid */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(67,97,238,0.06) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+          <div className="max-w-2xl mx-auto text-center space-y-8">
+            <div className="bg-dark border-2 border-dark inline-block px-4 py-1">
+              <p className="text-game-yellow text-xs font-mono flicker" style={{ fontFamily: "Space Mono, monospace" }}>
+                ★ READY TO COLLABORATE? ★
+              </p>
+            </div>
+            <h2
+              className="text-dark"
+              style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 900, lineHeight: 1 }}
             >
-              <Button variant="outline" size="lg">
-                LinkedIn
-                <ArrowUpRight size={14} />
-              </Button>
-            </a>
+              Let&apos;s build
+              <br />
+              <span className="text-game-blue">something</span>
+              <br />
+              together.
+            </h2>
+            <p className="text-text-muted" style={{ fontFamily: "DM Sans, sans-serif" }}>
+              Available for design consulting, frontend projects, and mentorship.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <a href="mailto:bluetch@gmail.com">
+                <Button size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
+                  ▶ CONTACT ME
+                  <ArrowUpRight size={16} />
+                </Button>
+              </a>
+              <a href="https://www.linkedin.com/in/bluetch/" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
+                  LINKEDIN
+                  <ArrowUpRight size={14} />
+                </Button>
+              </a>
+              <Link href="/mentorship">
+                <Button variant="yellow" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
+                  MENTORSHIP
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

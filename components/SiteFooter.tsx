@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Gamepad2, Heart } from "lucide-react";
 
 const socialLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/bluetch/" },
@@ -18,45 +18,49 @@ const siteLinks = [
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-ink-border mt-32">
+    <footer className="border-t-2 border-dark bg-dark mt-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
-          <div className="space-y-4">
-            <h3
-              className="text-2xl text-cream"
-              style={{ fontFamily: "Fraunces, serif" }}
-            >
-              Ken Huang
-            </h3>
-            <p className="text-cream-muted text-sm leading-relaxed">
+          <div className="md:col-span-2 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-game-blue border-2 border-white flex items-center justify-center">
+                <Gamepad2 size={16} className="text-white" />
+              </div>
+              <h3
+                className="text-white font-bold tracking-wider"
+                style={{ fontFamily: "Orbitron, monospace", fontSize: "1rem" }}
+              >
+                KEN HUANG
+              </h3>
+            </div>
+            <p className="text-gray-400 text-sm leading-relaxed" style={{ fontFamily: "DM Sans, sans-serif" }}>
               Product designer & frontend developer
               <br />
-              based in Taipei, Taiwan.
+              Taipei, Taiwan — Level 15 Unlocked
             </p>
             <a
               href="mailto:bluetch@gmail.com"
-              className="inline-flex items-center gap-1 text-sm text-lime hover:text-lime-dark transition-colors"
+              className="inline-flex items-center gap-1 text-sm text-game-blue hover:text-game-cyan transition-colors font-mono"
+              style={{ fontFamily: "Space Mono, monospace" }}
             >
               bluetch@gmail.com
               <ArrowUpRight size={14} />
             </a>
           </div>
 
-          {/* Navigation */}
+          {/* Nav */}
           <div>
-            <p
-              className="text-xs text-cream-faint tracking-widest uppercase mb-4 font-mono-site"
-              style={{ fontFamily: "JetBrains Mono, monospace" }}
-            >
-              Navigation
+            <p className="text-xs text-gray-500 tracking-widest uppercase mb-4" style={{ fontFamily: "Space Mono, monospace" }}>
+              Navigate
             </p>
             <ul className="space-y-2">
               {siteLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-cream-muted hover:text-cream transition-colors"
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     {link.label}
                   </Link>
@@ -67,10 +71,7 @@ export function SiteFooter() {
 
           {/* Social */}
           <div>
-            <p
-              className="text-xs text-cream-faint tracking-widest uppercase mb-4 font-mono-site"
-              style={{ fontFamily: "JetBrains Mono, monospace" }}
-            >
+            <p className="text-xs text-gray-500 tracking-widest uppercase mb-4" style={{ fontFamily: "Space Mono, monospace" }}>
               Connect
             </p>
             <ul className="space-y-2">
@@ -80,7 +81,8 @@ export function SiteFooter() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm text-cream-muted hover:text-cream transition-colors"
+                    className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors"
+                    style={{ fontFamily: "DM Sans, sans-serif" }}
                   >
                     {link.label}
                     <ArrowUpRight size={12} />
@@ -91,19 +93,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-ink-border pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <p
-            className="text-xs text-cream-faint"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            © {year} Ken Huang. All rights reserved.
+        {/* Bottom */}
+        <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <p className="text-xs text-gray-600" style={{ fontFamily: "Space Mono, monospace" }}>
+            © {year} KEN HUANG. ALL RIGHTS RESERVED.
           </p>
-          <p
-            className="text-xs text-cream-faint"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            Designed & built with craft
+          <p className="text-xs text-gray-600 flex items-center gap-1" style={{ fontFamily: "Space Mono, monospace" }}>
+            MADE WITH <Heart size={10} className="text-game-red mx-1" fill="currentColor" /> IN TAIPEI
           </p>
         </div>
       </div>

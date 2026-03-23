@@ -9,28 +9,41 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Design system: Editorial Dark Craft
-        ink: {
-          DEFAULT: "#0C0C0B",
-          surface: "#161614",
-          elevated: "#1E1E1C",
-          border: "#2A2A27",
-          muted: "#3A3A36",
+        // Game-inspired light theme tokens
+        paper: {
+          DEFAULT: "#F8F7F4",
+          white: "#FFFFFF",
+          warm: "#F3F1EC",
+          border: "#E5E3DC",
+          muted: "#D4D1C8",
         },
-        cream: {
-          DEFAULT: "#F2EDE4",
-          muted: "#9A9488",
-          faint: "#5C5851",
+        dark: {
+          DEFAULT: "#1A1A2E",
+          rich: "#0F0F1A",
+          mid: "#2D2D44",
         },
-        lime: {
-          DEFAULT: "#C5F135",
-          dark: "#A3CC1A",
-          faint: "rgba(197,241,53,0.12)",
-          glow: "rgba(197,241,53,0.08)",
+        text: {
+          DEFAULT: "#1A1A2E",
+          muted: "#6B7280",
+          faint: "#9CA3AF",
         },
-        slate: {
-          site: "#7A8B8C",
+        // Game accent colors
+        game: {
+          blue: "#4361EE",
+          "blue-light": "#6B87FF",
+          "blue-dark": "#2E4DD4",
+          pink: "#FF006E",
+          "pink-light": "#FF4D98",
+          yellow: "#FFB700",
+          "yellow-dark": "#D49600",
+          green: "#06D6A0",
+          "green-dark": "#04B086",
+          red: "#EF233C",
+          "red-dark": "#C81A2E",
+          cyan: "#4CC9F0",
+          purple: "#7209B7",
         },
+        // shadcn compat
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -58,29 +71,29 @@ module.exports = {
         },
       },
       fontFamily: {
-        display: ["Fraunces", "Georgia", "serif"],
-        sans: ["Plus Jakarta Sans", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        game: ["Orbitron", "monospace"],
+        display: ["Syne", "system-ui", "sans-serif"],
+        sans: ["DM Sans", "system-ui", "sans-serif"],
+        mono: ["Space Mono", "monospace"],
       },
-      fontSize: {
-        "10xl": ["10rem", { lineHeight: "0.85" }],
-        "9xl": ["8rem", { lineHeight: "0.88" }],
-        "8xl": ["6rem", { lineHeight: "0.9" }],
-      },
-      letterSpacing: {
-        tightest: "-0.05em",
-        tighter: "-0.03em",
-        wide: "0.08em",
-        wider: "0.15em",
-        widest: "0.25em",
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "var(--radius)",
+        sm: "var(--radius)",
+        DEFAULT: "0",
+        full: "9999px",
       },
       animation: {
-        "fade-up": "fadeUp 0.6s ease forwards",
+        "fade-up": "fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards",
         "fade-in": "fadeIn 0.5s ease forwards",
-        "slide-right": "slideRight 0.6s ease forwards",
-        "blur-in": "blurIn 0.5s ease forwards",
-        "count-up": "countUp 0.4s ease forwards",
-        "grain": "grain 8s steps(10) infinite",
+        "float": "float 3s ease-in-out infinite",
+        "flicker": "flicker 4s linear infinite",
+        "blink": "blink 1s step-end infinite",
+        "spin-slow": "spin 8s linear infinite",
+        "fill-bar": "fillBar 1.5s cubic-bezier(0.16,1,0.3,1) forwards",
+        "level-up": "levelUp 0.4s ease",
+        "pixel-pulse": "pixelPulse 2s ease-in-out infinite",
+        "marquee": "marquee 20s linear infinite",
       },
       keyframes: {
         fadeUp: {
@@ -91,34 +104,45 @@ module.exports = {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
-        slideRight: {
-          "0%": { opacity: 0, transform: "translateX(-16px)" },
-          "100%": { opacity: 1, transform: "translateX(0)" },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
-        blurIn: {
-          "0%": { opacity: 0, filter: "blur(8px)" },
-          "100%": { opacity: 1, filter: "blur(0)" },
+        flicker: {
+          "0%, 95%, 100%": { opacity: 1 },
+          "96%": { opacity: 0.8 },
+          "98%": { opacity: 0.7 },
         },
-        grain: {
-          "0%, 100%": { transform: "translate(0, 0)" },
-          "10%": { transform: "translate(-2%, -3%)" },
-          "20%": { transform: "translate(3%, 1%)" },
-          "30%": { transform: "translate(-1%, 4%)" },
-          "40%": { transform: "translate(2%, -2%)" },
-          "50%": { transform: "translate(-3%, 2%)" },
-          "60%": { transform: "translate(1%, -4%)" },
-          "70%": { transform: "translate(4%, 3%)" },
-          "80%": { transform: "translate(-2%, -1%)" },
-          "90%": { transform: "translate(3%, -3%)" },
+        blink: {
+          "0%, 100%": { opacity: 1 },
+          "50%": { opacity: 0 },
+        },
+        fillBar: {
+          "from": { width: "0%" },
+        },
+        levelUp: {
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)", filter: "brightness(1.3)" },
+          "100%": { transform: "scale(1)" },
+        },
+        pixelPulse: {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(67, 97, 238, 0.4)" },
+          "50%": { boxShadow: "0 0 0 6px rgba(67, 97, 238, 0)" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
-      backgroundImage: {
-        "noise": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E\")",
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      boxShadow: {
+        "pixel": "4px 4px 0 0 #1A1A2E",
+        "pixel-blue": "4px 4px 0 0 #4361EE",
+        "pixel-pink": "4px 4px 0 0 #FF006E",
+        "pixel-yellow": "4px 4px 0 0 #FFB700",
+        "pixel-green": "4px 4px 0 0 #06D6A0",
+        "pixel-sm": "2px 2px 0 0 #1A1A2E",
+        "pixel-lg": "6px 6px 0 0 #1A1A2E",
+        "inner-top": "inset 0 2px 0 0 rgba(255,255,255,0.5)",
       },
     },
   },
