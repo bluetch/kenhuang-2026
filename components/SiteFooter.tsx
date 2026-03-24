@@ -12,7 +12,7 @@ const siteLinks = [
   { label: "Work", href: "/portfolio" },
   { label: "About", href: "/about" },
   { label: "Devlog", href: "/articles" },
-  // { label: "Mentorship", href: "/mentorship" },
+  { label: "Mentorship", href: "/mentorship" },
 ];
 
 export function SiteFooter() {

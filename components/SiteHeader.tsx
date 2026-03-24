@@ -97,7 +97,7 @@ const navLinks = [
   { href: "/about", label: "ABOUT", key: "02" },
   { href: "/portfolio", label: "WORK", key: "03" },
   { href: "/articles", label: "DEVLOG", key: "04" },
-  // { href: "/mentorship", label: "MENTOR", key: "05" },
+  { href: "/mentorship", label: "MENTOR", key: "05" },
 ];
 
 export function SiteHeader() {
