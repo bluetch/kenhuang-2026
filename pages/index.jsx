@@ -1,16 +1,11 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Zap, Shield, Star, Trophy, Sword } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
-import { Badge } from "components/ui/badge";
-import { Button } from "components/ui/button";
-import { fetcher } from "utils";
-import dynamic from "next/dynamic";
-
-const ParticleCanvas = dynamic(
-  () => import("components/ParticleCanvas").then((m) => m.ParticleCanvas),
-  { ssr: false }
-);
+import { CharacterSelector } from "components/CharacterSelector";
+import { articles as allArticles } from "data/articles";
+import { portfolio as allPortfolio } from "data/portfolio";
+import { getMdxArticles } from "lib/mdx";
 
 function dateFormat(d) {
   const s = String(d);
@@ -18,75 +13,49 @@ function dateFormat(d) {
   return s;
 }
 
-// XP Bar component
-function XPBar({ label, value, max, color = "bg-game-blue", delay = 0 }) {
-  const [filled, setFilled] = useState(false);
+
+// Terminal line component
+function TermLine({ prefix = ">", text, color = "#4D9EFF", delay = 0 }) {
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const t = setTimeout(() => setFilled(true), 800 + delay);
+    const t = setTimeout(() => setVisible(true), delay);
     return () => clearTimeout(t);
   }, [delay]);
-  const pct = Math.round((value / max) * 100);
   return (
-    <div className="space-y-1">
-      <div className="flex justify-between items-center">
-        <span className="text-[10px] font-mono text-text-muted uppercase tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
-          {label}
-        </span>
-        <span className="text-[10px] font-mono text-dark font-bold" style={{ fontFamily: "Space Mono, monospace" }}>
-          {value}/{max}
-        </span>
-      </div>
-      <div className="h-3 bg-paper-warm border-2 border-dark overflow-hidden">
-        <div
-          className={`h-full ${color} transition-all duration-1000 ease-out`}
-          style={{ width: filled ? `${pct}%` : "0%", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4)" }}
-        />
-      </div>
+    <div
+      className="flex items-start gap-2 transition-all duration-300"
+      style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)" }}
+    >
+      <span className="flex-shrink-0" style={{ fontFamily: "Space Mono, monospace", fontSize: "12px", color }}>
+        {prefix}
+      </span>
+      <span className="text-[#D0E4FF] text-xs leading-relaxed" style={{ fontFamily: "Space Mono, monospace" }}>
+        {text}
+      </span>
     </div>
   );
 }
 
-// Stat block
-function StatBlock({ icon: Icon, value, label, color }) {
-  return (
-    <div className={`border-2 border-dark p-4 bg-white shadow-pixel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-150 group`}>
-      <div className={`w-8 h-8 ${color} border-2 border-dark flex items-center justify-center mb-2`}>
-        <Icon size={14} className="text-white" />
-      </div>
-      <p className="text-2xl font-bold text-dark" style={{ fontFamily: "Orbitron, monospace" }}>{value}</p>
-      <p className="text-xs text-text-muted uppercase tracking-wider mt-1" style={{ fontFamily: "Space Mono, monospace" }}>{label}</p>
-    </div>
-  );
-}
+const CAT_COLORS = {
+  design: { border: "#FFD60A", glow: "rgba(255,214,10,0.4)" },
+  frontend: { border: "#7BBFFF", glow: "rgba(123,191,255,0.4)" },
+  camino: { border: "#FFD60A", glow: "rgba(255,214,10,0.3)" },
+  other: { border: "#A78BFA", glow: "rgba(167,139,250,0.3)" },
+};
 
-// Achievement badge
-function Achievement({ icon, label, earned = true }) {
-  return (
-    <div className={`flex items-center gap-2 px-3 py-2 border-2 ${earned ? "border-game-yellow bg-game-yellow/10 shadow-pixel-yellow" : "border-paper-muted bg-paper-warm opacity-50"}`}>
-      <span className="text-lg">{icon}</span>
-      <span className="text-xs font-mono uppercase tracking-wide text-dark" style={{ fontFamily: "Space Mono, monospace" }}>{label}</span>
-    </div>
-  );
-}
-
-export default function Home() {
-  const [articles, setArticles] = useState([]);
-  const [portfolio, setPortfolio] = useState([]);
+export default function Home({ articles, portfolio }) {
   const [activeFilter, setActiveFilter] = useState("all");
-  const [showHUD, setShowHUD] = useState(false);
-  const heroRef = useRef(null);
+  const [booted, setBooted] = useState(false);
 
   useEffect(() => {
-    fetcher("/api/articles", { setState: setArticles });
-    fetcher("/api/portfolio", { setState: setPortfolio });
-    const t = setTimeout(() => setShowHUD(true), 300);
+    const t = setTimeout(() => setBooted(true), 200);
     return () => clearTimeout(t);
   }, []);
 
   const featuredWork = useMemo(() => {
     const sorted = [...portfolio].sort((a, b) => (a.date > b.date ? -1 : 1));
-    if (activeFilter === "all") return sorted.slice(0, 4);
-    return sorted.filter((p) => p.category.includes(activeFilter)).slice(0, 4);
+    if (activeFilter === "all") return sorted.slice(0, 6);
+    return sorted.filter((p) => p.category.includes(activeFilter)).slice(0, 6);
   }, [portfolio, activeFilter]);
 
   const featuredArticles = useMemo(() => {
@@ -95,249 +64,194 @@ export default function Home() {
 
   return (
     <SiteLayout
-      title="KEN HUANG — Product Designer & Frontend Developer"
-      description="Product designer and frontend developer based in Taipei, Taiwan. 15+ years crafting digital experiences."
+      title="KEN HUANG — Product Designer & Indie Dev"
+      description="Product designer, frontend developer & amateur game dev based in Taipei, Taiwan."
     >
+
       {/* ══════════════════════════════════════
-          HERO — GAME START SCREEN
+          HERO — BOOT SCREEN
       ══════════════════════════════════════ */}
       <section
-        ref={heroRef}
-        className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-paper"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(67,97,238,0.04) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
+        className="min-h-screen relative overflow-hidden flex items-center pt-14"
+        style={{ background: "#0D1533" }}
       >
-        {/* Canvas particle background */}
-        <div className="absolute inset-0">
-          <ParticleCanvas />
+        {/* Pixel grid background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(77,158,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(77,158,255,0.04) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+
+        {/* Scanline overlay */}
+        <div className="scanlines absolute inset-0 pointer-events-none" />
+
+        {/* Moving scan beam */}
+        <div className="scan-beam" />
+
+        {/* Corner HUD brackets */}
+        <div className="absolute top-20 left-6 w-6 h-6 border-t-2 border-l-2 border-[#4D9EFF] opacity-60" />
+        <div className="absolute top-20 right-6 w-6 h-6 border-t-2 border-r-2 border-[#4D9EFF] opacity-60" />
+        <div className="absolute bottom-10 left-6 w-6 h-6 border-b-2 border-l-2 border-[#4D9EFF] opacity-60" />
+        <div className="absolute bottom-10 right-6 w-6 h-6 border-b-2 border-r-2 border-[#4D9EFF] opacity-60" />
+
+        {/* Status indicator */}
+        <div className="absolute top-[72px] left-1/2 -translate-x-1/2 flex items-center gap-2 border border-[#243570] bg-[#0D1533]/90 px-4 py-1.5">
+          <span className="w-1.5 h-1.5 bg-[#4D9EFF] rounded-full animate-pulse" />
+          <span className="text-[10px] text-[#4D9EFF]" style={{ fontFamily: "Space Mono, monospace" }}>
+            PLAYER_1 · ONLINE · LV 15
+          </span>
         </div>
 
-        {/* Corner decorations — game HUD corners */}
-        <div className="absolute top-20 left-6 w-8 h-8 border-t-2 border-l-2 border-game-blue" />
-        <div className="absolute top-20 right-6 w-8 h-8 border-t-2 border-r-2 border-game-blue" />
-        <div className="absolute bottom-6 left-6 w-8 h-8 border-b-2 border-l-2 border-game-blue" />
-        <div className="absolute bottom-6 right-6 w-8 h-8 border-b-2 border-r-2 border-game-blue" />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-        {/* Player tag */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2">
-          <div className="flex items-center gap-2 bg-dark text-white px-4 py-1.5 border-2 border-dark text-xs font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-            <span className="w-2 h-2 bg-game-green rounded-full animate-pulse" />
-            PLAYER 1 · ONLINE
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left: Main content */}
-            <div className="space-y-8">
-              {/* Game label */}
-              <div
-                className={`transition-all duration-500 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-              >
-                <span
-                  className="text-xs text-game-blue font-bold tracking-widest uppercase"
-                  style={{ fontFamily: "Space Mono, monospace" }}
-                >
-                  — SELECT YOUR HERO —
-                </span>
+            {/* ── LEFT: Profile ── */}
+            <div
+              className="space-y-8"
+              style={{ opacity: booted ? 1 : 0, transform: booted ? "none" : "translateY(20px)", transition: "all 0.6s ease" }}
+            >
+              {/* Boot sequence */}
+              <div className="space-y-1.5 font-mono border-l-2 border-[#4D9EFF]/30 pl-4">
+                <TermLine prefix="$" text="init kenhuang.profile --mode=indie_dev" delay={100} />
+                <TermLine prefix=">" text="LOADING: product_designer.exe ......... OK" color="#4D9EFF" delay={400} />
+                <TermLine prefix=">" text="LOADING: frontend_dev.exe ............. OK" color="#7BBFFF" delay={700} />
+                <TermLine prefix=">" text="LOADING: game_dev_amateur.exe ......... OK" color="#FFD60A" delay={1000} />
+                <TermLine prefix="#" text="BOOT COMPLETE. WELCOME TO TAIPEI." color="#FFD60A" delay={1300} />
               </div>
 
               {/* Main title */}
-              <div
-                className={`space-y-2 transition-all duration-700 delay-100 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-              >
+              <div className="space-y-3">
                 <h1
-                  className="leading-none text-dark glitch"
-                  data-text="KEN HUANG"
+                  className="leading-none text-neon-pulse"
                   style={{
-                    fontFamily: "Orbitron, monospace",
-                    fontSize: "clamp(2.8rem, 7vw, 6rem)",
-                    fontWeight: 900,
-                    letterSpacing: "-0.02em",
+                    fontFamily: "VT323, monospace",
+                    fontSize: "clamp(4rem, 10vw, 8rem)",
+                    color: "#4D9EFF",
+                    textShadow: "0 0 20px rgba(77,158,255,0.5), 0 0 40px rgba(77,158,255,0.2)",
+                    lineHeight: 0.9,
                   }}
                 >
-                  KEN HUANG
+                  KEN
+                  <br />
+                  HUANG
                 </h1>
                 <div className="flex items-center gap-3">
-                  <div className="h-0.5 w-8 bg-game-blue" />
-                  <p
-                    className="text-dark font-semibold"
-                    style={{
-                      fontFamily: "Syne, sans-serif",
-                      fontSize: "clamp(1rem, 2.5vw, 1.5rem)",
-                    }}
+                  <span
+                    className="text-[#FFD60A] text-sm"
+                    style={{ fontFamily: "Space Mono, monospace" }}
                   >
-                    Product Designer × Frontend Dev
-                  </p>
+                    ▸ PRODUCT DESIGNER × FRONTEND DEV × AMATEUR INDIE DEV
+                  </span>
                 </div>
               </div>
 
-              {/* XP Bars */}
-              <div
-                className={`space-y-3 bg-white border-2 border-dark p-5 shadow-pixel transition-all duration-700 delay-200 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-              >
-                <p className="text-[10px] font-mono text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
-                  ▸ CHARACTER STATS
-                </p>
-                <XPBar label="Design XP" value={15} max={15} color="bg-game-blue" delay={0} />
-                <XPBar label="Code XP" value={13} max={15} color="bg-game-pink" delay={150} />
-                <XPBar label="Mentor XP" value={8} max={10} color="bg-game-yellow" delay={300} />
-                <XPBar label="Level" value={99} max={99} color="bg-game-green" delay={450} />
+
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2">
+                {["🎮 Game Dev", "🎨 Designer", "💻 Frontend", "✈️ Taipei TW"].map((b) => (
+                  <span
+                    key={b}
+                    className="text-[10px] text-[#6880AA] border border-[#243570] bg-[#142040] px-3 py-1"
+                    style={{ fontFamily: "Space Mono, monospace" }}
+                  >
+                    {b}
+                  </span>
+                ))}
               </div>
 
-              {/* CTA buttons */}
-              <div
-                className={`flex flex-wrap gap-3 transition-all duration-700 delay-300 ${showHUD ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-              >
+              {/* CTA */}
+              <div className="flex flex-wrap gap-3">
                 <Link href="/portfolio">
-                  <Button size="lg" className="font-game" style={{ fontFamily: "Space Mono, monospace" }}>
+                  <button
+                    className="px-6 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-150"
+                    style={{
+                      fontFamily: "Space Mono, monospace",
+                      background: "#4D9EFF",
+                      color: "#0D1533",
+                      border: "2px solid #4D9EFF",
+                      boxShadow: "4px 4px 0 0 #2468CC",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translate(2px,2px)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 0 #2468CC"; e.currentTarget.style.transform = "none"; }}
+                  >
                     ▶ VIEW WORK
-                    <ArrowRight size={16} />
-                  </Button>
+                  </button>
                 </Link>
-                <Link href="/about">
-                  <Button variant="outline" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
-                    CHARACTER INFO
-                  </Button>
-                </Link>
+                <a href="mailto:bluetch@gmail.com">
+                  <button
+                    className="px-6 py-3 text-xs font-bold tracking-widest uppercase transition-all duration-150"
+                    style={{
+                      fontFamily: "Space Mono, monospace",
+                      background: "transparent",
+                      color: "#4D9EFF",
+                      border: "2px solid #4D9EFF",
+                      boxShadow: "4px 4px 0 0 #4D9EFF",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translate(2px,2px)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 0 #4D9EFF"; e.currentTarget.style.transform = "none"; }}
+                  >
+                    CONTACT ME
+                  </button>
+                </a>
               </div>
             </div>
 
-            {/* Right: Character card */}
+            {/* ── RIGHT: Character Selector ── */}
             <div
-              className={`transition-all duration-700 delay-200 ${showHUD ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+              className="flex justify-center"
+              style={{ opacity: booted ? 1 : 0, transform: booted ? "none" : "translateX(20px)", transition: "all 0.8s 0.3s ease" }}
             >
-              <div className="bg-white border-2 border-dark shadow-pixel-lg relative">
-                {/* Card header */}
-                <div className="bg-dark px-6 py-3 flex justify-between items-center">
-                  <span className="text-white font-bold text-xs tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
-                    PLAYER CARD
-                  </span>
-                  <span className="text-game-yellow text-xs font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-                    LVL 99
-                  </span>
-                </div>
-
-                {/* Avatar + info */}
-                <div className="p-6 flex items-start gap-6">
-                  <div className="relative">
-                    <div className="w-24 h-24 border-2 border-dark overflow-hidden flex-shrink-0">
-                      <img
-                        src="/images/about/kenhuang_avatar.png"
-                        alt="Ken Huang"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Level badge */}
-                    <div className="absolute -bottom-2 -right-2 w-7 h-7 bg-game-yellow border-2 border-dark flex items-center justify-center">
-                      <Star size={12} className="text-dark" fill="currentColor" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <p className="font-bold text-sm text-dark" style={{ fontFamily: "Orbitron, monospace" }}>KEN HUANG</p>
-                    <p className="text-xs text-game-blue font-semibold uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
-                      UX ENGINEER
-                    </p>
-                    <p className="text-xs text-text-muted" style={{ fontFamily: "Space Mono, monospace" }}>
-                      CLASS: Designer / Dev
-                      <br />
-                      ORIGIN: Taipei, TW
-                      <br />
-                      EXP: 15+ Years
-                    </p>
-                  </div>
-                </div>
-
-                {/* Abilities */}
-                <div className="px-6 pb-4 space-y-2">
-                  <p className="text-[10px] text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
-                    ▸ ABILITIES
-                  </p>
-                  {[
-                    { name: "Product Thinking", icon: "🧠", value: 95 },
-                    { name: "React / Next.js", icon: "⚛️", value: 90 },
-                    { name: "Figma / Design", icon: "🎨", value: 92 },
-                    { name: "Mentorship", icon: "🎓", value: 88 },
-                  ].map((ability) => (
-                    <div key={ability.name} className="flex items-center gap-3">
-                      <span className="text-sm w-5">{ability.icon}</span>
-                      <span className="text-xs text-dark flex-1" style={{ fontFamily: "Space Mono, monospace" }}>
-                        {ability.name}
-                      </span>
-                      <div className="flex gap-0.5">
-                        {Array.from({ length: 10 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className={`w-2.5 h-2 border border-dark ${i < Math.round(ability.value / 10) ? "bg-game-blue" : "bg-paper-warm"}`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Achievements */}
-                <div className="border-t-2 border-dark px-6 py-4">
-                  <p className="text-[10px] text-text-muted uppercase tracking-widest mb-3" style={{ fontFamily: "Space Mono, monospace" }}>
-                    ▸ ACHIEVEMENTS
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {["🏆 Shopee DLS", "🌍 10 Countries", "👟 800km Camino", "🎓 50+ Mentees"].map((a) => (
-                      <span key={a} className="text-[10px] bg-game-yellow/20 border border-game-yellow px-2 py-0.5 text-dark" style={{ fontFamily: "Space Mono, monospace" }}>
-                        {a}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <CharacterSelector size={330} />
             </div>
+
           </div>
         </div>
 
         {/* Scroll hint */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce">
-          <p className="text-[10px] text-text-muted font-mono animate-blink" style={{ fontFamily: "Space Mono, monospace" }}>
-            SCROLL TO EXPLORE
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
+          <p className="text-[9px] text-[#6880AA] animate-blink" style={{ fontFamily: "Space Mono, monospace" }}>
+            ▼ SCROLL
           </p>
-          <div className="w-px h-8 bg-game-blue" />
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          STATS STRIP
+          MARQUEE BAND
       ══════════════════════════════════════ */}
-      <section className="border-y-2 border-dark bg-dark py-6 overflow-hidden">
-        {/* Scrolling marquee */}
+      <section
+        className="border-y overflow-hidden py-3"
+        style={{ borderColor: "#243570", background: "#0B1220" }}
+      >
         <div className="flex overflow-hidden">
-          <div className="flex gap-12 animate-marquee whitespace-nowrap">
+          <div className="flex gap-10 animate-marquee whitespace-nowrap">
             {[
-              "15+ YEARS EXP",
-              "★ SHOPEE DLS",
-              "50+ MENTOR SESSIONS",
-              "10 COUNTRIES",
-              "REACT / NEXT.JS",
-              "PRODUCT DESIGN",
-              "TAIPEI TAIWAN",
-              "800KM CAMINO",
-              "15+ YEARS EXP",
-              "★ SHOPEE DLS",
-              "50+ MENTOR SESSIONS",
-              "10 COUNTRIES",
-              "REACT / NEXT.JS",
-              "PRODUCT DESIGN",
-              "TAIPEI TAIWAN",
-              "800KM CAMINO",
+              { text: "15+ YRS EXP", color: "#4D9EFF" },
+              { text: "SHOPEE DLS LEAD", color: "#FFD60A" },
+              { text: "50+ MENTEES", color: "#7BBFFF" },
+              { text: "20+ COUNTRIES", color: "#FFD60A" },
+              { text: "REACT / NEXT.JS", color: "#4D9EFF" },
+              { text: "AMATEUR GAME DEV", color: "#FFD60A" },
+              { text: "TAIPEI TAIWAN", color: "#7BBFFF" },
+              { text: "800KM CAMINO", color: "#FFD60A" },
+              { text: "15+ YRS EXP", color: "#4D9EFF" },
+              { text: "SHOPEE DLS LEAD", color: "#FFD60A" },
+              { text: "50+ MENTEES", color: "#7BBFFF" },
+              { text: "20+ COUNTRIES", color: "#FFD60A" },
+              { text: "REACT / NEXT.JS", color: "#4D9EFF" },
+              { text: "AMATEUR GAME DEV", color: "#FFD60A" },
+              { text: "TAIPEI TAIWAN", color: "#7BBFFF" },
+              { text: "800KM CAMINO", color: "#FFD60A" },
             ].map((item, i) => (
               <span
                 key={i}
-                className={`text-sm font-bold tracking-widest ${i % 4 === 0 ? "text-game-blue" : i % 4 === 1 ? "text-game-pink" : i % 4 === 2 ? "text-game-yellow" : "text-game-green"}`}
-                style={{ fontFamily: "Space Mono, monospace" }}
+                className="text-xs font-bold tracking-widest"
+                style={{ fontFamily: "Space Mono, monospace", color: item.color }}
               >
-                {item}
-                <span className="mx-6 text-gray-600">◆</span>
+                {item.text}
+                <span className="mx-5 text-[#243570]">◆</span>
               </span>
             ))}
           </div>
@@ -345,191 +259,250 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════
-          SELECTED WORK — MISSION LOG
+          WORK — // SHIPPED.LOG
       ══════════════════════════════════════ */}
-      <section className="py-24 lg:py-32 bg-paper">
+      <section className="py-20 lg:py-28" style={{ background: "#0D1533" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {/* Section header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
-            <div className="space-y-2">
-              <p className="text-xs text-game-blue font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
-                ◆ MISSION LOG
+            <div>
+              <p
+                className="mb-1"
+                style={{ fontFamily: "VT323, monospace", fontSize: "1rem", color: "#4D9EFF", letterSpacing: "0.2em" }}
+              >
+                // SHIPPED.LOG
               </p>
               <h2
-                className="text-dark leading-none"
-                style={{
-                  fontFamily: "Syne, sans-serif",
-                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                  fontWeight: 800,
-                }}
+                className="leading-none"
+                style={{ fontFamily: "VT323, monospace", fontSize: "clamp(3rem, 7vw, 5rem)", color: "#D0E4FF", lineHeight: 1 }}
               >
-                Selected Work
+                SELECTED WORK
               </h2>
             </div>
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-game-blue hover:text-dark transition-colors group border-b-2 border-game-blue pb-0.5"
-              style={{ fontFamily: "Space Mono, monospace" }}
+              className="text-[11px] tracking-widest uppercase border-b border-[#4D9EFF] pb-0.5 transition-all hover:text-[#4D9EFF]"
+              style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}
             >
-              VIEW ALL MISSIONS
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              ALL PROJECTS →
             </Link>
           </div>
 
           {/* Filter tabs */}
-          <div className="flex gap-0 mb-10 border-2 border-dark w-fit">
+          <div className="flex gap-0 mb-10 border border-[#243570] w-fit">
             {["all", "design", "frontend"].map((f) => (
               <button
                 key={f}
                 onClick={() => setActiveFilter(f)}
-                className={`px-5 py-2 text-xs font-bold tracking-widest uppercase transition-all duration-150 border-r-2 border-dark last:border-r-0 ${
-                  activeFilter === f
-                    ? "bg-dark text-white"
-                    : "bg-white text-text-muted hover:bg-paper-warm"
-                }`}
-                style={{ fontFamily: "Space Mono, monospace" }}
+                className="px-5 py-2 text-[10px] font-bold tracking-widest uppercase border-r border-[#243570] last:border-r-0 transition-all duration-150"
+                style={{
+                  fontFamily: "Space Mono, monospace",
+                  background: activeFilter === f ? "#4D9EFF" : "transparent",
+                  color: activeFilter === f ? "#0D1533" : "#6880AA",
+                }}
               >
-                {f}
+                {f === "all" ? "ALL" : f === "design" ? "DESIGN" : "CODE"}
               </button>
             ))}
           </div>
 
           {/* Work grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredWork.map((item, i) => (
-              <Link
-                key={item.url}
-                href={item.url}
-                className="group block bg-white border-2 border-dark shadow-pixel hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all duration-150 overflow-hidden"
-              >
-                {/* Mission number badge */}
-                <div className="relative overflow-hidden aspect-[16/9] bg-paper-warm">
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {/* Mission overlay */}
-                  <div className="absolute top-3 left-3">
-                    <div className="bg-dark text-white px-2 py-1 text-[10px] font-mono border border-white" style={{ fontFamily: "Space Mono, monospace" }}>
-                      MISSION {String(i + 1).padStart(2, "0")}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {featuredWork.map((item, i) => {
+              const cat = item.category[0] || "";
+              const colors = CAT_COLORS[cat] || { border: "#243570", glow: "rgba(36,53,112,0.4)" };
+              return (
+                <Link
+                  key={item.url}
+                  href={item.url}
+                  className="group block overflow-hidden transition-all duration-150"
+                  style={{
+                    background: "#142040",
+                    border: `2px solid #243570`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = colors.border;
+                    e.currentTarget.style.boxShadow = `4px 4px 0 0 ${colors.border}`;
+                    e.currentTarget.style.transform = "translate(-2px,-2px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "#243570";
+                    e.currentTarget.style.boxShadow = "none";
+                    e.currentTarget.style.transform = "none";
+                  }}
+                >
+                  {/* Image */}
+                  <div className="relative aspect-[16/10] overflow-hidden border-b border-[#243570]">
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {/* Dark overlay */}
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={{ background: "rgba(13,21,51,0.1)" }}
+                    />
+                    {/* Mission number */}
+                    <div
+                      className="absolute top-2 left-2 px-2 py-0.5 text-[9px] font-mono"
+                      style={{ background: "#0D1533", color: "#4D9EFF", border: "1px solid #4D9EFF", fontFamily: "Space Mono, monospace" }}
+                    >
+                      #{String(i + 1).padStart(2, "0")}
+                    </div>
+                    {/* Category chip */}
+                    <div className="absolute top-2 right-2 flex gap-1">
+                      {item.category.map((c) => (
+                        <span
+                          key={c}
+                          className="text-[8px] font-bold px-2 py-0.5"
+                          style={{
+                            fontFamily: "Space Mono, monospace",
+                            color: CAT_COLORS[c]?.border || "#D0E4FF",
+                            background: "#0D1533",
+                            border: `1px solid ${CAT_COLORS[c]?.border || "#243570"}`,
+                          }}
+                        >
+                          {c.toUpperCase()}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  {/* Category badges */}
-                  <div className="absolute top-3 right-3 flex gap-1">
-                    {item.category.map((cat) => (
-                      <span
-                        key={cat}
-                        className={`px-2 py-0.5 text-[9px] font-bold border ${cat === "design" ? "bg-game-pink text-white border-game-pink" : "bg-game-blue text-white border-game-blue"}`}
-                        style={{ fontFamily: "Space Mono, monospace" }}
-                      >
-                        {cat.toUpperCase()}
-                      </span>
-                    ))}
+                  {/* Content */}
+                  <div className="p-4">
+                    <h3
+                      className="font-bold mb-1 transition-colors group-hover:text-[#D0E4FF]"
+                      style={{ fontFamily: "Syne, sans-serif", fontSize: "0.9rem", color: "#B0C4DE" }}
+                    >
+                      {item.name}
+                    </h3>
+                    <p
+                      className="text-xs line-clamp-2 mb-3"
+                      style={{ fontFamily: "DM Sans, sans-serif", color: "#8898BB" }}
+                    >
+                      {item.desc}
+                    </p>
+                    <p
+                      className="text-[9px]"
+                      style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}
+                    >
+                      {item.company} · {item.date}
+                    </p>
                   </div>
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-game-blue/0 group-hover:bg-game-blue/10 transition-all duration-300 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-game-blue border-2 border-white flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300">
-                      <ArrowUpRight size={20} className="text-white" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3
-                    className="text-dark font-bold mb-2 group-hover:text-game-blue transition-colors"
-                    style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700 }}
-                  >
-                    {item.name}
-                  </h3>
-                  <p className="text-sm text-text-muted line-clamp-2 mb-3" style={{ fontFamily: "DM Sans, sans-serif" }}>
-                    {item.desc}
-                  </p>
-                  <p className="text-[10px] text-text-faint font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-                    {item.company} · {item.date}
-                  </p>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════
-          ABOUT — CHARACTER PROFILE
+          ABOUT — CHAR PROFILE PANEL
       ══════════════════════════════════════ */}
-      <section className="py-24 border-t-2 border-dark bg-dark">
+      <section
+        className="py-20 border-y"
+        style={{ background: "#0B1220", borderColor: "#243570" }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Left */}
-            <div className="space-y-8">
-              <div className="space-y-2">
-                <p className="text-xs text-game-blue font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
-                  ◆ CHARACTER PROFILE
+            <div className="space-y-6">
+              <div>
+                <p className="text-[10px] tracking-widest uppercase mb-2" style={{ fontFamily: "Space Mono, monospace", color: "#FFD60A" }}>
+                  // CHARACTER.INFO
                 </p>
                 <h2
-                  className="text-white leading-none"
-                  style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800 }}
+                  className="leading-none mb-4"
+                  style={{ fontFamily: "VT323, monospace", fontSize: "clamp(3rem, 6vw, 4.5rem)", color: "#D0E4FF", lineHeight: 0.95 }}
                 >
-                  Designer who builds.
+                  DESIGNER WHO BUILDS.
                   <br />
-                  <span className="text-game-blue">Developer who designs.</span>
+                  <span style={{ color: "#7BBFFF" }}>DEV WHO DESIGNS.</span>
                 </h2>
+                <p className="text-sm leading-relaxed" style={{ fontFamily: "DM Sans, sans-serif", color: "#8898BB" }}>
+                  Since 2005, turning complex problems into simple, beautiful, and intuitive products.
+                  15+ years across APAC and Europe — from Shopee to Trend Micro. Now building indie games on weekends.
+                </p>
               </div>
-              <p className="text-gray-400 leading-relaxed" style={{ fontFamily: "DM Sans, sans-serif" }}>
-                Since 2005, turning complex problems into simple, beautiful, and
-                intuitive products. 15+ years across APAC and Europe — from Shopee
-                to Trend Micro.
-              </p>
+
+              {/* Stat grid */}
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { icon: Sword, value: "15+", label: "Years EXP", color: "bg-game-blue" },
-                  { icon: Shield, value: "6", label: "Companies", color: "bg-game-pink" },
-                  { icon: Trophy, value: "50+", label: "Mentees", color: "bg-game-yellow" },
-                  { icon: Zap, value: "10", label: "Countries", color: "bg-game-green" },
+                  { value: "15+", label: "YEARS EXP", color: "#7BBFFF" },
+                  { value: "6", label: "COMPANIES", color: "#FFD60A" },
+                  { value: "50+", label: "MENTEES", color: "#FFD60A" },
+                  { value: "20", label: "COUNTRIES", color: "#4D9EFF" },
                 ].map((s) => (
-                  <div key={s.label} className="bg-gray-900 border-2 border-gray-700 p-4 hover:border-game-blue transition-colors">
-                    <div className={`w-7 h-7 ${s.color} flex items-center justify-center mb-2`}>
-                      <s.icon size={13} className="text-white" />
-                    </div>
-                    <p className="text-xl font-bold text-white" style={{ fontFamily: "Orbitron, monospace" }}>{s.value}</p>
-                    <p className="text-[10px] text-gray-500 uppercase tracking-wider" style={{ fontFamily: "Space Mono, monospace" }}>{s.label}</p>
+                  <div
+                    key={s.label}
+                    className="p-4"
+                    style={{ background: "#142040", border: "1px solid #243570" }}
+                  >
+                    <p
+                      className="leading-none mb-1"
+                      style={{ fontFamily: "VT323, monospace", fontSize: "2.5rem", color: s.color }}
+                    >
+                      {s.value}
+                    </p>
+                    <p className="text-[9px] tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace", color: "#8898BB" }}>
+                      {s.label}
+                    </p>
                   </div>
                 ))}
               </div>
+
               <Link href="/about">
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-dark" style={{ fontFamily: "Space Mono, monospace" }}>
-                  VIEW FULL PROFILE
-                  <ArrowRight size={14} />
-                </Button>
+                <button
+                  className="px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase transition-all duration-150"
+                  style={{
+                    fontFamily: "Space Mono, monospace",
+                    border: "2px solid #243570",
+                    color: "#6880AA",
+                    background: "transparent",
+                    boxShadow: "3px 3px 0 0 #243570",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#4D9EFF"; e.currentTarget.style.color = "#4D9EFF"; e.currentTarget.style.boxShadow = "3px 3px 0 0 #4D9EFF"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#243570"; e.currentTarget.style.color = "#6880AA"; e.currentTarget.style.boxShadow = "3px 3px 0 0 #243570"; }}
+                >
+                  ▶ FULL PROFILE
+                </button>
               </Link>
             </div>
 
             {/* Right: Skill tree */}
-            <div className="space-y-4">
-              <p className="text-xs text-game-blue font-bold tracking-widest uppercase mb-6" style={{ fontFamily: "Space Mono, monospace" }}>
-                ◆ SKILL TREE
+            <div className="space-y-3">
+              <p className="text-[10px] tracking-widest mb-4" style={{ fontFamily: "Space Mono, monospace", color: "#4D9EFF" }}>
+                // SKILL_TREE.JSON
               </p>
               {[
-                { cat: "DESIGN", color: "bg-game-pink", skills: ["Product Thinking", "UX Research", "Figma", "Design Systems", "Prototyping"] },
-                { cat: "FRONTEND", color: "bg-game-blue", skills: ["React / Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Git / CI/CD"] },
-                { cat: "LEADERSHIP", color: "bg-game-yellow", skills: ["Mentorship", "Team Lead", "Career Coach", "Portfolio Review"] },
+                { cat: "DESIGN", color: "#FFD60A", skills: ["Product Thinking", "UX Research", "Figma", "Design Systems", "Prototyping"] },
+                { cat: "FRONTEND", color: "#7BBFFF", skills: ["React / Next.js", "TypeScript", "Tailwind CSS", "Node.js", "Git"] },
+                { cat: "GAME DEV", color: "#4D9EFF", skills: ["Godot 4", "GDScript", "Pixel Art", "Game Design", "itch.io"] },
+                { cat: "MENTOR", color: "#FFD60A", skills: ["Career Coaching", "Portfolio Review", "Mock Interview"] },
               ].map((group) => (
-                <div key={group.cat} className="bg-gray-900 border-2 border-gray-700 p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className={`w-2 h-4 ${group.color}`} />
-                    <p className="text-xs font-bold text-white tracking-widest" style={{ fontFamily: "Space Mono, monospace" }}>
-                      {group.cat}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
+                <div
+                  key={group.cat}
+                  className="p-4"
+                  style={{ background: "#142040", border: "1px solid #243570", borderLeft: `3px solid ${group.color}` }}
+                >
+                  <p
+                    className="text-[10px] font-bold tracking-widest mb-3"
+                    style={{ fontFamily: "Space Mono, monospace", color: group.color }}
+                  >
+                    {group.cat}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
                     {group.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="text-[10px] bg-gray-800 text-gray-300 border border-gray-700 px-2 py-1"
-                        style={{ fontFamily: "Space Mono, monospace" }}
+                        className="text-[9px] px-2 py-1"
+                        style={{
+                          fontFamily: "Space Mono, monospace",
+                          background: "#1A2D5A",
+                          color: "#8898BB",
+                          border: "1px solid #2E4070",
+                        }}
                       >
                         {skill}
                       </span>
@@ -543,73 +516,104 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════
-          WRITING — QUEST LOG
+          DEVLOG — // WRITING
       ══════════════════════════════════════ */}
-      <section className="py-24 lg:py-32 bg-paper">
+      <section className="py-20" style={{ background: "#0D1533" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
-            <div className="space-y-2">
-              <p className="text-xs text-game-pink font-bold tracking-widest uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
-                ◆ QUEST LOG
+            <div>
+              <p
+                className="mb-1"
+                style={{ fontFamily: "VT323, monospace", fontSize: "1rem", color: "#FFD60A", letterSpacing: "0.2em" }}
+              >
+                // DEVLOG.MD
               </p>
               <h2
-                className="text-dark leading-none"
-                style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 800 }}
+                className="leading-none"
+                style={{ fontFamily: "VT323, monospace", fontSize: "clamp(3rem, 7vw, 5rem)", color: "#D0E4FF", lineHeight: 1 }}
               >
-                Writing
+                WRITING
               </h2>
             </div>
             <Link
               href="/articles"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-game-pink hover:text-dark transition-colors border-b-2 border-game-pink pb-0.5"
-              style={{ fontFamily: "Space Mono, monospace" }}
+              className="text-[11px] tracking-widest uppercase border-b pb-0.5 transition-colors hover:text-[#FFD60A]"
+              style={{ fontFamily: "Space Mono, monospace", color: "#6880AA", borderColor: "#FFD60A" }}
             >
-              ALL QUESTS
-              <ArrowRight size={14} />
+              ALL POSTS →
             </Link>
           </div>
 
-          <div className="space-y-0 border-2 border-dark">
+          <div className="border border-[#243570]">
             {featuredArticles.map((item, i) => {
               const isExternal = item.url.startsWith("http");
+              const cat = item.category[0] || "";
+              const catColor = CAT_COLORS[cat]?.border || "#6880AA";
               return (
                 <Link
                   key={item.url}
                   href={item.url}
                   target={isExternal ? "_blank" : "_self"}
                   rel={isExternal ? "noopener noreferrer" : undefined}
-                  className="group flex items-center gap-4 p-4 border-b-2 border-dark last:border-b-0 bg-white hover:bg-game-blue hover:text-white transition-all duration-150"
+                  className="group flex items-center gap-3 px-4 py-3 border-b border-[#243570] last:border-b-0 transition-all duration-150"
+                  style={{ background: "#142040", borderLeft: "2px solid transparent" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "#1A2D5A"; e.currentTarget.style.borderLeftColor = catColor; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "#142040"; e.currentTarget.style.borderLeftColor = "transparent"; }}
                 >
+                  {/* Number */}
                   <span
-                    className="text-xs font-mono text-text-faint group-hover:text-white/60 w-6 flex-shrink-0"
-                    style={{ fontFamily: "Space Mono, monospace" }}
+                    className="text-[10px] w-6 flex-shrink-0"
+                    style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="w-12 h-10 overflow-hidden border border-paper-border group-hover:border-white/30 flex-shrink-0 hidden sm:block">
-                    <img src={item.img} alt="" className="w-full h-full object-cover" loading="lazy" />
+
+                  {/* Thumbnail */}
+                  <div className="w-10 h-8 overflow-hidden flex-shrink-0 hidden sm:block border border-[#243570]">
+                    <img src={item.img} alt={item.name} className="w-full h-full object-cover" loading="lazy" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      {item.category.slice(0, 1).map((cat) => (
-                        <span key={cat} className="text-[9px] font-mono text-game-blue group-hover:text-white/70 uppercase" style={{ fontFamily: "Space Mono, monospace" }}>
-                          [{cat}]
-                        </span>
-                      ))}
-                    </div>
-                    <h3
-                      className="text-dark group-hover:text-white transition-colors line-clamp-1 font-semibold text-sm"
-                      style={{ fontFamily: "DM Sans, sans-serif" }}
+
+                  {/* Cat tag */}
+                  {cat && (
+                    <span
+                      className="text-[8px] font-bold uppercase px-2 py-0.5 flex-shrink-0 border"
+                      style={{
+                        fontFamily: "Space Mono, monospace",
+                        color: catColor,
+                        borderColor: catColor,
+                        background: "transparent",
+                      }}
                     >
-                      {item.name}
+                      {cat}
+                    </span>
+                  )}
+
+                  {/* Title */}
+                  <div className="flex-1 min-w-0">
+                    <h3
+                      className="text-sm font-semibold line-clamp-1 transition-colors"
+                      style={{
+                        fontFamily: "DM Sans, sans-serif",
+                        color: "#B0C4DE",
+                      }}
+                    >
+                      <span className="group-hover:text-[#D0E4FF] transition-colors">{item.name}</span>
                     </h3>
                   </div>
-                  <div className="flex-shrink-0 text-xs text-text-faint group-hover:text-white/60 font-mono hidden md:block" style={{ fontFamily: "Space Mono, monospace" }}>
+
+                  {/* Date */}
+                  <span
+                    className="text-[9px] hidden md:block flex-shrink-0"
+                    style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}
+                  >
                     {dateFormat(item.date)}
-                  </div>
+                  </span>
+
+                  {/* Arrow */}
                   {isExternal
-                    ? <ArrowUpRight size={14} className="flex-shrink-0 text-text-faint group-hover:text-white transition-colors" />
-                    : <ArrowRight size={14} className="flex-shrink-0 text-text-faint group-hover:text-white transition-colors" />}
+                    ? <ArrowUpRight size={13} style={{ color: "#6880AA" }} className="group-hover:text-[#4D9EFF] flex-shrink-0 transition-colors" />
+                    : <ArrowRight size={13} style={{ color: "#6880AA" }} className="group-hover:text-[#4D9EFF] flex-shrink-0 transition-colors" />
+                  }
                 </Link>
               );
             })}
@@ -618,58 +622,94 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════
-          CTA — GAME OVER / CONTINUE?
+          CTA — GAME OVER SCREEN
       ══════════════════════════════════════ */}
-      <section className="py-24 lg:py-32 border-t-2 border-dark bg-paper relative overflow-hidden">
-        {/* Background grid */}
-        <div className="absolute inset-0 pointer-events-none"
+      <section
+        className="py-24 relative overflow-hidden"
+        style={{ background: "#0B1220", borderTop: "1px solid #243570" }}
+      >
+        {/* Grid bg */}
+        <div
+          className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(67,97,238,0.06) 1px, transparent 1px)",
+            backgroundImage: "linear-gradient(rgba(77,158,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(77,158,255,0.02) 1px, transparent 1px)",
             backgroundSize: "24px 24px",
           }}
         />
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <div className="max-w-2xl mx-auto text-center space-y-8">
-            <div className="bg-dark border-2 border-dark inline-block px-4 py-1">
-              <p className="text-game-yellow text-xs font-mono flicker" style={{ fontFamily: "Space Mono, monospace" }}>
-                ★ READY TO COLLABORATE? ★
-              </p>
-            </div>
-            <h2
-              className="text-dark"
-              style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 900, lineHeight: 1 }}
-            >
-              Let&apos;s build
-              <br />
-              <span className="text-game-blue">something</span>
-              <br />
-              together.
-            </h2>
-            <p className="text-text-muted" style={{ fontFamily: "DM Sans, sans-serif" }}>
-              Available for design consulting, frontend projects, and mentorship.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <a href="mailto:bluetch@gmail.com">
-                <Button size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
-                  ▶ CONTACT ME
-                  <ArrowUpRight size={16} />
-                </Button>
-              </a>
-              <a href="https://www.linkedin.com/in/bluetch/" target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
-                  LINKEDIN
-                  <ArrowUpRight size={14} />
-                </Button>
-              </a>
-              <Link href="/mentorship">
-                <Button variant="yellow" size="lg" style={{ fontFamily: "Space Mono, monospace" }}>
-                  MENTORSHIP
-                </Button>
-              </Link>
-            </div>
+        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center space-y-8">
+          <div
+            className="inline-block px-4 py-1.5 text-[10px] font-bold"
+            style={{ fontFamily: "Space Mono, monospace", background: "#FFD60A", color: "#0D1533", border: "2px solid #CCA800" }}
+          >
+            ★ FIRST SESSION FREE ★
           </div>
+
+          <h2
+            className="leading-none"
+            style={{ fontFamily: "VT323, monospace", fontSize: "clamp(3rem, 8vw, 6rem)", color: "#D0E4FF", lineHeight: 0.95 }}
+          >
+            WANNA WORK
+            <br />
+            <span style={{ color: "#4D9EFF", textShadow: "0 0 20px rgba(77,158,255,0.4)" }}>TOGETHER?</span>
+          </h2>
+
+          <p className="text-sm" style={{ fontFamily: "DM Sans, sans-serif", color: "#8898BB" }}>
+            Open to freelance collaborations, mentorship, and interesting projects. First conversation is always free.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href="mailto:bluetch@gmail.com">
+              <button
+                className="px-8 py-3 text-[11px] font-bold tracking-widest uppercase transition-all duration-150"
+                style={{
+                  fontFamily: "Space Mono, monospace",
+                  background: "#4D9EFF",
+                  color: "#0D1533",
+                  border: "2px solid #4D9EFF",
+                  boxShadow: "4px 4px 0 0 #2468CC",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translate(2px,2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 0 #2468CC"; e.currentTarget.style.transform = "none"; }}
+              >
+                ▶ INSERT COIN
+              </button>
+            </a>
+{/* MENTORSHIP link hidden
+            <Link href="/mentorship">
+              <button
+                className="px-8 py-3 text-[11px] font-bold tracking-widest uppercase transition-all duration-150"
+                style={{
+                  fontFamily: "Space Mono, monospace",
+                  background: "transparent",
+                  color: "#FFD60A",
+                  border: "2px solid #FFD60A",
+                  boxShadow: "4px 4px 0 0 #CCA800",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translate(2px,2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 0 #CCA800"; e.currentTarget.style.transform = "none"; }}
+              >
+                MENTORSHIP
+              </button>
+            </Link>
+*/}
+          </div>
+
+          <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: "#8898BB" }}>
+            bluetch@gmail.com
+          </p>
         </div>
       </section>
+
     </SiteLayout>
   );
+}
+
+export async function getStaticProps() {
+  const mdxArticles = getMdxArticles();
+  const mdxUrls = new Set(mdxArticles.map((a) => a.url));
+  const articles = [
+    ...mdxArticles,
+    ...allArticles.filter((a) => !mdxUrls.has(a.url)),
+  ].sort((a, b) => (a.date > b.date ? -1 : 1));
+  return { props: { articles, portfolio: allPortfolio } };
 }

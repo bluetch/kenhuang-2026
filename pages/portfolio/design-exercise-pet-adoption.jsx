@@ -75,9 +75,9 @@ const designExercisePetAdoption = () => {
             <p>I started out with some brainstorming to explore the topic of the design exercise and gather my initial thoughts. I did some competitor research to see how other products were tackling this issue and taking notes of the things I did and didn’t like. Just roughly penning down what features the app would need, what information would need to be shown, and what pieces of content should be in focus.</p>
             <Typography>Find problems</Typography>
             <ol className="list-decimal pl-4 space-y-2">
-              <li><strong className="text-black">36%</strong> of shelter dogs and cats end up being euthanized every year (around 1.3 million)</li>
-              <li>There are <strong className="text-black">65%</strong> of people believe that shelter animals are abused, malnourished and sick.</li>
-              <li><strong className="text-black">32%</strong> of given up reasons could prevent through education and awareness.</li>
+              <li><strong >36%</strong> of shelter dogs and cats end up being euthanized every year (around 1.3 million)</li>
+              <li>There are <strong >65%</strong> of people believe that shelter animals are abused, malnourished and sick.</li>
+              <li><strong >32%</strong> of given up reasons could prevent through education and awareness.</li>
             </ol>
           </div>
           <div className="lg:w-1/2">

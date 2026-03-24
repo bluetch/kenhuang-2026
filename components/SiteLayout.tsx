@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
-import { SITE_URL } from "constants/site";
+import { SITE_TITLE, SITE_META_DESCRIPTION, SITE_URL } from "constants/site";
 
 interface SiteLayoutProps {
   title?: string;
@@ -12,8 +12,8 @@ interface SiteLayoutProps {
 }
 
 export function SiteLayout({
-  title = "Ken Huang — Product Designer & Frontend Developer",
-  description = "Ken Huang is a product designer and frontend developer based in Taipei, Taiwan with 15+ years of experience.",
+  title = SITE_TITLE,
+  description = SITE_META_DESCRIPTION,
   ogImage = "/images/og-image.jpg",
   children,
 }: SiteLayoutProps) {

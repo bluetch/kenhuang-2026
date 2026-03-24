@@ -4,10 +4,10 @@ export const Refactoring = ({ type }) => {
   if (type === "password") {
     return (
       <div className="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-        <div className="flex justify-center items-center bg-white w-80">
+        <div className="flex justify-center items-center bg-[#142040] border border-[#243570] w-80 p-6 rounded">
           <label htmlFor="">
-            <span>Password</span>
-            <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <span style={{ color: "#D0E4FF" }}>Password</span>
+            <input type="text" className="bg-[#0D1533] border border-[#243570] text-[#D0E4FF] text-sm rounded focus:ring-[#4D9EFF] focus:border-[#4D9EFF] block w-full p-2.5 mt-2" />
           </label>
         </div>
       </div>

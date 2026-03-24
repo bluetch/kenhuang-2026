@@ -27,7 +27,7 @@ const links = [
 export const Footer = () => {
   return (
     <footer className="text-sm text-gray-500 text-center lg:py-20 py-8 space-y-8">
-      <p className="lg:text-xl text-black">Feel free to reach out, I’d love to chat with you!</p>
+      <p className="lg:text-xl" style={{ color: "#D0E4FF" }}>Feel free to reach out, I’d love to chat with you!</p>
       <div className="space-x-4">
         {links.map((link) => (
           <Link
@@ -35,7 +35,7 @@ export const Footer = () => {
             key={link.name}
             target="_blank"
             rel="noreferrer"
-            className="inline-block shadow-lg rounded-lg lg:p-4 border border-white hover:border-black"
+            className="inline-block shadow-lg rounded-lg lg:p-4 border border-[#243570] hover:border-[#4D9EFF]"
           >
             <Icon name={link.name} />
           </Link>

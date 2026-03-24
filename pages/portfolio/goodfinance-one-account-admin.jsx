@@ -120,7 +120,7 @@ const goodfinanceOneAccountAdmin = () => {
             /> */}
           </div>
         </div>
-        <hr className="my-24" />
+        <HR />
         <Typography className="text-center" variant="h3">Action</Typography>
         <div className="space-y-4 text-gray-500 text-center lg:w-1/2 mx-auto">
           <p>
@@ -149,7 +149,7 @@ const goodfinanceOneAccountAdmin = () => {
             automated tasks to speed up development and Git for version control.
           </p>
         </div>
-        <hr className="my-24" />
+        <HR />
         <Typography className="text-center" variant="h3">Result</Typography>
       </Container>
       <Image

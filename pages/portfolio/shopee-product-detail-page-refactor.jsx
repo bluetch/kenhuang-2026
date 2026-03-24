@@ -53,11 +53,11 @@ const shopeeProductDetailPageRefactor = () => {
             <p>There were some reasons that drove this project:</p>
             <ol className="list-decimal pl-4 space-y-2">
               <li>
-                <strong className="text-black">Business:</strong> We wanted to reduce the drop-off rate of web pages, and increase discoverability from Google search.</li>
+                <strong >Business:</strong> We wanted to reduce the drop-off rate of web pages, and increase discoverability from Google search.</li>
               <li>
-                <strong className="text-black">Technology:</strong> The previous app design and architecture was difficult to fit low-bandwidth internet environment like Indonesia. It need to load a page around 11 seconds.</li>
+                <strong >Technology:</strong> The previous app design and architecture was difficult to fit low-bandwidth internet environment like Indonesia. It need to load a page around 11 seconds.</li>
               <li>
-                <strong className="text-black">User’s pain points:</strong> There is too much information for many South-east-Asians use the older smartphone with small screen size. A lot of our users in Indonesia are hard to filter the more meaningful thing they care. </li>
+                <strong >User’s pain points:</strong> There is too much information for many South-east-Asians use the older smartphone with small screen size. A lot of our users in Indonesia are hard to filter the more meaningful thing they care. </li>
             </ol>
           </div>
           <div className="lg:w-1/2">
@@ -238,7 +238,7 @@ const shopeeProductDetailPageRefactor = () => {
           <Typography className="text-center" variant="h3">Technical solution</Typography>
           <div className="flex lg:flex-row flex-col-reverse gap-8 py-8">
             <div className="lg:w-1/2 space-y-4 text-gray-500">
-              <p>Via workshop with Google, we launch the <Link href="AMP project" target="_blank" className="font-bold text-black">AMP project</Link> for this version which is an open-source initiative aiming to make the web better for all. The project enables the creation of websites and ads that are consistently fast, beautiful and high-performing across devices and distribution platforms.</p>
+              <p>Via workshop with Google, we launch the <Link href="AMP project" target="_blank" className="font-bold">AMP project</Link> for this version which is an open-source initiative aiming to make the web better for all. The project enables the creation of websites and ads that are consistently fast, beautiful and high-performing across devices and distribution platforms.</p>
               <p>In a highly competitive e-commerce market, it’s critical to provide the best user experience for customers, including for those using low-end smartphones on 3G or 2G connections. As Shopee mobile traffic grew, the company saw an opportunity to acquire new users and improve mobile conversions through this valuable channel.</p>
             </div>
             <div className="lg:w-1/2">
@@ -292,13 +292,13 @@ const shopeeProductDetailPageRefactor = () => {
               <p>3 months after launch, product detail page continued to have a positive impact on the user experience: </p>
               <ul className="list-disc pl-4 space-y-2">
                 <li>
-                  <strong className="text-black">User satisfaction</strong> increased significantly 14%.</li>
+                  <strong >User satisfaction</strong> increased significantly 14%.</li>
                 <li>
-                  <strong className="text-black">active usage</strong> of 28 day for pages increased by 50%.</li>
+                  <strong >active usage</strong> of 28 day for pages increased by 50%.</li>
                 <li>
-                  <strong className="text-black">Organic traffic</strong> incrase 39%.</li>
+                  <strong >Organic traffic</strong> incrase 39%.</li>
                 <li>
-                  <strong className="text-black">Loading time</strong> runs 3 times as fast as before launch.</li>
+                  <strong >Loading time</strong> runs 3 times as fast as before launch.</li>
               </ul>
               <p>For confidentiality reasons I have omitted the actual values for these metrics.</p>
             </div>

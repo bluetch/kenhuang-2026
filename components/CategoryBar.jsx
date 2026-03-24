@@ -19,11 +19,11 @@ export const CategoryBar = ({ name = "", type, method, value = null }) => {
       {/* {name ? `${name}:` : ""} */}
       {!isSSR && _data.map((item) => {
         let classType =
-          "bg-white px-2 py-1 border rounded-lg text-sm hover:cursor-pointer hover:border-black ";
+          "bg-[#142040] px-2 py-1 border rounded-lg text-sm hover:cursor-pointer hover:border-[#4D9EFF] transition-colors ";
         if (category === item.code) {
-          classType += "text-black border border-black hover:text-black";
+          classType += "text-[#4D9EFF] border-[#4D9EFF]";
         } else {
-          classType += "text-gray-400";
+          classType += "text-[#8898BB] border-[#243570]";
         }
         return (
           <span

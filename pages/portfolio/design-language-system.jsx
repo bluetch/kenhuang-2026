@@ -128,7 +128,7 @@ const DesignLanguageSystem = () => {
         <HR />
         <div className="flex lg:flex-row flex-col gap-8 py-8">
           <div className="lg:w-1/3 space-y-4 text-gray-500">
-            <Typography className="text-black" variant="h3">Process</Typography>
+            <Typography  variant="h3">Process</Typography>
           </div>
           <div className="lg:w-2/3 space-y-8 text-gray-500">
             <p>The goal we set for the DLS was to create a more beautiful and accessible design language. Our designs
@@ -152,7 +152,7 @@ const DesignLanguageSystem = () => {
               src={require("public/images/portfolio/design-language-system-iconic.png")}
               alt="design-language-system-iconic"
             />
-            <Typography className="text-black" variant="h3">Tools</Typography>
+            <Typography  variant="h3">Tools</Typography>
             <p>Standardize the tools different teams use in different phases of the project. Right from the discovery of
               the project through the design, development and validation phases. Make sure everyone is aware of the tools
               other teams use. Tools used for collaboration should be easily accessible and agreed upon by everyone in
@@ -161,7 +161,7 @@ const DesignLanguageSystem = () => {
               src={require("public/images/portfolio/design-language-system-tools.png")}
               alt="design-language-system-tool"
             />
-            <Typography className="text-black" variant="h3">Folder System</Typography>
+            <Typography  variant="h3">Folder System</Typography>
             <p>Create a folder system to organize work. Standardize the naming convention. This will make it easier to
               find a particular file. Find a formula that works best for all the teams, perfect a naming convention and
               STICK TO IT.</p>
@@ -169,13 +169,13 @@ const DesignLanguageSystem = () => {
               src={require("public/images/portfolio/design-language-system-folder.png")}
               alt="design-language-system-folder"
             />
-            <Typography className="text-black" variant="h3">Documentation</Typography>
+            <Typography  variant="h3">Documentation</Typography>
             <p>Document all these standardizations. Create a one stop shop for every information related to the system
               followed.</p>
             <Image src={require("public/images/portfolio/design-language-system-documents.png")}
               alt="design-language-system-documents"
             />
-            <Typography className="text-black" variant="h3">Style Guide</Typography>
+            <Typography  variant="h3">Style Guide</Typography>
             <p>Conduct a UI Audit (If working on an already existing platform). This is essentially making an inventory of
               all the components that make up the digital product. All we have to do is take screenshots of all the
               elements and components that make up your product and categorize them. The components range from right, from
@@ -183,7 +183,7 @@ const DesignLanguageSystem = () => {
             <Image src={require("public/images/portfolio/design-language-system-style.png")}
               alt="design-language-system-style"
             />
-            <Typography className="text-black" variant="h3">Foundation</Typography>
+            <Typography  variant="h3">Foundation</Typography>
             <p>We had already created a basic style guide, that we called the foundation. This foundation loosely defined
               our typography, colors, icons, spacing and information architecture. The foundation proved essential for
               guiding our work in a unified direction while allowing room for us to individually explore creative design
@@ -194,7 +194,7 @@ const DesignLanguageSystem = () => {
               src={require("public/images/portfolio/design-language-system-foundation.png")}
               alt="design-language-system-foundation"
             />
-            <Typography className="text-black" variant="h3">Brand</Typography>
+            <Typography  variant="h3">Brand</Typography>
             <p>A DLS creates a personality for a digital product. A personality that has its own character and other
               quirks which gives it its own identity and allows it to be recognized in this over populated world of
               digital products.</p>

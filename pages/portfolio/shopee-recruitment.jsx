@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Container, Layout, PortfolioSummary } from "components";
+import { Container, HR, Layout, PortfolioSummary, Typography } from "components";
 
 const shopeeRecruitment = () => {
   return (
@@ -19,8 +19,8 @@ const shopeeRecruitment = () => {
             { key: "Company", value: "Shopee, Singapore" },
           ]}
         />
-        <h3 className="text-center mt-24 mb-12 text-3xl font-bold">Background</h3>
-        <div className="grid grid-cols-2 gap-8">
+        <Typography className="text-center" variant="h3">Background</Typography>
+        <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-4 text-gray-500">
             <p>In the beginning of 2018, Travel Frog (Japan name: Tabi Kaeru 旅かえる) has topped the charts in the free game category in Apple's App Store in China for more than a fortnight. Soon after, it also becomes popular in South east area.</p>
             <p>So that we would like to leverage this fashion as Shopee recruitment.</p>
@@ -35,14 +35,14 @@ const shopeeRecruitment = () => {
           </div>
           <Image src={require('public/images/portfolio/shopee-recruitment-frog-app.jpg')} alt="Travel Frog" />
         </div>
-        <hr className="my-24" />
+        <HR />
       </Container>
-      <h3 className="text-center mt-24 mb-12 text-3xl font-bold">Visual</h3>
+      <Typography className="text-center" variant="h3">Visual</Typography>
       <Image src={require('public/images/portfolio/shopee-recruitment-wechat.png')} alt="Travel Frog" />
       <Image src={require('public/images/portfolio/shopee-recruitment-content.png')} alt="Travel Frog" className="my-20"/>
       <Container>
-        <div className="grid grid-cols-2 gap-8">
-          <h3 className="text-3xl font-bold">Result</h3>
+        <div className="grid lg:grid-cols-2 gap-8 py-8">
+          <Typography variant="h3">Result</Typography>
           <div className="space-y-4 text-gray-500">
             <p>We got nearly <strong>hundred</strong> of great designer resumes around the China, Taiwan, Indonesia, Singapore, and Thailand ...etc, in one week.</p>
             <Image src={require('public/images/portfolio/shopee-recruitment-email.png')} alt="Travel Frog" />

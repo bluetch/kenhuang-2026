@@ -23,18 +23,16 @@ export const Button = memo(
     ) => {
       const variants = {
         primary:
-          "cursor-pointer py-3 px-8 bg-black hover:bg-gray-700 text-white flex-shrink-0 rounded-full h-12",
+          "cursor-pointer py-3 px-8 bg-[#4D9EFF] hover:bg-[#2468CC] text-[#0D1533] font-semibold flex-shrink-0 rounded-full h-12",
         ["primary-outline"]:
-          "cursor-pointer py-3 px-8 bg-white border border-sky-600 hover:bg-sky-700 hover:text-white text-sky-700 rounded-full h-12",
-        // primary:
-        //   "bg-gradient-to-r from-blue-light to-purple-light text-gray-darker md:hover:from-[#78DAFF] md:hover:to-[#BAD3FF] active:from-[#78DAFF] active:to-[#BAD3FF]",
+          "cursor-pointer py-3 px-8 bg-transparent border border-[#4D9EFF] hover:bg-[#4D9EFF] hover:text-[#0D1533] text-[#4D9EFF] rounded-full h-12",
         secondary:
-          "bg-white md:hover:bg-blue-lightest md:hover:bg-opacity-70 active:bg-white text-blue-light ring-1 ring-blue-light",
+          "bg-[#142040] border border-[#243570] md:hover:border-[#4D9EFF] text-[#4D9EFF]",
         plain:
-          "text-blue-light md:hover:bg-blue-lightest active:bg-white md:hover:bg-opacity-70",
+          "text-[#4D9EFF] md:hover:bg-[#142040]",
         link: "",
         action:
-          "text-white bg-gray-darker md:hover:bg-opacity-70 active:bg-opacity-100",
+          "text-[#D0E4FF] bg-[#1A2D5A] md:hover:bg-[#243570]",
       };
 
       const variantClass = variants[variant];

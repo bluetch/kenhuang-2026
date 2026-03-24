@@ -25,7 +25,7 @@ export const Layout = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SiteHeader />
-      <main className="min-h-screen">{children}</main>
+      <main className="min-h-screen bg-[#0D1533]">{children}</main>
       <SiteFooter />
     </>
   );
@@ -38,5 +38,5 @@ export const Container = ({ className = "", children }) => {
 };
 
 export const HR = () => {
-  return <hr className="lg:my-24 my-12 border-ink-border" />;
+  return <hr className="article-hr" />;
 };
