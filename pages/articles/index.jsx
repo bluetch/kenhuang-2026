@@ -1,4 +1,4 @@
-import Content from "components/ArticleList";
+import Content from "components/articles/ArticleList";
 import { articles } from "data/articles";
 import { getMdxArticles } from "lib/mdx";
 
