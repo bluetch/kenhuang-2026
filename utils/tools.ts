@@ -1,4 +1,4 @@
-export const termsMapping = (key, data) => {
+export const termsMapping = (key: string, data: any[]) => {
   if (!key) return;
   const match = data.find((item) => {
     const slug = item.name_eng.toLowerCase().replace(/ /g, "-");
@@ -7,7 +7,7 @@ export const termsMapping = (key, data) => {
   return match || key;
 };
 
-export const codeMapping = ({ key, data, field = "name" }) => {
+export const codeMapping = ({ key, data, field = "name" }: { key: any; data: any[]; field?: string }) => {
   if (!key || !data) return;
   const match = data.find(
     (item) => key === item.code || key === item.slackId || key === item.id
@@ -18,7 +18,7 @@ export const codeMapping = ({ key, data, field = "name" }) => {
   return match.name;
 };
 
-export const dateConvert = (date, format) => {
+export const dateConvert = (date: number | string | undefined, format?: string): string | undefined => {
   if (!date) return;
   const str = date.toString();
   const year = str.slice(0, 4);

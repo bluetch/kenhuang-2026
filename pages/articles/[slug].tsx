@@ -1,9 +1,15 @@
-import { MDXRemote } from "next-mdx-remote";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import { SiteLayout } from "components/SiteLayout";
 import { getMdxArticle, getMdxSlugs } from "lib/mdx";
+import { GetStaticPaths, GetStaticProps } from "next";
 
-export default function MdxArticlePage({ frontmatter, mdxSource }) {
+interface MdxArticlePageProps {
+  frontmatter: Record<string, any>;
+  mdxSource: MDXRemoteSerializeResult;
+}
+
+export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePageProps) {
   return (
     <SiteLayout title={frontmatter.name} description={frontmatter.desc}>
       {/* Hero image — heroImg for article header, img for list thumbnail */}
@@ -22,7 +28,7 @@ export default function MdxArticlePage({ frontmatter, mdxSource }) {
         <div className="mb-10 space-y-3">
           {frontmatter.category?.length > 0 && (
             <div className="flex gap-2">
-              {frontmatter.category.map((cat) => (
+              {frontmatter.category.map((cat: string) => (
                 <span
                   key={cat}
                   className="text-[9px] font-bold uppercase px-2 py-0.5 border"
@@ -64,7 +70,7 @@ export default function MdxArticlePage({ frontmatter, mdxSource }) {
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = getMdxSlugs();
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
@@ -72,8 +78,9 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
-  const article = getMdxArticle(params.slug);
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slug = params?.slug as string;
+  const article = getMdxArticle(slug);
   if (!article) return { notFound: true };
 
   const mdxSource = await serialize(article.content);

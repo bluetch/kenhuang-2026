@@ -3,9 +3,10 @@ import Head from "next/head";
 import { useEffect } from "react";
 import TagManager from 'react-gtm-module';
 import { AppWrapper } from "contexts";
+import type { AppProps } from "next/app";
 import "styles/globals.css";
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps }: AppProps) => {
   const MemoComponent = memo(Component);
   useEffect(() => {
     TagManager.initialize({ gtmId: 'GTM-MWXSCRM' });

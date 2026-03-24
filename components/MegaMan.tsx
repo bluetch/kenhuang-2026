@@ -8,7 +8,13 @@ const GROUND       = 36;    // px from viewport bottom
 const SPEED        = 2.2;
 
 // ── Tooltip with two actions ──────────────────────────────────────────
-function Tooltip({ paused, onTogglePause, onLeave }) {
+interface TooltipProps {
+  paused: boolean;
+  onTogglePause: () => void;
+  onLeave: () => void;
+}
+
+function Tooltip({ paused, onTogglePause, onLeave }: TooltipProps) {
   return (
     <div
       style={{
@@ -78,19 +84,20 @@ function Tooltip({ paused, onTogglePause, onLeave }) {
   );
 }
 
+type MegaManMode = "running" | "teleporting" | "gone";
+
 // ── Main component ────────────────────────────────────────────────────
 export function MegaMan() {
   const [posX, setPosX]         = useState(80);
   const [dir, setDir]           = useState(1);
   const [paused, setPaused]     = useState(false);
   const [hovered, setHovered]   = useState(false);
-  // "running" | "teleporting" | "gone"
-  const [mode, setMode]         = useState("running");
+  const [mode, setMode]         = useState<MegaManMode>("running");
 
   const xRef      = useRef(80);
   const dirRef    = useRef(1);
   const pausedRef = useRef(false);
-  const rafRef    = useRef(null);
+  const rafRef    = useRef<number | null>(null);
 
   // keep pausedRef in sync
   useEffect(() => { pausedRef.current = paused; }, [paused]);
@@ -119,7 +126,7 @@ export function MegaMan() {
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", onResize);
     };
   }, [mode]);

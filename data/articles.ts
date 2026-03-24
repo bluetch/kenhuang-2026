@@ -1,8 +1,18 @@
-export function getArticleMeta(url) {
+export interface Article {
+  name: string;
+  category: string[];
+  desc: string;
+  url: string;
+  img: string;
+  code: string | number;
+  date: number;
+}
+
+export function getArticleMeta(url: string): Article | null {
   return articles.find((a) => a.url === url) ?? null;
 }
 
-export const articles = [
+export const articles: Article[] = [
   {
     name: "朝聖之路 Camino de Santiago Day 14 - 夫羅米斯塔 (Frómista) to 卡里翁德洛斯孔德斯 (Carrion de los Condes)",
     category: ["camino"],

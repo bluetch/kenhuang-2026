@@ -1,4 +1,15 @@
-export const portfolio = [
+export interface PortfolioItem {
+  name: string;
+  company: string;
+  category: string[];
+  date: number;
+  url: string;
+  desc: string;
+  img: string;
+  state: boolean;
+}
+
+export const portfolio: PortfolioItem[] = [
   {
     name: "One Account Admin",
     company: "Good Finance",

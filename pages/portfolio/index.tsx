@@ -2,14 +2,19 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
-import { portfolio as allPortfolio } from "data/portfolio";
+import { portfolio as allPortfolio, PortfolioItem } from "data/portfolio";
+import { GetStaticProps } from "next";
 
 const CAT_COLORS = {
   design: { border: "#FFD60A", bg: "rgba(255,214,10,0.15)", text: "#FFD60A" },
   frontend: { border: "#7BBFFF", bg: "rgba(0,207,255,0.15)", text: "#7BBFFF" },
 };
 
-export default function Portfolio({ portfolio }) {
+interface PortfolioPageProps {
+  portfolio: PortfolioItem[];
+}
+
+export default function Portfolio({ portfolio }: PortfolioPageProps) {
   const [activeFilter, setActiveFilter] = useState("all");
 
   const data = useMemo(() => {
@@ -190,6 +195,6 @@ export default function Portfolio({ portfolio }) {
   );
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   return { props: { portfolio: allPortfolio } };
 }

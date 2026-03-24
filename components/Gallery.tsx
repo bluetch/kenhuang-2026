@@ -1,6 +1,17 @@
 import Link from "next/link"
 
-export const Gallery = ({ photos, className }) => {
+interface GalleryPhoto {
+  url: string;
+  name: string;
+  img: string;
+}
+
+interface GalleryProps {
+  photos: GalleryPhoto[];
+  className?: string;
+}
+
+export const Gallery = ({ photos, className }: GalleryProps) => {
   return (
     <div className={`grid grid-cols-6 gap-4 ${className}`}>
       {photos.map((photo) => {

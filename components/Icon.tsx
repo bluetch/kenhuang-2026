@@ -12,7 +12,7 @@ import ToolsIcon from "../assets/icons/tools.svg";
 import WorkIcon from "../assets/icons/work.svg";
 
 // 靜態映射
-const IconMap = {
+const IconMap: Record<string, any> = {
   facebook: FacebookIcon,
   github: GithubIcon,
   instagram: InstagramIcon,
@@ -27,7 +27,12 @@ const IconMap = {
 
 const IconNameOptions = Object.freeze(Object.keys(IconMap));
 
-const Icon = memo(({ name, ...rest }) => {
+interface IconProps {
+  name: string;
+  [key: string]: any;
+}
+
+const Icon = memo(({ name, ...rest }: IconProps) => {
   const Component = IconMap[name];
   if (!Component) throw new Error(`${name} not defined in IconNameOptions`);
 

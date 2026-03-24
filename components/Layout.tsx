@@ -1,13 +1,20 @@
+import { ReactNode } from "react";
 import Head from "next/head";
 import { SiteHeader } from "components/SiteHeader";
 import { SiteFooter } from "components/SiteFooter";
 import { SITE_META_DESCRIPTION, SITE_TITLE, SITE_URL } from "constants/site";
 
+interface LayoutProps {
+  children: ReactNode;
+  title?: string;
+  description?: string;
+}
+
 export const Layout = ({
   children,
   title = SITE_TITLE,
   description = SITE_META_DESCRIPTION,
-}) => {
+}: LayoutProps) => {
   const pageTitle = title || SITE_TITLE;
   const pageDescription = description || SITE_META_DESCRIPTION;
 
@@ -31,7 +38,12 @@ export const Layout = ({
   );
 };
 
-export const Container = ({ className = "", children }) => {
+interface ContainerProps {
+  className?: string;
+  children: ReactNode;
+}
+
+export const Container = ({ className = "", children }: ContainerProps) => {
   return (
     <div className={`max-w-7xl mx-auto lg:px-8 px-4 ${className}`}>{children}</div>
   );

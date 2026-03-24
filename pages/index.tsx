@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
 import { CharacterSelector } from "components/CharacterSelector";
-import { articles as allArticles } from "data/articles";
-import { portfolio as allPortfolio } from "data/portfolio";
+import { articles as allArticles, Article } from "data/articles";
+import { portfolio as allPortfolio, PortfolioItem } from "data/portfolio";
 import { getMdxArticles } from "lib/mdx";
+import { GetStaticProps } from "next";
 
 function dateFormat(d) {
   const s = String(d);
@@ -43,7 +44,12 @@ const CAT_COLORS = {
   other: { border: "#A78BFA", glow: "rgba(167,139,250,0.3)" },
 };
 
-export default function Home({ articles, portfolio }) {
+interface HomeProps {
+  articles: Article[];
+  portfolio: PortfolioItem[];
+}
+
+export default function Home({ articles, portfolio }: HomeProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [booted, setBooted] = useState(false);
 
@@ -704,10 +710,10 @@ export default function Home({ articles, portfolio }) {
   );
 }
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const mdxArticles = getMdxArticles();
   const mdxUrls = new Set(mdxArticles.map((a) => a.url));
-  const articles = [
+  const articles: Article[] = [
     ...mdxArticles,
     ...allArticles.filter((a) => !mdxUrls.has(a.url)),
   ].sort((a, b) => (a.date > b.date ? -1 : 1));

@@ -1,10 +1,30 @@
 import { Icon } from "components";
 import Link from "next/link";
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, ReactNode, MouseEvent } from "react";
 import clsx from "clsx";
 
+interface IconConfig {
+  name?: string;
+  size?: "xs" | "sm" | "md" | "lg";
+  classes?: string;
+}
+
+interface ButtonProps {
+  children?: ReactNode;
+  onClick?: (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+  disabled?: boolean;
+  icon?: IconConfig;
+  href?: string | null;
+  link?: boolean;
+  className?: string;
+  responsive?: boolean;
+  variant?: "primary" | "primary-outline" | "secondary" | "plain" | "link" | "action";
+  type?: "button" | "submit" | "reset";
+  [key: string]: any;
+}
+
 export const Button = memo(
-  forwardRef(
+  forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     (
       {
         children,
@@ -21,7 +41,7 @@ export const Button = memo(
       },
       ref
     ) => {
-      const variants = {
+      const variants: Record<string, string> = {
         primary:
           "cursor-pointer py-3 px-8 bg-[#4D9EFF] hover:bg-[#2468CC] text-[#0D1533] font-semibold flex-shrink-0 rounded-full h-12",
         ["primary-outline"]:
@@ -49,11 +69,11 @@ export const Button = memo(
       const element = (
         <Tag
           {...rest}
-          onClick={onClick}
-          ref={ref}
+          onClick={onClick as any}
+          ref={ref as any}
           disabled={disabled}
           type={type}
-          href={href}
+          href={href as any}
           className={clsx(
             "p-3 text-center appearance-none rounded-full inline-flex items-center justify-center space-x-2 transition-all duration-300 focus:outline-none",
             variantClass,
@@ -85,7 +105,7 @@ export const Button = memo(
 
       return link ? (
         <Link
-          href={href}
+          href={href!}
           onClick={(e) => (disabled ? e.preventDefault() : undefined)}
           className={className}
         >

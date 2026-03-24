@@ -3,31 +3,36 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
+import { Article } from "data/articles";
 
-function dateFormat(d) {
+function dateFormat(d: number | string): string {
   const s = String(d);
   if (s.length === 8) return `${s.slice(0, 4)}.${s.slice(4, 6)}.${s.slice(6, 8)}`;
   return s;
 }
 
-const CAT_COLOR = {
+const CAT_COLOR: Record<string, { border: string; text: string }> = {
   camino: { border: "#FFD60A", text: "#FFD60A" },
   frontend: { border: "#7BBFFF", text: "#7BBFFF" },
   other: { border: "#A78BFA", text: "#A78BFA" },
 };
 
-export default function ArticleList({ articles }) {
+interface ArticleListProps {
+  articles: Article[];
+}
+
+export default function ArticleList({ articles }: ArticleListProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const router = useRouter();
 
   useEffect(() => {
     if (!router.isReady) return;
     const q = router.query?.type;
-    if (q) setActiveFilter(q);
+    if (q) setActiveFilter(q as string);
   }, [router.isReady, router.query]);
 
   const categories = useMemo(() => {
-    const cats = new Set();
+    const cats = new Set<string>();
     articles.forEach((item) => item.category?.forEach((c) => cats.add(c)));
     return Array.from(cats).sort();
   }, [articles]);
@@ -184,4 +189,3 @@ export default function ArticleList({ articles }) {
     </SiteLayout>
   );
 }
-

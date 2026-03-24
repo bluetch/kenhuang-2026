@@ -1,4 +1,10 @@
-export const Tag = ({ children }) => {
+import { ReactNode } from "react";
+
+interface TagProps {
+  children: ReactNode;
+}
+
+export const Tag = ({ children }: TagProps) => {
   if (Array.isArray(children)) {
     return (
       <div className="flex flex-wrap gap-2">

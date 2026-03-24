@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Icon } from "components";
 
-const links = [
+interface FooterLink {
+  name: string;
+  url: string;
+}
+
+const links: FooterLink[] = [
   {
     name: "facebook",
     url: "https://www.facebook.com/bluetch",
@@ -27,7 +32,7 @@ const links = [
 export const Footer = () => {
   return (
     <footer className="text-sm text-gray-500 text-center lg:py-20 py-8 space-y-8">
-      <p className="lg:text-xl" style={{ color: "#D0E4FF" }}>Feel free to reach out, I’d love to chat with you!</p>
+      <p className="lg:text-xl" style={{ color: "#D0E4FF" }}>Feel free to reach out, I'd love to chat with you!</p>
       <div className="space-x-4">
         {links.map((link) => (
           <Link

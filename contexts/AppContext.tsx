@@ -1,11 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-const AppContext = createContext();
+interface AppContextValue {
+  getState: Record<string, any>;
+  setState: (data: Record<string, any> | ((prev: Record<string, any>) => Record<string, any>)) => void;
+}
 
-export const AppWrapper = ({ children }) => {
-  const [dataState, setDataState] = useState({});
+const AppContext = createContext<AppContextValue | undefined>(undefined);
 
-  const setState = (data) => {
+export const AppWrapper = ({ children }: { children: React.ReactNode }) => {
+  const [dataState, setDataState] = useState<Record<string, any>>({});
+
+  const setState = (data: Record<string, any> | ((prev: Record<string, any>) => Record<string, any>)) => {
     if (typeof data === "function") {
       setDataState((prev) => ({ ...prev, ...data(prev) }));
     } else {

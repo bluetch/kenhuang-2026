@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
-import { articlesSpec, portfolioSpec } from "constants";
+import { articlesSpec, portfolioSpec } from "constants/index";
 
-export const CategoryBar = ({ name = "", type, method, value = null }) => {
+interface CategoryBarProps {
+  name?: string;
+  type: "articlesSpec" | "portfolioSpec";
+  method: (code: string | null) => void;
+  value?: string | null;
+}
+
+export const CategoryBar = ({ name = "", type, method, value = null }: CategoryBarProps) => {
   const _data = type === "articlesSpec" ? articlesSpec : portfolioSpec;
-  const [category, setCategory] = useState(value ?? null);
+  const [category, setCategory] = useState<string | null>(value ?? null);
   const [isSSR, setIsSSR] = useState(true);
 
   useEffect(() => {

@@ -1,7 +1,26 @@
 import { useState } from "react";
 import { COLORS, FONTS } from "constants/theme";
 
-const CHARS = [
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface CharDef {
+  src: string;
+  badge: string;
+  name: string;
+  accentColor: string;
+  accentColor2: string;
+  lvBg: string;
+  lvBorder: string;
+  labelBg: string;
+  glow: string[];
+  glowHover: string[];
+  stats: Stat[];
+}
+
+const CHARS: CharDef[] = [
   {
     src: "/images/about/kenhuang_avatar.png",
     badge: "★ INDIE DEV",
@@ -38,11 +57,12 @@ const CHARS = [
   },
 ];
 
-/**
- * CharacterSelector
- * @param {number} size - diameter of the avatar circle in px (default 330)
- */
-export function CharacterSelector({ size = 330 }) {
+interface CharacterSelectorProps {
+  /** diameter of the avatar circle in px (default 330) */
+  size?: number;
+}
+
+export function CharacterSelector({ size = 330 }: CharacterSelectorProps) {
   const [charIndex, setCharIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
   const char = CHARS[charIndex];

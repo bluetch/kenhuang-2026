@@ -1,8 +1,24 @@
+import { ReactNode } from "react";
 import { Typography } from "components";
 import Link from "next/link";
 import { Tag } from "./Tag";
+import { dateConvert } from "utils/tools";
+import { PortfolioItem } from "data/portfolio";
+import { Article } from "data/articles";
 
-export const PortfolioSummary = ({ tags, date, info, title }) => {
+interface InfoItem {
+  key: string;
+  value: string;
+}
+
+interface PortfolioSummaryProps {
+  tags?: string | string[];
+  date?: string;
+  info?: InfoItem[];
+  title?: ReactNode;
+}
+
+export const PortfolioSummary = ({ tags, date, info, title }: PortfolioSummaryProps) => {
   const displayInfo = info?.slice(0, 4) || [];
   const tagArray = Array.isArray(tags) ? tags : tags ? [tags] : [];
 
@@ -41,7 +57,16 @@ export const PortfolioSummary = ({ tags, date, info, title }) => {
   );
 };
 
-export const PortfolioOverview = ({ overview }) => {
+interface OverviewItem {
+  title: string;
+  desc: string;
+}
+
+interface PortfolioOverviewProps {
+  overview: OverviewItem[];
+}
+
+export const PortfolioOverview = ({ overview }: PortfolioOverviewProps) => {
   return (
     <div className="py-8">
       <Typography className="text-center" variant="h3">
@@ -63,7 +88,16 @@ export const PortfolioOverview = ({ overview }) => {
   );
 };
 
-export const PortfolioProcess = ({ data }) => {
+interface ProcessItem {
+  title: string;
+  desc: string;
+}
+
+interface PortfolioProcessProps {
+  data: ProcessItem[];
+}
+
+export const PortfolioProcess = ({ data }: PortfolioProcessProps) => {
   return (
     <div
       className="grid gap-8"
@@ -86,7 +120,7 @@ export const PortfolioProcess = ({ data }) => {
 };
 
 // 單一共用卡片元件：拆成 Portfolio / Article 兩種卡片
-const PortfolioCard = ({ item }) => {
+const PortfolioCard = ({ item }: { item: PortfolioItem }) => {
   if (!item.state) return null;
 
   return (
@@ -124,7 +158,7 @@ const PortfolioCard = ({ item }) => {
   );
 };
 
-const ArticleCard = ({ item }) => {
+const ArticleCard = ({ item }: { item: Article }) => {
   const isExternal = item.url.startsWith("http");
 
   return (
@@ -168,7 +202,7 @@ const ArticleCard = ({ item }) => {
 };
 
 // 單一共用 List 元件，透過 mode 切換使用不同卡片
-const BaseList = ({ data, mode }) => {
+const BaseList = ({ data, mode }: { data: any[]; mode: "portfolio" | "article" }) => {
   const isPortfolio = mode === "portfolio";
   const Card = isPortfolio ? PortfolioCard : ArticleCard;
 
@@ -181,4 +215,4 @@ const BaseList = ({ data, mode }) => {
   );
 };
 
-export const ContentList = ({ data, mode }) => <BaseList data={data} mode={mode} />;
+export const ContentList = ({ data, mode }: { data: any[]; mode: "portfolio" | "article" }) => <BaseList data={data} mode={mode} />;
