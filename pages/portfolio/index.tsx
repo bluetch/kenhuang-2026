@@ -1,14 +1,15 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SiteLayout } from "components/SiteLayout";
 import { portfolio as allPortfolio, PortfolioItem } from "data/portfolio";
 import { GetStaticProps } from "next";
 
-const CAT_COLORS = {
-  design: { border: "#FFD60A", bg: "rgba(255,214,10,0.15)", text: "#FFD60A" },
-  frontend: { border: "#7BBFFF", bg: "rgba(0,207,255,0.15)", text: "#7BBFFF" },
-};
+const FILTERS = [
+  { id: "all", label: "All work" },
+  { id: "design", label: "Product design" },
+  { id: "frontend", label: "Frontend" },
+];
 
 interface PortfolioPageProps {
   portfolio: PortfolioItem[];
@@ -25,176 +26,130 @@ export default function Portfolio({ portfolio }: PortfolioPageProps) {
 
   return (
     <SiteLayout
-      title="Mission Log — Ken Huang"
-      description="Selected product design and frontend engineering projects by Ken Huang."
+      title="Work — Ken Huang"
+      description="Selected product design and frontend work by Ken Huang."
     >
-      {/* Header */}
-      <section
-        className="pt-28 pb-14 lg:pt-36 lg:pb-16 relative"
-        style={{
-          background: "#0B1220",
-          borderBottom: "1px solid #243570",
-          backgroundImage: "linear-gradient(rgba(0,207,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0,207,255,0.02) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-            <div>
-              <p className="text-[10px] tracking-widest uppercase mb-2" style={{ fontFamily: "Space Mono, monospace", color: "#7BBFFF" }}>
-                // MISSION.LOG
-              </p>
-              <h1
-                className="leading-none"
-                style={{ fontFamily: "VT323, monospace", fontSize: "clamp(4rem, 8vw, 7rem)", color: "#D0E4FF", lineHeight: 0.95 }}
-              >
-                SELECTED
-                <br />
-                <span style={{ color: "#7BBFFF" }}>WORK</span>
-              </h1>
-            </div>
-            <div
-              className="px-5 py-3"
-              style={{ background: "#142040", border: "1px solid #243570" }}
-            >
-              <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}>
-                MISSIONS COMPLETE:{" "}
-                <span style={{ color: "#7BBFFF" }}>{data.length}</span>
-              </p>
-            </div>
-          </div>
-
-          {/* Filter */}
-          <div className="flex gap-0 mt-8 border border-[#243570] w-fit">
-            {[
-              { id: "all", label: "ALL" },
-              { id: "design", label: "DESIGN" },
-              { id: "frontend", label: "CODE" },
-            ].map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setActiveFilter(f.id)}
-                className="px-5 py-2.5 text-[10px] font-bold tracking-widest uppercase border-r border-[#243570] last:border-r-0 transition-all duration-150"
-                style={{
-                  fontFamily: "Space Mono, monospace",
-                  background: activeFilter === f.id ? "#7BBFFF" : "transparent",
-                  color: activeFilter === f.id ? "#0D1533" : "#6880AA",
-                }}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Grid */}
-      <section className="py-16 lg:py-20" style={{ background: "#0D1533" }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.map((item, i) => (
-              <Link
-                key={item.url}
-                href={item.url}
-                className="group overflow-hidden flex flex-col transition-all duration-150"
-                style={{ background: "#142040", border: "2px solid #243570" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#7BBFFF";
-                  e.currentTarget.style.boxShadow = "4px 4px 0 0 #7BBFFF";
-                  e.currentTarget.style.transform = "translate(-2px,-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "#243570";
-                  e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.transform = "none";
-                }}
-              >
-                {/* Image */}
-                <div
-                  className="relative overflow-hidden aspect-[16/10] border-b border-[#243570]"
-                  style={{ background: "#1A2D5A" }}
+      <div className="bg-[#f7f1e8] text-[#1d2636]">
+        <section className="px-6 pb-14 pt-28 md:px-8 lg:px-10 lg:pb-16 lg:pt-32">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-3xl">
+                <p
+                  className="text-[10px] uppercase tracking-[0.22em] text-[#8f7d6f]"
+                  style={{ fontFamily: '"Press Start 2P", monospace' }}
                 >
-                  <img
-                    src={item.img}
-                    alt={item.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {/* Semi-transparent dark overlay */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{ background: "rgba(13,21,51,0.08)" }}
-                  />
-                  {/* Mission badge */}
-                  <div
-                    className="absolute top-2 left-2 px-2 py-0.5 text-[9px] font-mono"
-                    style={{ background: "#0D1533", color: "#7BBFFF", border: "1px solid #7BBFFF", fontFamily: "Space Mono, monospace" }}
-                  >
-                    MISSION {String(i + 1).padStart(2, "0")}
-                  </div>
-                  {/* Category chips */}
-                  <div className="absolute top-2 right-2 flex gap-1">
-                    {item.category.map((cat) => (
-                      <span
-                        key={cat}
-                        className="text-[8px] font-bold px-2 py-0.5"
-                        style={{
-                          fontFamily: "Space Mono, monospace",
-                          color: CAT_COLORS[cat]?.text || "#D0E4FF",
-                          background: "#0D1533",
-                          border: `1px solid ${CAT_COLORS[cat]?.border || "#243570"}`,
-                        }}
-                      >
-                        {cat.toUpperCase()}
-                      </span>
-                    ))}
-                  </div>
-                  {/* Hover CTA */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    style={{ background: "rgba(0,207,255,0.08)" }}
-                  >
-                    <div
-                      className="w-10 h-10 flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform"
-                      style={{ background: "#7BBFFF", border: "2px solid #0D1533" }}
+                  Work
+                </p>
+                <h1
+                  className="mt-4 text-[clamp(3rem,7vw,6rem)] leading-[0.92] tracking-[-0.05em]"
+                  style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
+                >
+                  Selected work,
+                  <br />
+                  shipped with taste.
+                </h1>
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-[#5f6675]">
+                  Product systems, growth surfaces, internal tools, and design work that had to survive real use.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {FILTERS.map((filter) => {
+                  const isActive = activeFilter === filter.id;
+                  return (
+                    <button
+                      key={filter.id}
+                      onClick={() => setActiveFilter(filter.id)}
+                      className="rounded-full border px-4 py-2 text-sm transition-all"
+                      style={{
+                        borderColor: isActive ? "#1f3a5f" : "#d6cabd",
+                        background: isActive ? "#1f3a5f" : "#fffaf4",
+                        color: isActive ? "#fffaf4" : "#6b625a",
+                      }}
                     >
-                      <ArrowUpRight size={18} color="#0D1533" />
+                      {filter.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 pb-20 md:px-8 lg:px-10 lg:pb-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-5 lg:grid-cols-2">
+              {data.map((item, index) => (
+                <Link
+                  key={item.url}
+                  href={item.url}
+                  className={`group relative overflow-hidden rounded-[1.8rem] border border-[#ddd1c4] bg-[#fffdf8] transition-transform duration-300 hover:-translate-y-1 ${
+                    index % 2 === 1 ? "lg:translate-y-8" : ""
+                  }`}
+                  style={{ boxShadow: "0 18px 60px rgba(73, 54, 36, 0.08)" }}
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden border-b border-[#eee2d5] bg-[#f1ebe3]">
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                    <div
+                      className="absolute left-4 top-4 rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.18em]"
+                      style={{
+                        fontFamily: '"Press Start 2P", monospace',
+                        borderColor: "rgba(255,255,255,0.7)",
+                        background: "rgba(29,38,54,0.72)",
+                        color: "#fff7f1",
+                      }}
+                    >
+                      Quest {String(index + 1).padStart(2, "0")}
                     </div>
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="p-4 flex-1 flex flex-col gap-2">
-                  <div className="flex-1">
-                    <h3
-                      className="font-bold mb-1 transition-colors"
-                      style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", color: "#B0C4DE" }}
-                    >
-                      {item.name}
-                    </h3>
-                    <p
-                      className="text-xs line-clamp-2"
-                      style={{ fontFamily: "DM Sans, sans-serif", color: "#8898BB" }}
-                    >
-                      {item.desc}
-                    </p>
+                  <div className="p-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-sm text-[#8a7c6f]">{item.company}</p>
+                        <h2 className="mt-2 text-2xl leading-tight text-[#1d2636]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
+                          {item.name}
+                        </h2>
+                      </div>
+                      <ArrowUpRight className="mt-1 text-[#1f3a5f] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={18} />
+                    </div>
+
+                    <p className="mt-4 text-base leading-7 text-[#5f6675]">{item.desc}</p>
+
+                    <div className="mt-6 flex flex-wrap items-center gap-3">
+                      {item.category.map((category) => (
+                        <span
+                          key={category}
+                          className="rounded-full border border-[#dfd2c5] bg-[#fff7ef] px-3 py-1 text-xs uppercase tracking-[0.16em] text-[#7a685a]"
+                        >
+                          {category}
+                        </span>
+                      ))}
+                      <span className="text-sm text-[#8b8178]">{item.date}</span>
+                    </div>
                   </div>
-                  <p
-                    className="text-[9px] pt-2 border-t border-[#243570]"
-                    style={{ fontFamily: "Space Mono, monospace", color: "#8898BB" }}
-                  >
-                    {item.company} · {item.date}
-                  </p>
-                </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-10">
+              <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-[#1f3a5f]">
+                Back to home
+                <ArrowRight size={16} />
               </Link>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </SiteLayout>
   );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   return { props: { portfolio: allPortfolio } };
-}
+};

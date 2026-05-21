@@ -14,7 +14,7 @@ export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePag
     <SiteLayout title={frontmatter.name} description={frontmatter.desc}>
       {/* Hero image — heroImg for article header, img for list thumbnail */}
       {(frontmatter.heroImg || frontmatter.img) && (
-        <div className="h-80 lg:h-96 w-full overflow-hidden" style={{ background: "#0B1220" }}>
+        <div className="h-80 w-full overflow-hidden bg-[#efe7de] lg:h-96">
           <img
             src={frontmatter.heroImg || frontmatter.img}
             alt={frontmatter.name}
@@ -23,7 +23,7 @@ export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePag
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto px-6 py-16 lg:py-20">
+      <div className="mx-auto max-w-3xl px-6 py-16 lg:py-20">
         {/* Meta header */}
         <div className="mb-10 space-y-3">
           {frontmatter.category?.length > 0 && (
@@ -31,11 +31,12 @@ export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePag
               {frontmatter.category.map((cat: string) => (
                 <span
                   key={cat}
-                  className="text-[9px] font-bold uppercase px-2 py-0.5 border"
+                  className="rounded-full border px-3 py-1 text-[9px] font-bold uppercase"
                   style={{
                     fontFamily: "Space Mono, monospace",
-                    color: cat === "camino" ? "#FFD60A" : "#7BBFFF",
-                    borderColor: cat === "camino" ? "#FFD60A" : "#7BBFFF",
+                    color: "#7a685a",
+                    borderColor: "#dfd2c5",
+                    background: "#fff7ef",
                   }}
                 >
                   {cat}
@@ -48,14 +49,14 @@ export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePag
             style={{
               fontFamily: "Syne, sans-serif",
               fontSize: "clamp(1.6rem, 4vw, 2.4rem)",
-              color: "#D0E4FF",
+              color: "#1d2636",
               fontWeight: 700,
             }}
           >
             {frontmatter.name}
           </h1>
           {frontmatter.date && (
-            <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: "#6880AA" }}>
+            <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: "#8b8178" }}>
               {String(frontmatter.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}
             </p>
           )}

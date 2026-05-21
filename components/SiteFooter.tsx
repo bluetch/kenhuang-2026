@@ -12,58 +12,90 @@ const siteLinks = [
   { label: "Work", href: "/portfolio" },
   { label: "About", href: "/about" },
   { label: "Devlog", href: "/articles" },
-  { label: "Mentorship", href: "/mentorship" },
 ];
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
-  return (
-    <footer className="border-t border-[#243570] bg-[#0B1220] mt-0">
-      {/* Top accent line */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#4D9EFF] to-transparent opacity-60" />
+  const isHome = true;
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-          {/* Brand */}
-          <div className="md:col-span-2 space-y-4">
+  const theme = isHome
+    ? {
+        shell: "border-[#ddd1c4] bg-[#fff8f0]",
+        line: "from-transparent via-[#e86f51] to-transparent",
+        title: "#1f3a5f",
+        small: "#8b7a6d",
+        body: "#646b79",
+        link: "#5e6675",
+        linkHover: "#1f3a5f",
+        arrow: "#ccb9aa",
+        email: "#e86f51",
+        border: "#ddd1c4",
+      }
+    : {
+        shell: "border-[#243570] bg-[#0B1220]",
+        line: "from-transparent via-[#4D9EFF] to-transparent",
+        title: "#4D9EFF",
+        small: "#6880AA",
+        body: "#6880AA",
+        link: "#6880AA",
+        linkHover: "#D0E4FF",
+        arrow: "#243570",
+        email: "#4D9EFF",
+        border: "#243570",
+      };
+
+  return (
+    <footer className={`mt-0 border-t ${theme.shell}`}>
+      <div className={`h-[2px] bg-gradient-to-r ${theme.line} opacity-70`} />
+
+      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+        <div className="mb-10 grid grid-cols-1 gap-10 md:grid-cols-4">
+          <div className="space-y-4 md:col-span-2">
             <div>
               <p
-                className="text-[#4D9EFF] leading-none mb-1"
-                style={{ fontFamily: "VT323, monospace", fontSize: "2.5rem" }}
+                className="mb-1 leading-none"
+                style={{ fontFamily: "Syne, sans-serif", fontSize: "2.2rem", fontWeight: 700, color: theme.title }}
               >
                 KEN HUANG
               </p>
-              <p className="text-[10px] text-[#6880AA] font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-                LEVEL 15 · INDIE DEV · PRODUCT DESIGNER
+              <p className="text-[10px] font-mono uppercase tracking-[0.18em]" style={{ fontFamily: "Space Mono, monospace", color: theme.small }}>
+                Indie game developer · Product designer · Former frontend lead
               </p>
             </div>
-            <p className="text-sm text-[#6880AA]" style={{ fontFamily: "DM Sans, sans-serif" }}>
-              Amateur game dev & product designer building things in Taipei.
+
+            <p className="max-w-md text-sm leading-7" style={{ fontFamily: "DM Sans, sans-serif", color: theme.body }}>
+              Building games from Taipei, with a product eye for systems, feel, and pacing.
             </p>
+
             <a
               href="mailto:bluetch@gmail.com"
-              className="inline-flex items-center gap-1 text-[11px] text-[#4D9EFF] hover:text-white transition-colors font-mono"
-              style={{ fontFamily: "Space Mono, monospace" }}
+              className="inline-flex items-center gap-1 text-[11px] transition-colors"
+              style={{ fontFamily: "Space Mono, monospace", color: theme.email }}
             >
               <span className="opacity-50">$</span> bluetch@gmail.com
               <ArrowUpRight size={12} />
             </a>
           </div>
 
-          {/* Nav */}
           <div>
-            <p className="text-[10px] text-[#4D9EFF] tracking-widest uppercase mb-4 font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-              // Navigate
+            <p className="mb-4 text-[10px] uppercase tracking-widest" style={{ fontFamily: "Space Mono, monospace", color: theme.title }}>
+              Navigate
             </p>
             <ul className="space-y-2">
               {siteLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#6880AA] hover:text-[#D0E4FF] transition-colors flex items-center gap-2"
-                    style={{ fontFamily: "Space Mono, monospace", fontSize: "11px" }}
+                    className="flex items-center gap-2 text-sm transition-colors"
+                    style={{ fontFamily: "Space Mono, monospace", fontSize: "11px", color: theme.link }}
+                    onMouseEnter={(event) => {
+                      event.currentTarget.style.color = theme.linkHover;
+                    }}
+                    onMouseLeave={(event) => {
+                      event.currentTarget.style.color = theme.link;
+                    }}
                   >
-                    <span className="text-[#243570]">›</span>
+                    <span style={{ color: theme.arrow }}>›</span>
                     {link.label}
                   </Link>
                 </li>
@@ -71,10 +103,9 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Social */}
           <div>
-            <p className="text-[10px] text-[#4D9EFF] tracking-widest uppercase mb-4 font-mono" style={{ fontFamily: "Space Mono, monospace" }}>
-              // Connect
+            <p className="mb-4 text-[10px] uppercase tracking-widest" style={{ fontFamily: "Space Mono, monospace", color: theme.title }}>
+              Connect
             </p>
             <ul className="space-y-2">
               {socialLinks.map((link) => (
@@ -83,10 +114,16 @@ export function SiteFooter() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm text-[#6880AA] hover:text-[#D0E4FF] transition-colors"
-                    style={{ fontFamily: "Space Mono, monospace", fontSize: "11px" }}
+                    className="inline-flex items-center gap-1 text-sm transition-colors"
+                    style={{ fontFamily: "Space Mono, monospace", fontSize: "11px", color: theme.link }}
+                    onMouseEnter={(event) => {
+                      event.currentTarget.style.color = theme.linkHover;
+                    }}
+                    onMouseLeave={(event) => {
+                      event.currentTarget.style.color = theme.link;
+                    }}
                   >
-                    <span className="text-[#243570]">›</span>
+                    <span style={{ color: theme.arrow }}>›</span>
                     {link.label}
                     <ArrowUpRight size={10} />
                   </a>
@@ -96,13 +133,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-[#243570] pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <p className="text-[10px] text-[#6880AA]" style={{ fontFamily: "Space Mono, monospace" }}>
+        <div className="flex flex-col items-start justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center" style={{ borderColor: theme.border }}>
+          <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: theme.small }}>
             © {year} KEN HUANG — ALL RIGHTS RESERVED
           </p>
-          <p className="text-[10px] text-[#6880AA]" style={{ fontFamily: "Space Mono, monospace" }}>
-            MADE WITH <span className="text-[#FF3E3E]">♥</span> IN TAIPEI · TAIWAN
+          <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: theme.small }}>
+            MADE IN TAIPEI · SHAPED BY PRODUCTS AND GAMES
           </p>
         </div>
       </div>

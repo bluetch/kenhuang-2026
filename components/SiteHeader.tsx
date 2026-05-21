@@ -1,38 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/* ── Logo keyframes ──────────────────────────────────────────────── */
 const LOGO_STYLES = `
   @keyframes logoGlitch {
     0%   { clip-path: inset(0 0 100% 0); transform: translate(0); }
     20%  { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
     40%  { clip-path: inset(50% 0 30% 0); transform: translate(3px, 0); }
     60%  { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 0); }
-    80%  { clip-path: inset(0 0 0 0);     transform: translate(0); }
-    100% { clip-path: inset(0 0 0 0);     transform: translate(0); }
+    80%  { clip-path: inset(0 0 0 0); transform: translate(0); }
+    100% { clip-path: inset(0 0 0 0); transform: translate(0); }
   }
+
   .site-logo:hover .logo-glitch {
     animation: logoGlitch 0.35s steps(1) forwards;
   }
-  .site-logo:hover .logo-icon {
-    filter: brightness(0) invert(1) drop-shadow(0 0 6px #4D9EFF);
-  }
 `;
 
-function SiteLogo() {
+function SiteLogo({ isHome }: { isHome: boolean }) {
+  const iconFilter = isHome ? "none" : "brightness(0) invert(1)";
+  const accent = isHome ? "#e86f51" : "#4D9EFF";
+  const divider = isHome ? "#d8cabd" : "#243570";
+  const textColor = isHome ? "#1d2636" : "#D0E4FF";
+
   return (
     <>
       <style>{LOGO_STYLES}</style>
-
-      <Link
-        href="/"
-        className="site-logo flex items-center gap-3 select-none"
-        style={{ textDecoration: "none" }}
-      >
-        {/* K icon */}
+      <Link href="/" className="site-logo flex items-center gap-3 select-none" style={{ textDecoration: "none" }}>
         <img
           src="/images/k-logo.png"
           alt=""
@@ -43,15 +39,13 @@ function SiteLogo() {
           style={{
             display: "block",
             flexShrink: 0,
-            filter: "brightness(0) invert(1)",
-            transition: "filter 0.2s",
+            filter: iconFilter,
+            transition: "transform 0.2s ease, filter 0.2s ease",
           }}
         />
 
-        {/* Divider */}
-        <div style={{ width: 1, height: 22, background: "#243570", flexShrink: 0 }} />
+        <div style={{ width: 1, height: 22, background: divider, flexShrink: 0 }} />
 
-        {/* Name — glitch layer */}
         <div style={{ position: "relative", lineHeight: 1 }}>
           <span
             style={{
@@ -59,15 +53,13 @@ function SiteLogo() {
               fontWeight: 700,
               fontSize: 15,
               letterSpacing: "0.12em",
-              color: "#D0E4FF",
+              color: textColor,
               textTransform: "uppercase",
               display: "block",
             }}
           >
             Ken Huang
           </span>
-
-          {/* Glitch clone — same text, clips and shifts on hover */}
           <span
             aria-hidden
             className="logo-glitch"
@@ -76,7 +68,7 @@ function SiteLogo() {
               fontWeight: 700,
               fontSize: 15,
               letterSpacing: "0.12em",
-              color: "#4D9EFF",
+              color: accent,
               textTransform: "uppercase",
               position: "absolute",
               inset: 0,
@@ -93,17 +85,17 @@ function SiteLogo() {
 }
 
 const navLinks = [
-  { href: "/", label: "HOME", key: "01" },
-  { href: "/about", label: "ABOUT", key: "02" },
-  { href: "/portfolio", label: "WORK", key: "03" },
-  { href: "/articles", label: "DEVLOG", key: "04" },
-  { href: "/mentorship", label: "MENTOR", key: "05" },
+  { href: "/", label: "HOME" },
+  { href: "/about", label: "ABOUT" },
+  { href: "/portfolio", label: "WORK" },
+  { href: "/articles", label: "DEVLOG" },
 ];
 
 export function SiteHeader() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isHome = true;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -115,67 +107,85 @@ export function SiteHeader() {
     setIsOpen(false);
   }, [router.pathname]);
 
+  const theme = {
+    header: scrolled
+      ? "bg-[rgba(255,249,241,0.92)] border-b border-[#ded1c4] backdrop-blur-md"
+      : "bg-[rgba(247,241,232,0.76)] border-b border-[#e7dbce] backdrop-blur-md",
+    accentLine: "from-transparent via-[#e86f51] to-transparent",
+    navBorder: "#d8cabd",
+    navActiveBg: "#1f3a5f",
+    navActiveText: "#fff8f0",
+    navIdleText: "#75695f",
+    navIdleHover: "#1f3a5f",
+    navIdleHoverBg: "rgba(31,58,95,0.06)",
+    artHover: "#e86f51",
+    menuBorder: "#d8cabd",
+    menuText: "#75695f",
+    mobileBg: "#f7f1e8",
+    mobileActiveBg: "rgba(31,58,95,0.08)",
+    mobileActiveText: "#1f3a5f",
+    mobileIdleHoverBg: "#fff8f0",
+    mobileHeaderBg: "#1f3a5f",
+    mobileHeaderText: "#fff8f0",
+  };
+
   return (
     <>
-      <header
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-200",
-          scrolled
-            ? "bg-[#0D1533]/95 backdrop-blur-sm border-b border-[#243570]"
-            : "bg-[#0D1533]/80 backdrop-blur-sm border-b border-[#243570]/50"
-        )}
-      >
-        {/* Top pixel line */}
-        <div className="h-[2px] bg-gradient-to-r from-transparent via-[#4D9EFF] to-transparent" />
+      <header className={cn("fixed left-0 right-0 top-0 z-50 transition-all duration-200", theme.header)}>
+        <div className={`h-[2px] bg-gradient-to-r ${theme.accentLine}`} />
 
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14">
-            {/* Logo */}
-            <SiteLogo />
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            <SiteLogo isHome={isHome} />
 
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-0 border border-[#243570]">
+            <nav className="hidden items-center gap-6 md:flex">
               {navLinks.map((link) => {
                 const isActive =
                   link.href === "/"
                     ? router.pathname === "/"
                     : router.pathname.startsWith(link.href);
+
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={cn(
-                      "relative flex items-center gap-1.5 px-4 py-2.5 text-xs font-mono tracking-widest uppercase transition-all duration-150 border-r border-[#243570] last:border-r-0",
-                      isActive
-                        ? "bg-[#4D9EFF] text-[#0D1533] font-bold"
-                        : "text-[#6880AA] hover:text-[#4D9EFF] hover:bg-[#4D9EFF]/10"
-                    )}
-                    style={{ fontFamily: "Space Mono, monospace" }}
+                    className="relative px-1 py-2 text-xs uppercase tracking-[0.18em] transition-all duration-150"
+                    style={{
+                      fontFamily: "Space Mono, monospace",
+                      background: "transparent",
+                      color: isActive ? "#1d2636" : theme.navIdleText,
+                      fontWeight: isActive ? 700 : 500,
+                    }}
+                    onMouseEnter={(event) => {
+                      if (!isActive) {
+                        event.currentTarget.style.color = theme.navIdleHover;
+                      }
+                    }}
+                    onMouseLeave={(event) => {
+                      if (!isActive) {
+                        event.currentTarget.style.color = theme.navIdleText;
+                      }
+                    }}
                   >
-                    <span className="text-[10px] opacity-50">{link.key}</span>
                     {link.label}
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#4D9EFF]" />
+                      <span
+                        className="absolute -bottom-0.5 left-0 right-0 h-[2px]"
+                        style={{ background: "#e86f51" }}
+                      />
                     )}
                   </Link>
                 );
               })}
-              <a
-                href="https://www.instagram.com/noa.tzu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-mono tracking-widest uppercase text-[#6880AA] hover:text-[#FFD60A] hover:bg-[#FFD60A]/10 transition-all border-r-0"
-                style={{ fontFamily: "Space Mono, monospace" }}
-              >
-                <span className="text-[10px] opacity-50">06</span>
-                ART
-              </a>
             </nav>
 
-            {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden w-9 h-9 border border-[#243570] flex items-center justify-center hover:border-[#4D9EFF] hover:text-[#4D9EFF] text-[#6880AA] transition-all"
+              className="flex h-9 w-9 items-center justify-center border transition-all md:hidden"
+              style={{
+                borderColor: theme.menuBorder,
+                color: theme.menuText,
+              }}
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={16} /> : <Menu size={16} />}
@@ -184,51 +194,61 @@ export function SiteHeader() {
         </div>
       </header>
 
-      {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-[#0D1533] flex flex-col justify-center items-center pixel-grid-bg"
+          className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+          style={{ background: theme.mobileBg }}
           onClick={() => setIsOpen(false)}
         >
-          <nav className="flex flex-col items-stretch gap-0 border border-[#243570] w-64" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-[#4D9EFF] px-4 py-2 flex justify-between items-center">
-              <span className="text-[#0D1533] text-[10px] font-mono font-bold" style={{ fontFamily: "Space Mono, monospace" }}>
+          <nav
+            className="flex w-64 flex-col items-stretch gap-0 border"
+            style={{ borderColor: theme.navBorder }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div
+              className="flex items-center justify-between px-4 py-2"
+              style={{ background: theme.mobileHeaderBg, color: theme.mobileHeaderText }}
+            >
+              <span className="text-[10px] font-bold" style={{ fontFamily: "Space Mono, monospace" }}>
                 SELECT SCREEN
               </span>
-              <button onClick={() => setIsOpen(false)} className="text-[#0D1533]">
+              <button onClick={() => setIsOpen(false)}>
                 <X size={14} />
               </button>
             </div>
-            {[...navLinks, { href: "https://www.instagram.com/noa.tzu/", label: "ART", key: "06", external: true }].map((link, i) => {
-              const isActive = !("external" in link) && (
+
+            {navLinks.map((link) => {
+              const isActive = (
                 link.href === "/"
                   ? router.pathname === "/"
                   : router.pathname.startsWith(link.href)
               );
+
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  target={"external" in link ? "_blank" : undefined}
-                  className={cn(
-                    "flex items-center gap-3 px-4 py-3 text-xs font-mono tracking-widest uppercase border-b border-[#243570] last:border-b-0 transition-all",
-                    isActive
-                      ? "bg-[#4D9EFF]/15 text-[#4D9EFF] border-l-2 border-l-[#4D9EFF]"
-                      : "text-[#6880AA] hover:text-[#D0E4FF] hover:bg-[#1A2D5A]"
-                  )}
-                  style={{ fontFamily: "Space Mono, monospace" }}
+                  className="flex items-center gap-3 border-b px-4 py-3 text-xs uppercase tracking-widest transition-all last:border-b-0"
+                  style={{
+                    fontFamily: "Space Mono, monospace",
+                    borderColor: theme.navBorder,
+                    background: isActive ? theme.mobileActiveBg : "transparent",
+                    color: isActive ? theme.mobileActiveText : theme.navIdleText,
+                  }}
                   onClick={() => setIsOpen(false)}
+                  onMouseEnter={(event) => {
+                    if (!isActive) event.currentTarget.style.background = theme.mobileIdleHoverBg;
+                  }}
+                  onMouseLeave={(event) => {
+                    if (!isActive) event.currentTarget.style.background = "transparent";
+                  }}
                 >
-                  <span className="text-[#4D6090] text-[8px]">{link.key}</span>
-                  {isActive && <span className="text-[#4D9EFF]">▶</span>}
+                  {isActive && <span>▶</span>}
                   {link.label}
                 </Link>
               );
             })}
           </nav>
-          <p className="mt-8 text-[10px] text-[#4D6090] font-mono animate-blink" style={{ fontFamily: "Space Mono, monospace" }}>
-            PRESS ESC TO CLOSE
-          </p>
         </div>
       )}
     </>

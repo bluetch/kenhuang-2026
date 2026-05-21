@@ -11,8 +11,14 @@ export const Tag = ({ children }: TagProps) => {
         {children.map((item) => (
           <span
             key={`tag-${item}`}
-            className="text-[10px] tracking-widest uppercase text-game-blue bg-game-blue/10 border border-game-blue px-2 py-0.5"
-            style={{ fontFamily: "Space Mono, monospace" }}
+            className="px-3 py-1 text-[10px] uppercase tracking-[0.16em]"
+            style={{
+              fontFamily: "Space Mono, monospace",
+              color: "#7a685a",
+              background: "#fff7ef",
+              border: "1px solid #dfd2c5",
+              borderRadius: "999px",
+            }}
           >
             {item}
           </span>
@@ -22,8 +28,14 @@ export const Tag = ({ children }: TagProps) => {
   }
   return (
     <span
-      className="text-[10px] tracking-widest uppercase text-game-blue bg-game-blue/10 border border-game-blue px-2 py-0.5"
-      style={{ fontFamily: "Space Mono, monospace" }}
+      className="px-3 py-1 text-[10px] uppercase tracking-[0.16em]"
+      style={{
+        fontFamily: "Space Mono, monospace",
+        color: "#7a685a",
+        background: "#fff7ef",
+        border: "1px solid #dfd2c5",
+        borderRadius: "999px",
+      }}
     >
       {children}
     </span>

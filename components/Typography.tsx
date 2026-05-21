@@ -9,12 +9,12 @@ interface VariantConfig {
 }
 
 const VARIANT_CONFIG: Record<VariantKey, VariantConfig> = {
-  h1: { Tag: "h1", baseClass: "text-4xl font-bold mb-6 tracking-tight", style: { color: "#D0E4FF" } },
-  h2: { Tag: "h2", baseClass: "text-3xl font-bold mb-5 tracking-tight", style: { color: "#D0E4FF" } },
-  h3: { Tag: "h3", baseClass: "text-2xl font-bold mb-4 mt-10", style: { color: "#C4D8F0" } },
-  h4: { Tag: "h4", baseClass: "text-xl font-bold mb-3 mt-8", style: { color: "#C4D8F0" } },
-  h5: { Tag: "h5", baseClass: "font-bold text-base mb-2 mt-6", style: { color: "#B0C4DE" } },
-  h6: { Tag: "h6", baseClass: "font-bold text-sm mb-2 mt-4", style: { color: "#8898BB" } },
+  h1: { Tag: "h1", baseClass: "text-4xl font-bold mb-6 tracking-tight", style: { color: "#1d2636" } },
+  h2: { Tag: "h2", baseClass: "text-3xl font-bold mb-5 tracking-tight", style: { color: "#1d2636" } },
+  h3: { Tag: "h3", baseClass: "text-2xl font-bold mb-4 mt-10", style: { color: "#243b63" } },
+  h4: { Tag: "h4", baseClass: "text-xl font-bold mb-3 mt-8", style: { color: "#243b63" } },
+  h5: { Tag: "h5", baseClass: "font-bold text-base mb-2 mt-6", style: { color: "#40506d" } },
+  h6: { Tag: "h6", baseClass: "font-bold text-sm mb-2 mt-4", style: { color: "#6a7283" } },
 };
 
 interface TypographyProps extends HTMLAttributes<HTMLHeadingElement> {

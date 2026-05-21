@@ -32,7 +32,7 @@ export const Layout = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SiteHeader />
-      <main className="min-h-screen bg-[#0D1533]">{children}</main>
+      <main className="min-h-screen bg-[#f7f1e8] text-[#1d2636]">{children}</main>
       <SiteFooter />
     </>
   );

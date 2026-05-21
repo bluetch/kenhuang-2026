@@ -5,52 +5,34 @@ export default function Contact() {
   return (
     <SiteLayout
       title="Contact — Ken Huang"
-      description="Contact Ken Huang for collaboration, mentorship, or speaking opportunities."
+      description="Get in touch with Ken Huang for collaboration, product work, or mentorship."
     >
-      <section
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: "#0D1533" }}
-      >
-        <div className="text-center px-6 space-y-6">
+      <div className="flex min-h-screen items-center justify-center bg-[#f7f1e8] px-6 py-24 text-[#1d2636]">
+        <div className="w-full max-w-2xl rounded-[2rem] border border-[#ddd1c4] bg-[#fffdf8] p-8 text-center shadow-[0_24px_80px_rgba(61,49,38,0.10)] md:p-12">
           <p
-            className="text-[10px] tracking-widest uppercase"
-            style={{ fontFamily: "Space Mono, monospace", color: "#4D9EFF" }}
+            className="text-[10px] uppercase tracking-[0.22em] text-[#8f7d6f]"
+            style={{ fontFamily: '"Press Start 2P", monospace' }}
           >
-            // CONTACT.INIT
+            Contact
           </p>
           <h1
-            className="leading-tight"
-            style={{
-              fontFamily: "VT323, monospace",
-              fontSize: "clamp(2.5rem, 6vw, 4rem)",
-              color: "#D0E4FF",
-            }}
+            className="mt-5 text-[clamp(2.4rem,6vw,4.6rem)] leading-[0.94] tracking-[-0.05em]"
+            style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
           >
-            Thanks for taking the time<br />to reach out.
+            Say hello.
           </h1>
-          <p
-            className="text-sm max-w-sm mx-auto"
-            style={{ fontFamily: "DM Sans, sans-serif", color: "#8898BB" }}
-          >
-            I&apos;m always open to new collaborations, mentorship inquiries, or just a good conversation.
+          <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-[#5f6675]">
+            For product work, thoughtful collaborations, mentorship, or a good conversation about games and interfaces.
           </p>
           <a
             href="mailto:bluetch@gmail.com"
-            className="inline-flex items-center gap-2 px-6 py-3 text-[10px] font-bold tracking-widest uppercase transition-all duration-150"
-            style={{
-              fontFamily: "Space Mono, monospace",
-              background: "#4D9EFF",
-              color: "#0D1533",
-              border: "2px solid #4D9EFF",
-              boxShadow: "4px 4px 0 0 #2468CC",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translate(2px,2px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "4px 4px 0 0 #2468CC"; e.currentTarget.style.transform = "none"; }}
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1f3a5f] px-6 py-3 text-sm font-medium text-[#fff8f0]"
           >
-            ▶ bluetch@gmail.com <ArrowUpRight size={12} />
+            bluetch@gmail.com
+            <ArrowUpRight size={16} />
           </a>
         </div>
-      </section>
+      </div>
     </SiteLayout>
   );
 }

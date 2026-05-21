@@ -42,7 +42,7 @@ export const PortfolioSummary = ({ tags, date, info, title }: PortfolioSummaryPr
           className="grid gap-x-12 gap-y-4 mt-6 pt-6"
           style={{
             gridTemplateColumns: `repeat(${displayInfo.length}, minmax(0, 1fr))`,
-            borderTop: "1px solid #243570",
+            borderTop: "1px solid #dfd2c5",
           }}
         >
           {displayInfo.map((item, index) => (
@@ -75,9 +75,9 @@ export const PortfolioOverview = ({ overview }: PortfolioOverviewProps) => {
       <div className="grid lg:grid-cols-2 gap-4">
         {overview.map((item) => {
           return (
-            <div key={item.title} className="border border-[#243570] bg-[#142040] lg:p-8 p-4">
+            <div key={item.title} className="rounded-[1.6rem] border border-[#ddd1c4] bg-[#fffdf8] lg:p-8 p-5">
               <Typography variant="h4" style={{ marginTop: 0 }}>{item.title}</Typography>
-              <p style={{ fontFamily: "DM Sans, sans-serif", color: "#9ABCE8" }}>
+              <p style={{ fontFamily: "DM Sans, sans-serif", color: "#5f6675" }}>
                 {item.desc}
               </p>
             </div>
@@ -105,11 +105,11 @@ export const PortfolioProcess = ({ data }: PortfolioProcessProps) => {
     >
       {data.map((item, index) => {
         return (
-          <div key={item.title} className="bg-[#142040] border border-[#243570] p-4" style={{ borderLeft: "3px solid #4D9EFF" }}>
-            <h6 className="font-semibold mb-3" style={{ fontFamily: "Space Mono, monospace", fontSize: "0.7rem", color: "#4D9EFF" }}>
+          <div key={item.title} className="rounded-[1.4rem] border border-[#ddd1c4] bg-[#fffdf8] p-4" style={{ borderLeft: "3px solid #1f3a5f" }}>
+            <h6 className="font-semibold mb-3" style={{ fontFamily: "Space Mono, monospace", fontSize: "0.7rem", color: "#1f3a5f" }}>
               {`0${index + 1}. ${item.title}`}
             </h6>
-            <p className="text-sm" style={{ fontFamily: "DM Sans, sans-serif", color: "#9ABCE8" }}>
+            <p className="text-sm" style={{ fontFamily: "DM Sans, sans-serif", color: "#5f6675" }}>
               {item.desc}
             </p>
           </div>
@@ -125,7 +125,7 @@ const PortfolioCard = ({ item }: { item: PortfolioItem }) => {
 
   return (
     <Link key={item.url} href={item.url}>
-      <figure className="group flex lg:flex-col lg:space-y-4 border border-[#243570] hover:border-[#4D9EFF] bg-[#142040] transition-all duration-150 overflow-hidden">
+      <figure className="group flex lg:flex-col lg:space-y-4 overflow-hidden rounded-[1.6rem] border border-[#ddd1c4] bg-[#fffdf8] transition-all duration-150 hover:-translate-y-1">
         <div className="overflow-hidden">
           <img
             src={item.img}
@@ -136,19 +136,19 @@ const PortfolioCard = ({ item }: { item: PortfolioItem }) => {
         <figcaption className="lg:px-0 px-4 p-4 space-y-1">
           <p
             className="text-xs"
-            style={{ fontFamily: "Space Mono, monospace", color: "#8898BB" }}
+            style={{ fontFamily: "Space Mono, monospace", color: "#8b8178" }}
           >
             {item.company}, {item.date}
           </p>
           <h4
-            className="transition-colors group-hover:text-[#4D9EFF]"
-            style={{ fontFamily: "Syne, sans-serif", fontSize: "1rem", fontWeight: 600, color: "#D0E4FF" }}
+            className="transition-colors group-hover:text-[#1f3a5f]"
+            style={{ fontFamily: "Syne, sans-serif", fontSize: "1rem", fontWeight: 600, color: "#1d2636" }}
           >
             {item.name}
           </h4>
           <p
             className="text-sm"
-            style={{ fontFamily: "DM Sans, sans-serif", color: "#9ABCE8" }}
+            style={{ fontFamily: "DM Sans, sans-serif", color: "#5f6675" }}
           >
             {item.desc}
           </p>
@@ -167,7 +167,7 @@ const ArticleCard = ({ item }: { item: Article }) => {
       href={item.url}
       target={isExternal ? "_blank" : "_self"}
     >
-      <figure className="group bg-[#142040] border border-[#243570] flex hover:border-[#4D9EFF] transition-all duration-150">
+      <figure className="group flex rounded-[1.6rem] border border-[#ddd1c4] bg-[#fffdf8] transition-all duration-150 hover:-translate-y-1">
         <img
           src={item.img}
           alt=""
@@ -176,22 +176,22 @@ const ArticleCard = ({ item }: { item: Article }) => {
         <figcaption className="p-4 pl-0 space-y-1.5 relative">
           <p
             className="text-xs"
-            style={{ fontFamily: "Space Mono, monospace", color: "#8898BB" }}
+            style={{ fontFamily: "Space Mono, monospace", color: "#8b8178" }}
           >
             {dateConvert(item.date)}
             {item.category[0] && (
-              <span className="ml-2" style={{ color: "#4D9EFF" }}>{item.category[0]}</span>
+              <span className="ml-2" style={{ color: "#1f3a5f" }}>{item.category[0]}</span>
             )}
           </p>
           <h6
-            className="line-clamp-2 text-sm transition-colors group-hover:text-[#4D9EFF]"
-            style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, color: "#D0E4FF" }}
+            className="line-clamp-2 text-sm transition-colors group-hover:text-[#1f3a5f]"
+            style={{ fontFamily: "Syne, sans-serif", fontWeight: 600, color: "#1d2636" }}
           >
             {item.name}
           </h6>
           <p
             className="line-clamp-2 text-xs"
-            style={{ fontFamily: "DM Sans, sans-serif", color: "#9ABCE8" }}
+            style={{ fontFamily: "DM Sans, sans-serif", color: "#5f6675" }}
           >
             {item.desc}
           </p>
