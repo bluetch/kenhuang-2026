@@ -1,7 +1,7 @@
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
+import { MediaPreview } from "components/MediaPreview";
 import { SiteLayout } from "components/SiteLayout";
-import { YouTubePreview } from "components/YouTubePreview";
 import { getMdxArticle, getMdxSlugs } from "lib/mdx";
 import { GetStaticPaths, GetStaticProps } from "next";
 
@@ -12,7 +12,7 @@ interface MdxArticlePageProps {
 
 export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePageProps) {
   const mdxComponents = {
-    YouTubePreview,
+    MediaPreview,
   };
 
   return (

@@ -100,7 +100,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs uppercase tracking-[0.16em] text-[#8b8178]">
-                      {String(index + 1).padStart(2, "0")} · {dateFormat(item.date)} · {item.category.join(" / ")}
+                      {dateFormat(item.date)} · {item.category.join(" / ")}
                     </p>
                     <h2 className="mt-2 line-clamp-2 text-xl leading-tight text-[#1d2636] transition-colors group-hover:text-[#1f3a5f]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
                       {item.name}

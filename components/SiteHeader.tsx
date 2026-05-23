@@ -87,8 +87,8 @@ function SiteLogo({ isHome }: { isHome: boolean }) {
 const navLinks = [
   { href: "/", label: "HOME" },
   { href: "/about", label: "ABOUT" },
-  { href: "/portfolio", label: "WORK" },
   { href: "/articles", label: "DEVLOG" },
+  // { href: "/portfolio", label: "WORK" },
 ];
 
 export function SiteHeader() {

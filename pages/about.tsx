@@ -62,7 +62,7 @@ export default function About() {
                 About
               </p>
               <h1
-                className="mt-4 text-[clamp(3rem,6vw,5.6rem)] leading-[0.94] tracking-[-0.05em]"
+                className="mt-4 text-[clamp(3rem,6vw,4rem)] leading-[0.94] tracking-[-0.05em]"
                 style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
               >
                 Making games now,
