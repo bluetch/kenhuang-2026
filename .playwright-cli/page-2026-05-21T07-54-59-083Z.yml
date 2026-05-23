@@ -1,0 +1,174 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e6]:
+        - link "Ken Huang" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]:
+            - generic [ref=e10]: Ken Huang
+            - generic [ref=e11]: Ken Huang
+        - navigation [ref=e12]:
+          - link "01 HOME" [ref=e13] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e14]: "01"
+            - text: HOME
+          - link "02 ABOUT" [ref=e15] [cursor=pointer]:
+            - /url: /about
+            - generic [ref=e16]: "02"
+            - text: ABOUT
+          - link "03 WORK" [ref=e17] [cursor=pointer]:
+            - /url: /portfolio
+            - generic [ref=e18]: "03"
+            - text: WORK
+          - link "04 DEVLOG" [ref=e20] [cursor=pointer]:
+            - /url: /articles
+            - generic [ref=e21]: "04"
+            - text: DEVLOG
+          - link "05 MENTOR" [ref=e22] [cursor=pointer]:
+            - /url: /mentorship
+            - generic [ref=e23]: "05"
+            - text: MENTOR
+          - link "06 ART" [ref=e24] [cursor=pointer]:
+            - /url: https://www.instagram.com/noa.tzu/
+            - generic [ref=e25]: "06"
+            - text: ART
+    - main [ref=e26]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - generic [ref=e31]:
+              - generic [ref=e32]: Front-end
+              - generic [ref=e33]: APIs
+              - generic [ref=e34]: React
+              - generic [ref=e35]: Finance
+            - paragraph [ref=e36]: 2021 Apr - 2022 Apr
+          - heading "One Account Admin" [level=1] [ref=e37]
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - paragraph [ref=e40]: Duration
+              - paragraph [ref=e41]: 12 months
+            - generic [ref=e42]:
+              - paragraph [ref=e43]: My Role
+              - paragraph [ref=e44]: Sr. Front-end developer
+            - generic [ref=e45]:
+              - paragraph [ref=e46]: Responsibility
+              - paragraph [ref=e47]: React, MUI, SASS, Jest
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: Company
+              - paragraph [ref=e50]: Good Finance, Taipei, Taiwan
+        - generic [ref=e51]:
+          - heading "Project Overview" [level=3] [ref=e52]
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - heading "01. Objective" [level=4] [ref=e55]
+              - paragraph [ref=e56]: Due to there are many business unit and service with different account system, we would like to integrate all in one to help work stability and efficiency.
+            - generic [ref=e57]:
+              - heading "02. Role & Deliverables" [level=4] [ref=e58]
+              - paragraph [ref=e59]: In this project, I worked closely with Designers, PM and back-end engineers. I was responsible for the end to end web design, from PRD to front-end implementation and API handling.
+            - generic [ref=e60]:
+              - heading "03. Challenges" [level=4] [ref=e61]
+              - paragraph [ref=e62]: I am the first one front-end developer in this company, so that there are many standard and rule what I have to clearify, then make a scalable web structure.
+            - generic [ref=e63]:
+              - heading "04. Outcome & Impact" [level=4] [ref=e64]
+              - paragraph [ref=e65]: After launched the one account admin that decreased repetitive work for open account, when customers register new service we can maintain and update the same account. Save 30% of working time.
+        - heading "Situation" [level=3] [ref=e66]
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - paragraph [ref=e69]: Good Finance is one of tranditional securities company, some services were performed long ago by outsourcing companies. It makes employee increasingly difficult to maintain.
+            - paragraph [ref=e70]: However, With the development of a new product, we decided to solve this heavy burden.
+            - paragraph [ref=e71]: Additionally, the global financial services kept rolling out new content and features worldwide, which may not be an optimal experience to current market, it also affected the new product in many aspects.
+          - img "old services" [ref=e73]
+        - separator [ref=e74]
+        - heading "Task" [level=3] [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - paragraph [ref=e78]: "Because of there are many legacy service have to maintain with new product, I have to understand existing domain knowledge and propose a scalable structure plan, so that here are tasks to do:"
+            - list [ref=e79]:
+              - listitem [ref=e80]: PRD discussion
+              - listitem [ref=e81]: Frontend technical specification.
+              - listitem [ref=e82]: Refactor old systems.
+              - listitem [ref=e83]: Define API data specification.
+              - listitem [ref=e84]: Technological selection for product.
+              - listitem [ref=e85]: Ensure browser compatibility.
+          - img "sequence fiagram" [ref=e87]
+        - separator [ref=e88]
+        - heading "Action" [level=3] [ref=e89]
+        - generic [ref=e90]:
+          - paragraph [ref=e91]: I am the first one frontend developer in this company, and worked very closely with designers and backend developers on the implementation of the features and in some cases even had my hands on project management to help team work and better understand the development process.
+          - generic [ref=e92]:
+            - generic [ref=e93]: React.js
+            - generic [ref=e94]: SASS
+            - generic [ref=e95]: Keycloak.js
+            - generic [ref=e96]: MUI
+            - generic [ref=e97]: Date-io
+            - generic [ref=e98]: React-hook-form
+            - generic [ref=e99]: React-pdf
+            - generic [ref=e100]: Jest
+            - generic [ref=e101]: Figma
+          - paragraph [ref=e102]: The front end build process included the use of Gitlab CI/CD for automated tasks to speed up development and Git for version control.
+        - separator [ref=e103]
+        - heading "Result" [level=3] [ref=e104]
+      - img "one account admin home page" [ref=e105]
+      - img "one account admin list page" [ref=e106]
+      - img "one account admin profile page" [ref=e107]
+    - contentinfo [ref=e108]:
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]:
+              - paragraph [ref=e114]: KEN HUANG
+              - paragraph [ref=e115]: Product designer · Frontend builder · Game tinkerer
+            - paragraph [ref=e116]: Building thoughtful interfaces from Taipei, with a product lens first and a playful systems mindset close behind.
+            - link "$ bluetch@gmail.com" [ref=e117] [cursor=pointer]:
+              - /url: mailto:bluetch@gmail.com
+              - generic [ref=e118]: $
+              - text: bluetch@gmail.com
+              - img [ref=e119]
+          - generic [ref=e122]:
+            - paragraph [ref=e123]: Navigate
+            - list [ref=e124]:
+              - listitem [ref=e125]:
+                - link "› Work" [ref=e126] [cursor=pointer]:
+                  - /url: /portfolio
+                  - generic [ref=e127]: ›
+                  - text: Work
+              - listitem [ref=e128]:
+                - link "› About" [ref=e129] [cursor=pointer]:
+                  - /url: /about
+                  - generic [ref=e130]: ›
+                  - text: About
+              - listitem [ref=e131]:
+                - link "› Devlog" [ref=e132] [cursor=pointer]:
+                  - /url: /articles
+                  - generic [ref=e133]: ›
+                  - text: Devlog
+              - listitem [ref=e134]:
+                - link "› Mentorship" [ref=e135] [cursor=pointer]:
+                  - /url: /mentorship
+                  - generic [ref=e136]: ›
+                  - text: Mentorship
+          - generic [ref=e137]:
+            - paragraph [ref=e138]: Connect
+            - list [ref=e139]:
+              - listitem [ref=e140]:
+                - link "› LinkedIn" [ref=e141] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/bluetch/
+                  - generic [ref=e142]: ›
+                  - text: LinkedIn
+                  - img [ref=e143]
+              - listitem [ref=e146]:
+                - link "› Instagram" [ref=e147] [cursor=pointer]:
+                  - /url: https://www.instagram.com/noa.tzu/
+                  - generic [ref=e148]: ›
+                  - text: Instagram
+                  - img [ref=e149]
+              - listitem [ref=e152]:
+                - link "› GitHub" [ref=e153] [cursor=pointer]:
+                  - /url: https://github.com/bluetch
+                  - generic [ref=e154]: ›
+                  - text: GitHub
+                  - img [ref=e155]
+        - generic [ref=e158]:
+          - paragraph [ref=e159]: © 2026 KEN HUANG — ALL RIGHTS RESERVED
+          - paragraph [ref=e160]: MADE IN TAIPEI · SHAPED BY PRODUCTS AND GAMES
+  - alert [ref=e161]

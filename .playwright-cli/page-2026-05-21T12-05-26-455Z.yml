@@ -1,0 +1,116 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e6]:
+        - link "Ken Huang" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]:
+            - generic [ref=e10]: Ken Huang
+            - generic [ref=e11]: Ken Huang
+        - navigation [ref=e12]:
+          - link "HOME" [ref=e13] [cursor=pointer]:
+            - /url: /
+          - link "ABOUT" [ref=e14] [cursor=pointer]:
+            - /url: /about
+            - text: ABOUT
+          - link "WORK" [ref=e16] [cursor=pointer]:
+            - /url: /portfolio
+          - link "DEVLOG" [ref=e17] [cursor=pointer]:
+            - /url: /articles
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e21]:
+          - img "Ken Huang portrait" [ref=e23]
+          - generic [ref=e24]:
+            - paragraph [ref=e25]: About
+            - heading "Making games now, after a long time on the web." [level=1] [ref=e26]:
+              - text: Making games now,
+              - text: after a long time
+              - text: on the web.
+            - paragraph [ref=e27]: I'm Ken, based in Taipei. I spent years in product design and frontend, and somewhere along the way I started caring more and more about games.
+            - paragraph [ref=e28]: "That older work still shapes how I build: clear systems, good pacing, and playful details that earn their place."
+        - generic [ref=e30]:
+          - paragraph [ref=e31]: Timeline
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - paragraph [ref=e34]: Now
+              - generic [ref=e35]:
+                - paragraph [ref=e36]: Building indie games
+                - paragraph [ref=e37]: Small systems, toy-like worlds, readable feedback, and better game feel one loop at a time.
+            - generic [ref=e38]:
+              - paragraph [ref=e39]: 2022 — now
+              - generic [ref=e40]:
+                - paragraph [ref=e41]: Staff Frontend Developer at TXOne Networks
+                - paragraph [ref=e42]: Still shipping product work, but game development has become the main creative direction.
+            - generic [ref=e43]:
+              - paragraph [ref=e44]: 2017 — 2022
+              - generic [ref=e45]:
+                - paragraph [ref=e46]: Shopee, fintech, product systems
+                - paragraph [ref=e47]: A long stretch of design, frontend, experiments, systems, and learning how products actually hold together.
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: 2010 — 2017
+              - generic [ref=e50]:
+                - paragraph [ref=e51]: Early web and product years
+                - paragraph [ref=e52]: A mixed education across commerce, platforms, service design, and building things that had to work in the real world.
+            - generic [ref=e53]:
+              - paragraph [ref=e54]: 2010 — 2017
+              - generic [ref=e55]:
+                - paragraph [ref=e56]: Before that
+                - paragraph [ref=e57]: Curious about interfaces, making on the internet, and how small details change how something feels.
+          - generic [ref=e58]: 50+ mentees, 20+ countries visited, an 800km Camino, and a long-running habit of learning by making. Games are the latest chapter, but probably not the last one.
+    - contentinfo [ref=e59]:
+      - generic [ref=e61]:
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - paragraph [ref=e65]: KEN HUANG
+              - paragraph [ref=e66]: Indie game developer · Product designer · Former frontend lead
+            - paragraph [ref=e67]: Building games from Taipei, with a product eye for systems, feel, and pacing.
+            - link "$ bluetch@gmail.com" [ref=e68] [cursor=pointer]:
+              - /url: mailto:bluetch@gmail.com
+              - generic [ref=e69]: $
+              - text: bluetch@gmail.com
+              - img [ref=e70]
+          - generic [ref=e73]:
+            - paragraph [ref=e74]: Navigate
+            - list [ref=e75]:
+              - listitem [ref=e76]:
+                - link "› Work" [ref=e77] [cursor=pointer]:
+                  - /url: /portfolio
+                  - generic [ref=e78]: ›
+                  - text: Work
+              - listitem [ref=e79]:
+                - link "› About" [ref=e80] [cursor=pointer]:
+                  - /url: /about
+                  - generic [ref=e81]: ›
+                  - text: About
+              - listitem [ref=e82]:
+                - link "› Devlog" [ref=e83] [cursor=pointer]:
+                  - /url: /articles
+                  - generic [ref=e84]: ›
+                  - text: Devlog
+          - generic [ref=e85]:
+            - paragraph [ref=e86]: Connect
+            - list [ref=e87]:
+              - listitem [ref=e88]:
+                - link "› LinkedIn" [ref=e89] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/bluetch/
+                  - generic [ref=e90]: ›
+                  - text: LinkedIn
+                  - img [ref=e91]
+              - listitem [ref=e94]:
+                - link "› Instagram" [ref=e95] [cursor=pointer]:
+                  - /url: https://www.instagram.com/noa.tzu/
+                  - generic [ref=e96]: ›
+                  - text: Instagram
+                  - img [ref=e97]
+              - listitem [ref=e100]:
+                - link "› GitHub" [ref=e101] [cursor=pointer]:
+                  - /url: https://github.com/bluetch
+                  - generic [ref=e102]: ›
+                  - text: GitHub
+                  - img [ref=e103]
+        - generic [ref=e106]:
+          - paragraph [ref=e107]: © 2026 KEN HUANG — ALL RIGHTS RESERVED
+          - paragraph [ref=e108]: MADE IN TAIPEI · SHAPED BY PRODUCTS AND GAMES
+  - alert [ref=e109]

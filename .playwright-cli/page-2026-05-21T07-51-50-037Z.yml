@@ -1,0 +1,171 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e6]:
+        - link "Ken Huang" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]:
+            - generic [ref=e10]: Ken Huang
+            - generic [ref=e11]: Ken Huang
+        - navigation [ref=e12]:
+          - link "01 HOME" [ref=e13] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e14]: "01"
+            - text: HOME
+          - link "02 ABOUT" [ref=e15] [cursor=pointer]:
+            - /url: /about
+            - generic [ref=e16]: "02"
+            - text: ABOUT
+          - link "03 WORK" [ref=e18] [cursor=pointer]:
+            - /url: /portfolio
+            - generic [ref=e19]: "03"
+            - text: WORK
+          - link "04 DEVLOG" [ref=e20] [cursor=pointer]:
+            - /url: /articles
+            - generic [ref=e21]: "04"
+            - text: DEVLOG
+          - link "05 MENTOR" [ref=e22] [cursor=pointer]:
+            - /url: /mentorship
+            - generic [ref=e23]: "05"
+            - text: MENTOR
+          - link "06 ART" [ref=e24] [cursor=pointer]:
+            - /url: https://www.instagram.com/noa.tzu/
+            - generic [ref=e25]: "06"
+            - text: ART
+    - main [ref=e26]:
+      - generic [ref=e27]:
+        - generic [ref=e29]:
+          - img "Ken Huang portrait" [ref=e31]
+          - generic [ref=e32]:
+            - paragraph [ref=e33]: About
+            - heading "I make products feel clearer, calmer, and a little more alive." [level=1] [ref=e34]:
+              - text: I make products feel
+              - text: clearer, calmer,
+              - text: and a little more alive.
+            - paragraph [ref=e35]: I've spent 15+ years moving between product design and frontend development. That mix taught me how to care about both the idea and the implementation, both the narrative and the edge cases.
+            - paragraph [ref=e36]: "These days, I'm especially interested in what product teams can learn from games: pacing, readable feedback, progression, and charm with restraint."
+            - generic [ref=e37]:
+              - link "View selected work" [ref=e38] [cursor=pointer]:
+                - /url: /portfolio
+                - text: View selected work
+                - img [ref=e39]
+              - link "LinkedIn" [ref=e41] [cursor=pointer]:
+                - /url: https://www.linkedin.com/in/bluetch/
+                - text: LinkedIn
+                - img [ref=e42]
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - paragraph [ref=e48]: How I work
+            - heading "Thoughtful systems. Useful playfulness." [level=2] [ref=e49]:
+              - text: Thoughtful systems.
+              - text: Useful playfulness.
+          - generic [ref=e50]:
+            - generic [ref=e51]:
+              - paragraph [ref=e53]: Product first
+              - paragraph [ref=e54]: Start with the job to be done. Make the interface earn its keep.
+            - generic [ref=e55]:
+              - paragraph [ref=e57]: Systems matter
+              - paragraph [ref=e58]: I like patterns that survive more than one launch cycle.
+            - generic [ref=e59]:
+              - paragraph [ref=e61]: Play with purpose
+              - paragraph [ref=e62]: A little delight goes far when it sharpens clarity instead of distracting from it.
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - paragraph [ref=e66]: Experience
+            - heading "A long route through design, code, and product reality." [level=2] [ref=e67]
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - generic [ref=e71]:
+                  - paragraph [ref=e72]: TXOne Networks
+                  - paragraph [ref=e73]: Staff Frontend Developer
+                - paragraph [ref=e74]: 2022 — present
+              - paragraph [ref=e75]: OT security products, frontend systems, product-scale implementation.
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - paragraph [ref=e79]: Good Finance
+                  - paragraph [ref=e80]: Sr. Frontend Developer
+                - paragraph [ref=e81]: 2021 — 2022
+              - paragraph [ref=e82]: Trading tools, account systems, fintech product delivery.
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - paragraph [ref=e86]: Shopee
+                  - paragraph [ref=e87]: Product Designer Lead / UX Engineer
+                - paragraph [ref=e88]: 2017 — 2021
+              - paragraph [ref=e89]: Design systems, research, experimentation, product thinking at scale.
+            - generic [ref=e90]:
+              - generic [ref=e91]:
+                - generic [ref=e92]:
+                  - paragraph [ref=e93]: Uitox / LINE / Trend Micro / Yulon
+                  - paragraph [ref=e94]: Design and frontend roles
+                - paragraph [ref=e95]: 2010 — 2017
+              - paragraph [ref=e96]: A mixed education in commerce, platforms, service design, and shipping real things.
+        - generic [ref=e98]:
+          - paragraph [ref=e99]: Side notes
+          - generic [ref=e100]:
+            - generic [ref=e101]: 50+ mentees across design and frontend.
+            - generic [ref=e102]: 20+ countries visited, including an 800km Camino.
+            - generic [ref=e103]: Currently building small games after work.
+    - contentinfo [ref=e104]:
+      - generic [ref=e106]:
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - paragraph [ref=e110]: KEN HUANG
+              - paragraph [ref=e111]: Product designer · Frontend builder · Game tinkerer
+            - paragraph [ref=e112]: Building thoughtful interfaces from Taipei, with a product lens first and a playful systems mindset close behind.
+            - link "$ bluetch@gmail.com" [ref=e113] [cursor=pointer]:
+              - /url: mailto:bluetch@gmail.com
+              - generic [ref=e114]: $
+              - text: bluetch@gmail.com
+              - img [ref=e115]
+          - generic [ref=e118]:
+            - paragraph [ref=e119]: Navigate
+            - list [ref=e120]:
+              - listitem [ref=e121]:
+                - link "› Work" [ref=e122] [cursor=pointer]:
+                  - /url: /portfolio
+                  - generic [ref=e123]: ›
+                  - text: Work
+              - listitem [ref=e124]:
+                - link "› About" [ref=e125] [cursor=pointer]:
+                  - /url: /about
+                  - generic [ref=e126]: ›
+                  - text: About
+              - listitem [ref=e127]:
+                - link "› Devlog" [ref=e128] [cursor=pointer]:
+                  - /url: /articles
+                  - generic [ref=e129]: ›
+                  - text: Devlog
+              - listitem [ref=e130]:
+                - link "› Mentorship" [ref=e131] [cursor=pointer]:
+                  - /url: /mentorship
+                  - generic [ref=e132]: ›
+                  - text: Mentorship
+          - generic [ref=e133]:
+            - paragraph [ref=e134]: Connect
+            - list [ref=e135]:
+              - listitem [ref=e136]:
+                - link "› LinkedIn" [ref=e137] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/bluetch/
+                  - generic [ref=e138]: ›
+                  - text: LinkedIn
+                  - img [ref=e139]
+              - listitem [ref=e142]:
+                - link "› Instagram" [ref=e143] [cursor=pointer]:
+                  - /url: https://www.instagram.com/noa.tzu/
+                  - generic [ref=e144]: ›
+                  - text: Instagram
+                  - img [ref=e145]
+              - listitem [ref=e148]:
+                - link "› GitHub" [ref=e149] [cursor=pointer]:
+                  - /url: https://github.com/bluetch
+                  - generic [ref=e150]: ›
+                  - text: GitHub
+                  - img [ref=e151]
+        - generic [ref=e154]:
+          - paragraph [ref=e155]: © 2026 KEN HUANG — ALL RIGHTS RESERVED
+          - paragraph [ref=e156]: MADE IN TAIPEI · SHAPED BY PRODUCTS AND GAMES
+  - alert [ref=e157]

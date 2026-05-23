@@ -1,0 +1,255 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e6]:
+        - link "Ken Huang" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e9]:
+            - generic [ref=e10]: Ken Huang
+            - generic [ref=e11]: Ken Huang
+        - navigation [ref=e12]:
+          - link "HOME" [ref=e13] [cursor=pointer]:
+            - /url: /
+            - text: HOME
+          - link "ABOUT" [ref=e15] [cursor=pointer]:
+            - /url: /about
+          - link "WORK" [ref=e16] [cursor=pointer]:
+            - /url: /portfolio
+          - link "DEVLOG" [ref=e17] [cursor=pointer]:
+            - /url: /articles
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e21]:
+          - generic [ref=e22]:
+            - paragraph [ref=e23]: Game developer. Product shaped.
+            - heading "Small games, built with product taste." [level=1] [ref=e25]:
+              - text: Small games,
+              - text: built with product taste.
+            - paragraph [ref=e26]: "I make games now. Product design is still in the bones: systems that read clearly, feedback that teaches, and a little personality in the right places."
+            - generic [ref=e27]:
+              - link "See selected work" [ref=e28] [cursor=pointer]:
+                - /url: /portfolio
+                - text: See selected work
+                - img [ref=e29]
+              - link "Start a conversation" [ref=e31] [cursor=pointer]:
+                - /url: mailto:bluetch@gmail.com
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - paragraph [ref=e34]: Now
+                - paragraph [ref=e35]: Building indie games
+              - generic [ref=e36]:
+                - paragraph [ref=e37]: 15+
+                - paragraph [ref=e38]: Years in product work
+              - generic [ref=e39]:
+                - paragraph [ref=e40]: Past
+                - paragraph [ref=e41]: Frontend as previous chapter
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - generic [ref=e47]:
+                - paragraph [ref=e48]: Current build
+                - paragraph [ref=e49]: "The game I am building: Toy Factory"
+              - generic [ref=e50]: 開發中
+            - generic [ref=e53]:
+              - generic [ref=e54]:
+                - paragraph [ref=e55]: Intro
+                - paragraph [ref=e56]: A tiny factory game about making odd little toys and keeping the line alive.
+              - img "Toy Factory animated pixel art concept" [ref=e58]
+        - generic [ref=e60]:
+          - paragraph [ref=e61]: Building games with product discipline.
+          - paragraph [ref=e62]: Keeping old frontend work as part of the archive, not the headline.
+          - paragraph [ref=e63]: Chasing better feel, clearer systems, and stronger loops.
+          - paragraph [ref=e64]: Using play where it belongs.
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - paragraph [ref=e69]: Selected work
+              - heading "Selected work, shipped with taste." [level=2] [ref=e70]
+            - generic [ref=e71]:
+              - button "All missions" [ref=e72] [cursor=pointer]
+              - button "Product design" [ref=e73] [cursor=pointer]
+              - button "Web archive" [ref=e74] [cursor=pointer]
+          - generic [ref=e75]:
+            - link "One Account Admin Quest 01 Good Finance One Account Admin Make an all in one account admin to help different services and business units. frontend 2021" [ref=e76] [cursor=pointer]:
+              - /url: /portfolio/goodfinance-one-account-admin
+              - generic [ref=e77]:
+                - img "One Account Admin" [ref=e78]
+                - generic [ref=e79]: Quest 01
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - generic [ref=e82]:
+                    - paragraph [ref=e83]: Good Finance
+                    - heading "One Account Admin" [level=3] [ref=e84]
+                  - img [ref=e85]
+                - paragraph [ref=e88]: Make an all in one account admin to help different services and business units.
+                - generic [ref=e89]:
+                  - generic [ref=e90]: frontend
+                  - generic [ref=e91]: "2021"
+            - link "Product Detail Page Refactor Quest 02 Shopee Product Detail Page Refactor To improve performance and get more acquisition for e-commerce design 2018" [ref=e92] [cursor=pointer]:
+              - /url: /portfolio/shopee-product-detail-page-refactor
+              - generic [ref=e93]:
+                - img "Product Detail Page Refactor" [ref=e94]
+                - generic [ref=e95]: Quest 02
+              - generic [ref=e96]:
+                - generic [ref=e97]:
+                  - generic [ref=e98]:
+                    - paragraph [ref=e99]: Shopee
+                    - heading "Product Detail Page Refactor" [level=3] [ref=e100]
+                  - img [ref=e101]
+                - paragraph [ref=e104]: To improve performance and get more acquisition for e-commerce
+                - generic [ref=e105]:
+                  - generic [ref=e106]: design
+                  - generic [ref=e107]: "2018"
+            - link "Design Language System Quest 03 Shopee Design Language System A set of rules and guidelines help work efficiency design 2018" [ref=e108] [cursor=pointer]:
+              - /url: /portfolio/design-language-system
+              - generic [ref=e109]:
+                - img "Design Language System" [ref=e110]
+                - generic [ref=e111]: Quest 03
+              - generic [ref=e112]:
+                - generic [ref=e113]:
+                  - generic [ref=e114]:
+                    - paragraph [ref=e115]: Shopee
+                    - heading "Design Language System" [level=3] [ref=e116]
+                  - img [ref=e117]
+                - paragraph [ref=e120]: A set of rules and guidelines help work efficiency
+                - generic [ref=e121]:
+                  - generic [ref=e122]: design
+                  - generic [ref=e123]: "2018"
+            - link "Pet Adoption Quest 04 Design Exercise Pet Adoption Design an experience that will help connect people looking for a new pet with the right companion. design 2018" [ref=e124] [cursor=pointer]:
+              - /url: /portfolio/design-exercise-pet-adoption
+              - generic [ref=e125]:
+                - img "Pet Adoption" [ref=e126]
+                - generic [ref=e127]: Quest 04
+              - generic [ref=e128]:
+                - generic [ref=e129]:
+                  - generic [ref=e130]:
+                    - paragraph [ref=e131]: Design Exercise
+                    - heading "Pet Adoption" [level=3] [ref=e132]
+                  - img [ref=e133]
+                - paragraph [ref=e136]: Design an experience that will help connect people looking for a new pet with the right companion.
+                - generic [ref=e137]:
+                  - generic [ref=e138]: design
+                  - generic [ref=e139]: "2018"
+          - link "Browse the full archive" [ref=e141] [cursor=pointer]:
+            - /url: /portfolio
+            - text: Browse the full archive
+            - img [ref=e142]
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - paragraph [ref=e147]: Operating model
+            - heading "Product craft, with good timing." [level=2] [ref=e148]:
+              - text: Product craft,
+              - text: with good timing.
+            - paragraph [ref=e149]: Strategy first. Systems second. Delight where it earns its place.
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - paragraph [ref=e153]: Product framing
+              - paragraph [ref=e154]: Find the real user job before polishing the surface.
+            - generic [ref=e155]:
+              - paragraph [ref=e157]: System thinking
+              - paragraph [ref=e158]: Make patterns that scale past a single shiny screen.
+            - generic [ref=e159]:
+              - paragraph [ref=e161]: Playful restraint
+              - paragraph [ref=e162]: Use play to sharpen clarity, not to make noise.
+        - generic [ref=e164]:
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - paragraph [ref=e167]: Writing & thinking
+              - heading "Notes on craft, systems, and things worth making." [level=2] [ref=e168]
+            - link "Read more" [ref=e169] [cursor=pointer]:
+              - /url: /articles
+              - text: Read more
+              - img [ref=e170]
+          - generic [ref=e172]:
+            - link [ref=e173] [cursor=pointer]:
+              - /url: https://medium.com/@bluetch/git-%E6%8C%87%E4%BB%A4%E6%95%99%E5%AD%B8%E5%85%A8%E6%94%BB%E7%95%A5-%E5%88%9D%E5%AD%B8%E8%80%85%E5%BF%85%E5%82%99%E7%9A%84%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E8%88%87%E5%AF%A6%E7%94%A8%E6%83%85%E5%A2%83%E6%95%B4%E7%90%86-9448fd1024e6
+              - article [ref=e174]:
+                - img "Git 指令教學全攻略：初學者必備的常用指令與實用情境整理" [ref=e176]
+                - generic [ref=e177]:
+                  - paragraph [ref=e178]: frontend · 2025.05.17
+                  - heading "Git 指令教學全攻略：初學者必備的常用指令與實用情境整理" [level=3] [ref=e179]
+                  - paragraph [ref=e180]: 想學 Git 卻總是記不起指令？這篇文章整理了最常用的 Git 指令，搭配簡單說明與實際使用情境，讓你從版本控制新手快速進入開發者日常必備技能。適合自學者與前端/後端工程師參考！
+            - link [ref=e181] [cursor=pointer]:
+              - /url: https://medium.com/@bluetch/reflection-of-nvidia-ceo-jensen-huang-keynote-at-computex-2024-d61a6ba61475
+              - article [ref=e182]:
+                - img "Reflection of Nvidia CEO Jensen Huang keynote at Computex 2024" [ref=e184]
+                - generic [ref=e185]:
+                  - paragraph [ref=e186]: other · 2024.06.05
+                  - heading "Reflection of Nvidia CEO Jensen Huang keynote at Computex 2024" [level=3] [ref=e187]
+                  - paragraph [ref=e188]: Reflection of Nvidia CEO Jensen Huang keynote at Computex 2024.
+            - link [ref=e189] [cursor=pointer]:
+              - /url: https://medium.com/p/519d8be7d48c
+              - article [ref=e190]:
+                - img "JavaScript from ES6 to ES12 in 2022" [ref=e192]
+                - generic [ref=e193]:
+                  - paragraph [ref=e194]: frontend · 2022.10.10
+                  - heading "JavaScript from ES6 to ES12 in 2022" [level=3] [ref=e195]
+                  - paragraph [ref=e196]: Javascript a one of the three most crucial programming at front-end positions. However, the author Brendan Eich just spent 10 days on it. It helps a lot in the website technically, but it also caused many issues to fix, that's why there are from ES6(2015) to ES12(2021) born to fix better JavaScript.
+        - generic [ref=e199]:
+          - img "Mini 4WD toy car" [ref=e201]
+          - generic [ref=e202]:
+            - paragraph [ref=e203]: Let's build
+            - heading "If it needs structure and spark, let's talk." [level=2] [ref=e204]
+            - paragraph [ref=e205]: I'm most useful when a team wants clearer product thinking and sharper interaction craft.
+            - generic [ref=e206]:
+              - link "bluetch@gmail.com" [ref=e207] [cursor=pointer]:
+                - /url: mailto:bluetch@gmail.com
+                - text: bluetch@gmail.com
+                - img [ref=e208]
+              - link "Learn more about me" [ref=e211] [cursor=pointer]:
+                - /url: /about
+    - contentinfo [ref=e212]:
+      - generic [ref=e214]:
+        - generic [ref=e215]:
+          - generic [ref=e216]:
+            - generic [ref=e217]:
+              - paragraph [ref=e218]: KEN HUANG
+              - paragraph [ref=e219]: Indie game developer · Product designer · Former frontend lead
+            - paragraph [ref=e220]: Building games from Taipei, with a product eye for systems, feel, and pacing.
+            - link "$ bluetch@gmail.com" [ref=e221] [cursor=pointer]:
+              - /url: mailto:bluetch@gmail.com
+              - generic [ref=e222]: $
+              - text: bluetch@gmail.com
+              - img [ref=e223]
+          - generic [ref=e226]:
+            - paragraph [ref=e227]: Navigate
+            - list [ref=e228]:
+              - listitem [ref=e229]:
+                - link "› Work" [ref=e230] [cursor=pointer]:
+                  - /url: /portfolio
+                  - generic [ref=e231]: ›
+                  - text: Work
+              - listitem [ref=e232]:
+                - link "› About" [ref=e233] [cursor=pointer]:
+                  - /url: /about
+                  - generic [ref=e234]: ›
+                  - text: About
+              - listitem [ref=e235]:
+                - link "› Devlog" [ref=e236] [cursor=pointer]:
+                  - /url: /articles
+                  - generic [ref=e237]: ›
+                  - text: Devlog
+          - generic [ref=e238]:
+            - paragraph [ref=e239]: Connect
+            - list [ref=e240]:
+              - listitem [ref=e241]:
+                - link "› LinkedIn" [ref=e242] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/bluetch/
+                  - generic [ref=e243]: ›
+                  - text: LinkedIn
+                  - img [ref=e244]
+              - listitem [ref=e247]:
+                - link "› Instagram" [ref=e248] [cursor=pointer]:
+                  - /url: https://www.instagram.com/noa.tzu/
+                  - generic [ref=e249]: ›
+                  - text: Instagram
+                  - img [ref=e250]
+              - listitem [ref=e253]:
+                - link "› GitHub" [ref=e254] [cursor=pointer]:
+                  - /url: https://github.com/bluetch
+                  - generic [ref=e255]: ›
+                  - text: GitHub
+                  - img [ref=e256]
+        - generic [ref=e259]:
+          - paragraph [ref=e260]: © 2026 KEN HUANG — ALL RIGHTS RESERVED
+          - paragraph [ref=e261]: MADE IN TAIPEI · SHAPED BY PRODUCTS AND GAMES
+  - alert [ref=e262]

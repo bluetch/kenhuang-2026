@@ -522,6 +522,12 @@
   color: #5f6675;
   padding-left: 1.5rem;
 }
+.article-prose ul {
+  list-style: disc;
+}
+.article-prose ol {
+  list-style: decimal;
+}
 .article-prose li { color: #5f6675; }
 .article-prose li::marker { color: #1f3a5f; }
 
