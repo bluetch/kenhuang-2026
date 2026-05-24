@@ -66,11 +66,6 @@ export default function MdxArticlePage({ frontmatter, mdxSource }: MdxArticlePag
               >
                 {frontmatter.name}
               </h1>
-              {frontmatter.desc && (
-                <p className="max-w-2xl text-base leading-8 text-[#5f6675]">
-                  {frontmatter.desc}
-                </p>
-              )}
               {frontmatter.date && (
                 <p className="text-[10px]" style={{ fontFamily: "Space Mono, monospace", color: "#8b8178" }}>
                   {String(frontmatter.date).replace(/(\d{4})(\d{2})(\d{2})/, "$1.$2.$3")}

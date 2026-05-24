@@ -215,10 +215,10 @@ export default function Home({ articles, portfolio }: HomeProps) {
                       <p className="text-xs uppercase tracking-[0.18em] text-[#9a8676]">
                         {article.category.join(" / ")} · {dateFormat(article.date)}
                       </p>
-                      <h3 className="mt-3 text-xl leading-tight text-[#1d2636]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
+                      <h3 className="mt-3 line-clamp-1 text-xl leading-tight text-[#1d2636]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
                         {article.name}
                       </h3>
-                      <p className="mt-4 text-sm leading-7 text-[#636b79]">{article.desc}</p>
+                      <p className="mt-4 line-clamp-2 text-sm leading-7 text-[#636b79]">{article.desc}</p>
                     </div>
                   </article>
                 );
@@ -314,14 +314,14 @@ export default function Home({ articles, portfolio }: HomeProps) {
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="text-sm text-[#8a7c6f]">{item.company}</p>
-                        <h3 className="mt-2 text-2xl leading-tight text-[#1d2636]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
+                        <h3 className="mt-2 line-clamp-1 text-2xl leading-tight text-[#1d2636]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
                           {item.name}
                         </h3>
                       </div>
                       <ArrowUpRight className="mt-1 text-[#1f3a5f] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" size={18} />
                     </div>
 
-                    <p className="mt-4 text-base leading-7 text-[#5f6675]">{item.desc}</p>
+                    <p className="mt-4 line-clamp-2 text-base leading-7 text-[#5f6675]">{item.desc}</p>
 
                     <div className="mt-6 flex flex-wrap items-center gap-3">
                       {item.category.map((category) => (

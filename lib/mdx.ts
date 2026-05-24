@@ -32,6 +32,30 @@ function toSlug(filePath: string): string {
   return path.basename(filePath).replace(/\.(mdx|md|msx)$/, "");
 }
 
+function extractPlainText(content: string): string {
+  return content
+    .replace(/^---[\s\S]*?---/, "")
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[#>*`_-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function fallbackDesc(content: string): string {
+  return extractPlainText(content);
+}
+
+function normalizeFrontmatter<T extends Record<string, any>>(frontmatter: T, content: string): T {
+  const desc = typeof frontmatter.desc === "string" ? frontmatter.desc.trim() : "";
+
+  return {
+    ...frontmatter,
+    desc: desc || fallbackDesc(content),
+  };
+}
+
 /**
  * Returns metadata for all MDX articles (frontmatter only, no content).
  * Shape matches data/articles.ts entries so they can be merged.
@@ -43,8 +67,8 @@ export function getMdxArticles(): Article[] {
     .map((filePath) => {
       const slug = toSlug(filePath);
       const raw = fs.readFileSync(filePath, "utf8");
-      const { data } = matter(raw);
-      return { ...data, url: `articles/${slug}` } as Article;
+      const { data, content } = matter(raw);
+      return { ...normalizeFrontmatter(data, content), url: `articles/${slug}` } as Article;
     })
     .sort((a, b) => (a.date > b.date ? -1 : 1));
 }
@@ -58,7 +82,7 @@ export function getMdxArticle(slug: string): { frontmatter: Record<string, any>;
   if (filePath) {
     const raw = fs.readFileSync(filePath, "utf8");
     const { data: frontmatter, content } = matter(raw);
-    return { frontmatter, content };
+    return { frontmatter: normalizeFrontmatter(frontmatter, content), content };
   }
 
   return null;

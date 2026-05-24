@@ -57,13 +57,8 @@ export default function ArticleList({ articles }: ArticleListProps) {
                   className="mt-4 text-[clamp(3rem,7vw,6rem)] leading-[0.92] tracking-[-0.05em]"
                   style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
                 >
-                  Notes on craft,
-                  <br />
-                  systems, and side quests.
+                  Dev logs
                 </h1>
-                <p className="mt-5 max-w-2xl text-lg leading-8 text-[#5f6675]">
-                  Frontend, product, travel, and whatever else was worth writing down before it disappeared.
-                </p>
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -102,7 +97,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
                     <p className="text-xs uppercase tracking-[0.16em] text-[#8b8178]">
                       {dateFormat(item.date)} · {item.category.join(" / ")}
                     </p>
-                    <h2 className="mt-2 line-clamp-2 text-xl leading-tight text-[#1d2636] transition-colors group-hover:text-[#1f3a5f]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
+                    <h2 className="mt-2 line-clamp-1 text-xl leading-tight text-[#1d2636] transition-colors group-hover:text-[#1f3a5f]" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
                       {item.name}
                     </h2>
                     <p className="mt-3 line-clamp-2 text-sm leading-7 text-[#5f6675]">{item.desc}</p>
